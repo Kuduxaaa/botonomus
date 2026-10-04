@@ -14,6 +14,19 @@ Typical use:
 """
 
 from ._version import __version__
+from .client import (
+    Client,
+    Headers,
+    Identity,
+    Response,
+    delete,
+    get,
+    head,
+    patch,
+    post,
+    put,
+    request,
+)
 from .config import BrowserConfig, ProxySpec, parse_proxy
 from .core import Botonomus, Session
 from .errors import (
@@ -27,6 +40,7 @@ from .errors import (
     ConfigurationError,
     GeoLookupError,
     GeoMismatchError,
+    HTTPStatusError,
     ManagerClosedError,
     PersonaUnsupportedError,
     ProfileInUseError,
@@ -37,9 +51,6 @@ __all__ = [
     "PersonaUnsupportedError",
     "GeoMismatchError",
     "GeoLookupError",
-    "BinaryVerificationError",
-    "BinaryNotInstalledError",
-    "BinaryDownloadError",
     "BinaryDownloadError",
     "BinaryNotInstalledError",
     "BinaryVerificationError",
@@ -49,7 +60,12 @@ __all__ = [
     "BrowserConfig",
     "BrowserStartupError",
     "BrowserUnavailableError",
+    "Client",
     "ConfigurationError",
+    "HTTPStatusError",
+    "Headers",
+    "Identity",
+    "Response",
     "Human",
     "HumanConfig",
     "HumanPage",
@@ -59,5 +75,12 @@ __all__ = [
     "ProxySpec",
     "Session",
     "__version__",
+    "delete",
+    "get",
+    "head",
     "parse_proxy",
+    "patch",
+    "post",
+    "put",
+    "request",
 ]

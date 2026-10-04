@@ -40,6 +40,13 @@ def register(subparsers: Any) -> None:
         "--levels", type=_levels, default=[1, 2, 5, 10], help="e.g. 1,2,5,10 (default)"
     )
     parser.add_argument(
+        "--mode",
+        choices=("sessions", "contexts"),
+        default="sessions",
+        help="sessions: a browser per session (default); contexts: one browser with an "
+        "in-memory context per tab, as botonomus.Client",
+    )
+    parser.add_argument(
         "--root", type=Path, default=Path(".botonomus/benchmark"), help="profile root"
     )
     parser.add_argument("--output", type=Path, help="also write results to this JSON file")
@@ -52,7 +59,7 @@ def run(args: argparse.Namespace) -> int:
     """Run the levels and print one line per level."""
     config = browser_config(args, args.root)
     with ProbeServer() as server:
-        reports = asyncio.run(run_benchmark(args.levels, config, server.url))
+        reports = asyncio.run(run_benchmark(args.levels, config, server.url, mode=args.mode))
     if args.output is not None:
         write_json(args.output, reports)
     if args.json:
@@ -61,10 +68,12 @@ def run(args: argparse.Namespace) -> int:
         for report in reports:
             peak = report["peak_host_used_bytes"] / 2**30
             flag = "  stopped early" if report["stopped_early"] else ""
+            each = report.get("per_instance_bytes")
+            per = f", ~{each / 2**20:.0f} MiB each" if each else ""
             print(
                 f"level {report['requested']:>4}: active {report['active']:>4}, "
                 f"failures {report['failures']}, startup {report.get('startup_seconds', 0):.1f}s, "
-                f"peak host memory {peak:.1f} GiB{flag}"
+                f"peak host memory {peak:.1f} GiB{per}{flag}"
             )
     any_active = any(report["active"] for report in reports)
     return EXIT_OK if any_active else EXIT_FAILURE

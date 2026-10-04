@@ -46,7 +46,7 @@ botonomus benchmark --levels 1,2,5
 botonomus benchmark --levels 10,20,40,80 --output artifacts/benchmark.json
 ```
 
-The benchmark starts browsers sequentially and holds them open simultaneously at each level. It records startup duration, active sessions, failures and peak sampled host memory (whole-host, not browser-only). It stops admitting below 15% available RAM or after two failures, closes the level, then decides whether to continue.
+The benchmark starts browsers sequentially and holds them open simultaneously at each level. It records startup duration, active sessions, failures, peak sampled host memory (whole-host, not browser-only) and the host-memory growth per active session (in `contexts` mode this includes the shared browser, so it falls as the level rises). `--mode contexts` measures the [Client](client.md) model instead: one browser with an in-memory context per tab. It stops admitting below 15% available RAM or after two failures, closes the level, then decides whether to continue.
 
 The initial measured run completed 1 session in 1.125 s and 2 simultaneously active sessions in 3.031 s, including local navigation, with zero failures. Levels 10-80 have not been benchmarked, and no capacity or throughput figure is promised.
 

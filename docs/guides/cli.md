@@ -20,7 +20,7 @@ botonomus COMMAND --help
 | `botonomus profiles list [--root DIR] [--json]` | List profiles and whether each is in use |
 | `botonomus profiles remove NAME [--root DIR]` | Delete a profile; refuses one that is in use |
 | `botonomus profiles warmup NAME [--duration S] [--sites URL ...] [--root DIR] [--json]` | Browse common sites humanly so the profile accumulates history (see [Profiles](profiles.md)) |
-| `botonomus benchmark [--levels 1,2,5,10] [--root DIR] [--output FILE] [--json]` | Held-open concurrency on a local page |
+| `botonomus benchmark [--levels 1,2,5,10] [--mode sessions\|contexts] [--root DIR] [--output FILE] [--json]` | Held-open concurrency on a local page: a browser per session (default), or one browser with an in-memory context per tab, as `Client` uses |
 
 ## Browser options
 

@@ -5,7 +5,7 @@
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](pyproject.toml)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
 
-Botonomus is an async Python SDK for browser automation that looks like an ordinary browser. It launches real Google Chrome, or the Botonomus Chromium build, as a normal process with its own profile, then attaches a native Chrome DevTools Protocol (CDP) driver that never sends `Runtime.enable` and does its DOM work in an isolated world that page scripts cannot see. Fingerprint personas (hardware, time zone, canvas/WebGL/audio noise) are applied inside Botonomus Chromium at the C++ level from command-line switches. Nothing is spoofed in JavaScript. Around that sit a bounded concurrency pool, persistent profiles with cross-process locks, authenticated proxies, geo consistency, human-like input and a reproducible detection runner.
+Botonomus is an async Python SDK for browser automation that looks like an ordinary browser. It launches real Google Chrome, or the Botonomus Chromium build, as a normal process with its own profile, then attaches a native Chrome DevTools Protocol (CDP) driver that never sends `Runtime.enable` and does its DOM work in an isolated world that page scripts cannot see. Fingerprint personas (hardware, time zone, canvas/WebGL/audio noise) are applied inside Botonomus Chromium at the C++ level from command-line switches. Nothing is spoofed in JavaScript. Around that sit a bounded concurrency pool, persistent profiles with cross-process locks, authenticated proxies, geo consistency, human-like input, a reproducible detection runner and an `httpx`-like client that serves many requests from one shared browser.
 
 Botonomus does not claim to be undetectable. The [measured results](#measured-results) below show what was checked, when and under which conditions.
 
@@ -22,6 +22,12 @@ Optional drivers (the default `native` driver needs neither):
 ```bash
 pip install "botonomus[patchright]"   # Patchright, a Playwright fork without Runtime.enable
 pip install "botonomus[playwright]"   # stock Playwright
+```
+
+Optional HTTP fast path for the [`Client`](#client-httpx-like):
+
+```bash
+pip install "botonomus[http]"         # curl_cffi: Chrome's TLS and HTTP/2 fingerprints
 ```
 
 ## Quickstart
@@ -43,6 +49,15 @@ asyncio.run(main())
 
 The browser opens visibly, the profile in `.botonomus/profiles/acct-01` keeps its cookies and storage, and the browser closes when the `async with` block exits.
 
+Or call a real browser like `httpx`:
+
+```python
+import botonomus
+
+response = await botonomus.get("https://example.com")
+print(response.status, response.via, response.cookies)
+```
+
 ## Why Botonomus
 
 A comparison of approaches, limited to properties that can be checked from the code or the vendors' public documentation. Closed anti-detect browsers vary; the column describes the common pattern.
@@ -61,6 +76,31 @@ A comparison of approaches, limited to properties that can be checked from the c
 With stock Chrome, Botonomus offers no fingerprint diversity: every session presents the host's real hardware. Personas need Botonomus Chromium.
 
 ## Features
+
+### Client (httpx-like)
+
+`botonomus.Client` serves requests from one shared Chrome. Each request loads in a tab of an in-memory browser context: its own cookies and storage, no profile on disk, and the browser, GPU and network processes shared. It adds to the API below and replaces none of it.
+
+```python
+from botonomus import Client
+
+async with Client(max_tabs="auto") as client:
+    page = await client.get("https://example.com/products", params={"page": 2})
+    api = await client.post("https://example.com/api/cart", json={"sku": 42})
+
+    async with client.page("https://example.com/login") as tab:  # full interaction
+        await tab.get_by_role("button", name="Sign in").click()
+
+    async with client.identity("acct-01", proxy="http://user:pass@proxy:8080") as me:
+        await me.get("https://example.com/account")  # cookies and localStorage kept
+```
+
+- **Lighter.** With 6 tabs held open on the development machine, `botonomus benchmark` measured about 133 MiB per context against about 224 MiB per separate browser, and half the startup time. Run `botonomus benchmark --mode contexts` on your server.
+- **HTTP fast path** (`botonomus[http]`). After a tab has loaded a host without a challenge, later requests to it go through `curl_cffi` with Chrome's TLS and HTTP/2 fingerprints, the browser's own headers and its cookies. A challenge sends the request back to a tab. `response.via` says which path served it.
+- **Identities.** Cookies, `localStorage` and the proxy are kept in a small, owner-only file between uses. `backend="profile"` uses a full profile for sites that need IndexedDB or service workers.
+- **Recovery.** If the browser dies, the client relaunches it, restores every context and retries the request once.
+
+Contexts are Chrome's off-the-record kind, and a persona applies to the whole shared browser. See the [Client guide](docs/guides/client.md) for the details and limits.
 
 ### Concurrency pool
 
@@ -221,7 +261,7 @@ Installing the package adds `botonomus` (also `python -m botonomus.cli`).
 | `botonomus proxy-check FILE [--parallel N] [--timeout S]` | Exit IP and location per proxy; never prints credentials |
 | `botonomus profiles list \| remove NAME [--root DIR]` | List profiles; remove refuses profiles in use |
 | `botonomus profiles warmup NAME [--duration S] [--sites URL ...]` | Browse common sites humanly so a profile accumulates history |
-| `botonomus benchmark --levels 1,2,5` | Held-open concurrency on a local page |
+| `botonomus benchmark --levels 1,2,5 [--mode contexts]` | Held-open concurrency on a local page: browsers per session, or contexts in one browser |
 
 `open`, `probe`, `detect`, `trace`, `consistency`, `profiles warmup` and `benchmark` also accept `--executable`, `--browser {auto,botonomus,chrome}`, `--persona {auto,off,SEED}`, `--proxy`, `--geoip`, `--timezone ZONE`, `--allow-timezone-mismatch`, `--locale`, `--headless` and `--driver`; `open`, `detect` and `profiles warmup` also accept `--humanize {off,default,careful,fast}`. Exit codes: 0 success, 1 runtime failure, 2 usage or configuration error.
 
@@ -269,6 +309,7 @@ Every SDK error derives from `botonomus.BotonomusError`; the low-level cause is 
 | `BrowserCleanupError` | Shutdown could not be confirmed; profile and slot stay reserved |
 | `GeoLookupError` | `geoip=True` and every exit lookup failed |
 | `GeoMismatchError` | Chrome cannot present the required time zone |
+| `HTTPStatusError` | `Response.raise_for_status()` found a 4xx or 5xx status |
 
 `PersonaUnsupportedError`, `GeoLookupError` and `GeoMismatchError` are imported from `botonomus.errors`; the others are also exported from `botonomus`. The native driver's own page errors (`botonomus.cdp.TimeoutError_`, `NavigationError`, `EvaluationError`, `ProtocolError`) are not `BotonomusError` subclasses; `TimeoutError_` subclasses the built-in `TimeoutError`.
 

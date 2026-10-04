@@ -81,6 +81,11 @@ class Page:
         self.session.on("Page.navigatedWithinDocument", self._on_same_document)
         self._connection.on("Target.detachedFromTarget", self._on_detached)
 
+    @property
+    def main_frame_id(self) -> str:
+        """The CDP frame id of the main frame."""
+        return self._main_frame
+
     def _on_frame_navigated(self, params: dict[str, Any]) -> None:
         if params["frame"]["id"] == self._main_frame:
             self.url = params["frame"]["url"]
@@ -93,6 +98,13 @@ class Page:
     def _on_detached(self, params: dict[str, Any]) -> None:
         if params.get("sessionId") == self.session.session_id:
             self.closed = True
+            self._release_handlers()
+
+    def _release_handlers(self) -> None:
+        # The connection outlives tabs (a Client keeps one for hours): drop our handlers.
+        self.session.off("Page.frameNavigated", self._on_frame_navigated)
+        self.session.off("Page.navigatedWithinDocument", self._on_same_document)
+        self._connection.off("Target.detachedFromTarget", self._on_detached)
 
     async def goto(
         self, url: str, *, wait_until: WaitUntil = "load", timeout: float | None = None
@@ -315,6 +327,7 @@ class Page:
             except (ProtocolError, TargetClosedError):
                 pass
             self.closed = True
+            self._release_handlers()
 
 
 __all__ = ["Page", "TimeoutError_", "WaitUntil"]

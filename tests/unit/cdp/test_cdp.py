@@ -205,3 +205,21 @@ def test_unmapped_characters_fall_back_to_composed_text():
 )
 def test_function_detection(source, expected):
     assert _looks_like_function(source) is expected
+
+
+async def test_event_waiters_fail_when_their_session_detaches():
+    def respond(message):
+        return [{"id": message["id"], "result": {}}]
+
+    async with FakeDevTools(respond) as server:
+        connection = await Connection.connect(server.url)
+        waiter = asyncio.create_task(connection.session("S9").wait_for("Page.lifecycleEvent"))
+        other = asyncio.create_task(connection.session("S8").wait_for("Page.lifecycleEvent"))
+        await asyncio.sleep(0)
+        connection._dispatch({"method": "Target.detachedFromTarget", "params": {"sessionId": "S9"}})
+        with pytest.raises(TargetClosedError):
+            await asyncio.wait_for(waiter, 1)
+        assert not other.done()
+        await connection.close()
+        with pytest.raises(TargetClosedError):
+            await asyncio.wait_for(other, 1)

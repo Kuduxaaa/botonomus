@@ -36,6 +36,7 @@ nav:
   - Home: README.md
   - Getting started: getting-started.md
   - Guides:
+      - Client (httpx-like): guides/client.md
       - Concurrency: guides/concurrency.md
       - Profiles: guides/profiles.md
       - Proxies and geo: guides/proxies-and-geo.md
@@ -51,6 +52,7 @@ nav:
       - botonomus: reference/botonomus.md
       - botonomus.config: reference/config.md
       - botonomus.core: reference/core.md
+      - botonomus.client: reference/client.md
       - botonomus.errors: reference/errors.md
       - botonomus.browser: reference/browser.md
       - botonomus.drivers: reference/drivers.md

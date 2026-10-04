@@ -5,11 +5,11 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "botonomus"
 dynamic = ["version"]
-description = "Stealth browser automation on real Chrome: native CDP driver, C++-level personas, async session pools"
+description = "Stealth browser automation on real Chrome: native CDP driver, C++-level personas, async session pools and an httpx-like client"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "Botonomus contributors" }]
-keywords = ["browser automation", "chrome", "cdp", "stealth", "anti-detect", "fingerprint", "scraping", "playwright"]
+keywords = ["browser automation", "chrome", "cdp", "stealth", "anti-detect", "fingerprint", "scraping", "playwright", "httpx"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Framework :: AsyncIO",
@@ -45,8 +45,9 @@ Issues = "https://github.com/Kuduxaaa/botonomus/issues"
 [project.optional-dependencies]
 playwright = ["playwright>=1.60,<2"]
 patchright = ["patchright>=1.60,<2"]
+http = ["curl_cffi>=0.14,<1"]
 docs = ["mkdocs>=1.6,<2", "mkdocs-material>=9.5,<10", "mkdocstrings[python]>=0.26,<2"]
-dev = ["playwright>=1.60,<2", "patchright>=1.60,<2", "pytest>=8,<10", "pytest-asyncio>=0.25,<2", "ruff>=0.11,<1", "mypy>=1.15,<2", "types-psutil", "build"]
+dev = ["playwright>=1.60,<2", "patchright>=1.60,<2", "curl_cffi>=0.14,<1", "pytest>=8,<10", "pytest-asyncio>=0.25,<2", "ruff>=0.11,<1", "mypy>=1.15,<2", "types-psutil", "build"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

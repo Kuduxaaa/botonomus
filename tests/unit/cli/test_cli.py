@@ -64,7 +64,9 @@ def test_parser_defaults():
     assert args.sites == list(SITES)
     assert (args.runs, args.parallel, args.driver, args.json) == (1, 2, "native", False)
     args = build_parser().parse_args(["benchmark", "--levels", "1,3"])
-    assert args.levels == [1, 3]
+    assert (args.levels, args.mode) == ([1, 3], "sessions")
+    args = build_parser().parse_args(["benchmark", "--mode", "contexts"])
+    assert args.mode == "contexts"
     args = build_parser().parse_args(["open", "--profile", "p", "--locale", "de-DE"])
     assert (args.profile, args.locale, args.url) == ("p", "de-DE", "about:blank")
 

@@ -122,6 +122,7 @@ def test_unknown_humanize_name_is_configuration_error():
         ["detect", "--humanize", "turbo"],
         ["probe", "--humanize", "default"],  # probe never acts on session.page
         ["benchmark", "--humanize", "default"],
+        ["benchmark", "--mode", "tabs"],
         ["profiles", "warmup", "p", "--duration", "0"],
         ["profiles", "warmup", "p", "--duration", "x"],
         ["profiles", "warmup", "p", "--sites", "ftp://example.com/"],

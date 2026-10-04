@@ -6,7 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-04
+
 ### Added
+
+- **`botonomus.Client`, an httpx-like layer over one shared Chrome.** `await botonomus.get(url)` and `Client.get/post/put/patch/delete/head` load each request in a tab of an in-memory browser context: isolated cookies and storage, no profile on disk, and the browser, GPU and network processes shared. `Response` has `status`, `headers`, `content`, `text`, `json()`, `html` (rendered DOM), `cookies`, `elapsed`, `via` and `raise_for_status()`. Non-GET methods, headers and bodies are applied to the navigation request itself. Options: per-client proxy (credentials through the loopback forwarder), `max_tabs="auto"` sized from free memory and CPUs, `block` for images, fonts, media or stylesheets, `fresh_context`, `wait`, `timeout`. The existing `Botonomus` API is unchanged.
+- **HTTP fast path** (`pip install "botonomus[http]"`). After a tab has loaded a host without a challenge, later requests to it go through `curl_cffi` with Chrome's TLS and HTTP/2 fingerprints, the headers the browser sent and the context's cookies (written back both ways). Challenge responses fall back to a tab; a host challenged twice stays on tabs.
+- **Identities.** `client.identity(name, proxy=...)` keeps cookies, `localStorage` and the proxy in an owner-only state file and restores them into a fresh context (without contacting the site). `backend="profile"` opens the full Chrome profile for sites that need IndexedDB or service workers. One live use per identity across processes.
+- **Recovery.** If the shared browser dies, the client relaunches it, recreates every context from its last known state and retries the interrupted request once.
+- `client.page(url)` and `identity.page(url)`: a tab in the same context for full interaction (a `HumanPage` with `humanize`).
+- `botonomus.cdp.IsolatedContext` (in-memory browser contexts with an optional proxy), `Context.connection` and `Page.main_frame_id`.
+- `botonomus benchmark --mode contexts` measures one browser with a context per tab; reports now include `per_instance_bytes`. On the development machine, 6 held-open tabs used about 133 MiB each as contexts and about 224 MiB each as separate browsers.
+- `botonomus.HTTPStatusError`.
+
+### Fixed
+
+- Native driver: an event wait (for example `goto` waiting for `load`) now fails with `TargetClosedError` as soon as its tab detaches or the connection closes, instead of hanging until the timeout.
+- Native driver: a closed or detached page unregisters its event handlers, so a long-lived connection does not accumulate them.
 
 - **Seven more detection sites:** `apivoid`, `donutbrowser`, `cleantalk`, `pixelscan-bot`, `recaptcha-google`, `recaptcha-2captcha` and `turnstile-capskip`, each with an extractor tested against a captured page.
 - `DetectionSite(click_button=...)`: the runner clicks a named button after loading, for pages that compute their result on demand.
@@ -70,5 +86,6 @@ The 0.1 lifecycle guarantees (bounded admission, cancellation-safe cleanup, cros
 - `Human` input: Bezier pointer paths with Fitts's-law timing, lognormal keystroke gaps and eased wheel scrolling.
 - Local probe page with ordinary-launch comparison, and a held-open concurrency benchmark.
 
-[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/Kuduxaaa/botonomus/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Kuduxaaa/botonomus/releases/tag/v0.2.0

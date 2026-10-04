@@ -33,6 +33,7 @@ class Connection:
         self._ids = itertools.count(1)
         self._pending: dict[int, tuple[str, str | None, asyncio.Future[dict[str, Any]]]] = {}
         self._handlers: dict[tuple[str | None, str], list[Handler]] = defaultdict(list)
+        self._waiters: dict[str | None, set[asyncio.Future[dict[str, Any]]]] = defaultdict(set)
         self._reader: asyncio.Task[None] | None = None
         self.closed = asyncio.Event()
 
@@ -85,6 +86,8 @@ class Connection:
         handlers = self._handlers.get((session_id, event), [])
         if handler in handlers:
             handlers.remove(handler)
+            if not handlers:
+                del self._handlers[(session_id, event)]
 
     async def wait_for(
         self,
@@ -97,8 +100,12 @@ class Connection:
 
         Raises:
             TimeoutError: If no matching event arrives within ``timeout`` seconds.
+            TargetClosedError: If the session detaches or the connection closes first.
         """
+        if self.closed.is_set():
+            raise TargetClosedError("Browser connection is closed")
         future: asyncio.Future[dict[str, Any]] = asyncio.get_running_loop().create_future()
+        self._waiters[session_id].add(future)
 
         def handler(params: dict[str, Any]) -> None:
             if not future.done() and (predicate is None or predicate(params)):
@@ -110,6 +117,11 @@ class Connection:
                 return await future
         finally:
             self.off(event, handler, session_id)
+            waiters = self._waiters.get(session_id)
+            if waiters is not None:
+                waiters.discard(future)
+                if not waiters:
+                    del self._waiters[session_id]
 
     async def close(self) -> None:
         """Close the socket, stop the reader and fail pending commands."""
@@ -162,11 +174,18 @@ class Connection:
         for _, session, future in self._pending.values():
             if session == session_id and not future.done():
                 future.set_exception(TargetClosedError("Target closed"))
+        for waiter in tuple(self._waiters.get(session_id, ())):
+            if not waiter.done():
+                waiter.set_exception(TargetClosedError("Target closed"))
 
     def _fail_pending(self) -> None:
         for method, _, future in self._pending.values():
             if not future.done():
                 future.set_exception(TargetClosedError(f"{method}: connection closed"))
+        for waiters in tuple(self._waiters.values()):
+            for waiter in tuple(waiters):
+                if not waiter.done():
+                    waiter.set_exception(TargetClosedError("Connection closed"))
 
 
 class CDPSession:

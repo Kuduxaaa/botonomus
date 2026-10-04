@@ -5,6 +5,8 @@ Every error Botonomus raises derives from `BotonomusError`. Low-level causes
 Messages never contain credentials, cookies, page contents or navigation URLs.
 """
 
+from typing import Any
+
 
 class BotonomusError(Exception):
     """Base class for all Botonomus errors."""
@@ -86,3 +88,15 @@ class GeoMismatchError(BotonomusError):
     sites see a contradiction. Use Botonomus Chromium, change the host time zone,
     or pass ``allow_timezone_mismatch=True`` to accept the risk.
     """
+
+
+class HTTPStatusError(BotonomusError):
+    """`Response.raise_for_status` found a 4xx or 5xx status.
+
+    Attributes:
+        response: The response that failed.
+    """
+
+    def __init__(self, response: Any) -> None:
+        super().__init__(f"HTTP {response.status}")
+        self.response = response

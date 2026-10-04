@@ -5,7 +5,7 @@ read that command's side effects as CDP automation. DOM work runs in a private
 isolated world.
 """
 
-from .browser import Browser, Context
+from .browser import Browser, Context, IsolatedContext
 from .connection import CDPSession, Connection
 from .errors import (
     EvaluationError,
@@ -24,6 +24,7 @@ __all__ = [
     "Connection",
     "Context",
     "EvaluationError",
+    "IsolatedContext",
     "Keyboard",
     "Locator",
     "LocatorState",
