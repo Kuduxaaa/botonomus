@@ -107,5 +107,6 @@ A loopback page, with no third-party traffic, runs these checks. The command exi
 | `voices` | At least one speech voice (Google network voices are reported, not required: Chrome lists them only after a public page has loaded) |
 | `headless-ua` | No "Headless" in the user agent or brands |
 | `screen` | Outer size >= inner size and `availHeight <= height` |
+| `accept-header` | The server saw the page's and an image's `Accept` headers, and neither advertises `image/jxl` while UA-CH claims Google Chrome (Chrome stable does not support JPEG XL; a Chromium build with it enabled does) |
 
 From Python: `botonomus.diagnostics.consistency.run_consistency(config)` returns a `ConsistencyReport`.

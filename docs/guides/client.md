@@ -103,7 +103,9 @@ kilobytes instead of a profile directory. Like profiles, an identity can be open
 one place at a time, across processes.
 
 - The file contains session cookies and proxy credentials. It is written readable by
-  the owner only and is never logged. Treat it like a password.
+  the owner only (mode 0600 on Linux and macOS; on Windows the identity directory's
+  inherited permissions are replaced with full control for the current user) and is
+  never logged. Treat it like a password.
 - IndexedDB, Cache Storage, service workers and the HTTP cache are not carried. For sites
   that keep login state there, use `client.identity(name, backend="profile")`, which
   opens the full Chrome profile `name` (the same one `bot.open(profile=name)` uses) in
@@ -145,6 +147,8 @@ URL), `elapsed`, `via`, `ok` and `raise_for_status()`, which raises
 - If the browser process dies, the client relaunches it on the next request. It
   recreates each context with its last known cookies and `localStorage`, and retries the
   interrupted request once.
+- The shared browser's throwaway profile lives in the system temp directory
+  (`botonomus-client-*`), never among your named profiles, and is deleted on close.
 - Client browsers always launch with
   `--force-webrtc-ip-handling-policy=disable_non_proxied_udp`, so a per-context proxy
   cannot leak the real address over WebRTC.

@@ -6,8 +6,10 @@ The file holds session cookies (and proxy credentials): it is written readable b
 owner only and never logged.
 """
 
+import getpass
 import json
 import os
+import subprocess
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from types import TracebackType
@@ -51,6 +53,7 @@ class IdentityStore:
     def __init__(self, root: Path, name: str) -> None:
         self._lease = ProfileLease(Path(root), name)
         self.name = self._lease.name
+        self._secured = False
 
     def __enter__(self) -> Self:
         self._lease.acquire()
@@ -91,6 +94,9 @@ class IdentityStore:
     def save(self, state: StorageState) -> None:
         """Write ``state`` atomically, readable by the owner only."""
         data = json.dumps({"version": _VERSION, **asdict(state)}, ensure_ascii=False)
+        if os.name == "nt" and not self._secured:
+            _restrict_to_owner(self._lease.path)
+            self._secured = True
         temporary = self._path.with_suffix(".tmp")
         descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
         os.chmod(temporary, 0o600)  # O_CREAT's mode does not apply to a leftover file
@@ -99,3 +105,21 @@ class IdentityStore:
             handle.flush()
             os.fsync(handle.fileno())
         os.replace(temporary, self._path)
+
+
+def _restrict_to_owner(directory: Path) -> None:
+    """Windows: replace inherited ACLs on ``directory`` with full control for the owner.
+
+    POSIX modes do not apply on Windows; files created inside inherit this ACL.
+    """
+    subprocess.run(
+        [
+            "icacls",
+            str(directory),
+            "/inheritance:r",
+            "/grant:r",
+            f"{getpass.getuser()}:(OI)(CI)F",
+        ],
+        check=True,
+        capture_output=True,
+    )

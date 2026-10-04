@@ -117,6 +117,11 @@ def report_from_raw(raw: dict[str, Any], product: str) -> ConsistencyReport:
     if not isinstance(screen, dict):
         screen = {"error": screen} if screen else {}
     identity = str(page.get("ua", "")) + str(page.get("brands", ""))
+    posted_accept = raw.get("accept")
+    accept: dict[str, Any] = posted_accept if isinstance(posted_accept, dict) else {}
+    document_accept = str(accept.get("document") or "")
+    image_accept = str(accept.get("image") or "")
+    jxl = "image/jxl" in document_accept + image_accept
     screen_ok = (
         bool(screen)
         and "error" not in screen
@@ -163,8 +168,21 @@ def report_from_raw(raw: dict[str, Any], product: str) -> ConsistencyReport:
             {"ua": page.get("ua")},
         ),
         Check("screen", screen_ok, dict(screen)),
+        # Chrome stable does not advertise JPEG XL; a Chromium build with it on does,
+        # in the image (and navigation) Accept headers the server sees.
+        Check(
+            "accept-header",
+            bool(document_accept) and bool(image_accept) and not (jxl and claims_chrome),
+            {"document": document_accept, "image": image_accept, "jxl": jxl},
+        ),
     ]
     return ConsistencyReport(product, checks)
+
+
+# A 1x1 transparent GIF: the page loads it so the server sees Chrome's image Accept header.
+_PIXEL = bytes.fromhex(
+    "47494638396101000100800000000000ffffff21f90401000000002c00000000010001000002024401003b"
+)
 
 
 class ConsistencyServer:
@@ -179,6 +197,7 @@ class ConsistencyServer:
     def __init__(self) -> None:
         self._route = "/" + secrets.token_urlsafe(24)
         self._results: queue.Queue[dict[str, Any]] = queue.Queue(maxsize=8)
+        self.accept: dict[str, str] = {}
         self._server: ThreadingHTTPServer | None = None
         self._thread: threading.Thread | None = None
         self.url = ""
@@ -200,7 +219,9 @@ class ConsistencyServer:
             owner._route: ("text/html; charset=utf-8", html.encode()),
             owner._route + "/sw.js": ("text/javascript", service_worker.encode()),
             owner._route + "/shared.js": ("text/javascript", shared_worker.encode()),
+            owner._route + "/pixel.gif": ("image/gif", _PIXEL),
         }
+        recorded = {owner._route: "document", owner._route + "/pixel.gif": "image"}
 
         class Handler(BaseHTTPRequestHandler):
             def do_GET(self) -> None:
@@ -209,6 +230,8 @@ class ConsistencyServer:
                     self.send_error(404)
                     return
                 kind, body = found
+                if self.path in recorded:
+                    owner.accept[recorded[self.path]] = self.headers.get("Accept", "")
                 self.send_response(200)
                 self.send_header("Content-Type", kind)
                 self.send_header("Content-Length", str(len(body)))
@@ -302,4 +325,5 @@ async def run_consistency(config: BrowserConfig, *, timeout: float = 30) -> Cons
                 raise BotonomusError(
                     f"The consistency page posted no result within {timeout:g} s"
                 ) from None
+            raw["accept"] = dict(server.accept)
     return report_from_raw(raw, product)

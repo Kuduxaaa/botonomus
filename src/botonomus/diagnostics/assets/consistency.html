@@ -84,6 +84,11 @@ const ctxOrNull = async (probe) => {
 window.addEventListener('load', async () => {
   const raw = { contexts: {} };
   try {
+    // The server records the Accept header of this image request (and of the page).
+    await safe(() => new Promise((r) => {
+      const img = new Image(); img.onload = img.onerror = r; img.src = ROUTE + '/pixel.gif';
+      setTimeout(r, 3000);
+    }));
     const contexts = raw.contexts;
     const add = (k, v) => { if (v) contexts[k] = v; };
     add('page', await ctxOrNull(readCtx));

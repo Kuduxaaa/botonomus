@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `botonomus consistency` check `accept-header`: the loopback server records the `Accept` headers of the page and of an image, and fails when they advertise `image/jxl` while UA-CH claims Google Chrome (Chrome stable does not; the current Botonomus Chromium dev build does).
+
+### Changed
+
+- `Client`: the shared browser's throwaway profile now lives in the system temp directory instead of `profile_root`, so a killed process leaves nothing among your named profiles.
+- `Client`: restoring an identity's `localStorage` opens its tab inside a tab slot, so it never exceeds `max_tabs`.
+- Identity state on Windows: the identity directory's inherited permissions are replaced with full control for the current user (POSIX modes have no effect there).
+
 ## [0.3.0] - 2026-10-04
 
 ### Added

@@ -106,6 +106,8 @@ class _Holder:
     fast_allowed: bool = True
     hosts: dict[str, int] = field(default_factory=dict)
     lock: asyncio.Lock = field(default_factory=asyncio.Lock)
+    # localStorage still to write into the current context; done inside a tab slot.
+    pending_storage: bool = False
 
 
 class _Verbs:
@@ -439,6 +441,7 @@ class Client(_Verbs):
             for attempt in range(2):
                 context = await self._ensure(holder)
                 try:
+                    await self._restore_storage(holder, context)
                     fetched = await fetch_in_page(
                         context, request, wait=wait, timeout=timeout,
                         block=self._block, settle=settle,
@@ -463,6 +466,7 @@ class Client(_Verbs):
             build_request("GET", url)
         async with self._slots:
             context = await self._ensure(holder)
+            await self._restore_storage(holder, context)
             page: Page = await context.new_page()
             try:
                 if url is not None:
@@ -531,14 +535,21 @@ class Client(_Verbs):
                     raise
                 holder.context = context
                 holder.generation = self._browser.generation
+                holder.pending_storage = bool(holder.state.local_storage)
             return holder.context
 
     async def _restore(self, context: IsolatedContext, state: StorageState) -> None:
         if state.cookies:
             await context.add_cookies([cookie_param(cookie) for cookie in state.cookies])
-        for origin, items in state.local_storage.items():
+
+    async def _restore_storage(self, holder: _Holder, context: Any) -> None:
+        """Write pending ``localStorage``; callers hold a tab slot (it opens a tab)."""
+        if not holder.pending_storage:
+            return
+        for origin, items in holder.state.local_storage.items():
             if items:
                 await _restore_local_storage(context, origin, items)
+        holder.pending_storage = False
 
     async def _fast(self, holder: _Holder) -> FastPath | None:
         if holder.fast is not None or not holder.fast_allowed or not self._navigator:

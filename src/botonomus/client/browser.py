@@ -4,8 +4,10 @@ import asyncio
 import re
 import secrets
 import shutil
+import tempfile
 from contextlib import AbstractAsyncContextManager
 from dataclasses import replace
+from pathlib import Path
 from typing import Any
 
 from ..cdp import Connection
@@ -22,6 +24,8 @@ _MAJOR = re.compile(r"/(\d+)\.")
 class SharedBrowser:
     """Lazily launches one browser through `Botonomus` with a throwaway profile.
 
+    The profile lives under the system temp directory and is deleted on close.
+
     Attributes:
         generation: Incremented on every launch; contexts from an older generation are
             gone and must be recreated.
@@ -35,14 +39,16 @@ class SharedBrowser:
             if WEBRTC_POLICY in config.extra_args
             else (*config.extra_args, WEBRTC_POLICY)
         )
-        self.config = replace(config, extra_args=tuple(args))
+        # The throwaway profile lives in the system temp directory, never among the
+        # user's named profiles (where a killed process would leave it behind).
+        root = Path(tempfile.gettempdir()) / f"botonomus-client-{secrets.token_hex(6)}"
+        self.config = replace(config, profile_root=root, extra_args=tuple(args))
         self.generation = 0
         self.major = 0
         self.session: Session | None = None
         self._lock = asyncio.Lock()
         self._manager: Botonomus | None = None
         self._opener: AbstractAsyncContextManager[Session] | None = None
-        self._profile = ""
         self._closed = False
 
     @property
@@ -70,8 +76,7 @@ class SharedBrowser:
     async def _launch(self) -> None:
         self._manager = Botonomus(1, config=self.config)
         await self._manager.__aenter__()
-        self._profile = "client-" + secrets.token_hex(6)
-        self._opener = self._manager.open(profile=self._profile)
+        self._opener = self._manager.open(profile="client")
         try:
             self.session = await self._opener.__aenter__()
             version = await self.connection_of(self.session).send("Browser.getVersion")
@@ -94,7 +99,7 @@ class SharedBrowser:
                 try:
                     await manager.close()
                 finally:
-                    shutil.rmtree(self.config.profile_root / self._profile, ignore_errors=True)
+                    shutil.rmtree(self.config.profile_root, ignore_errors=True)
 
     async def close(self) -> None:
         """Close the browser and delete its throwaway profile."""

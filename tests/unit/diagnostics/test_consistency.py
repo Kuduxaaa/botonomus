@@ -10,8 +10,16 @@ GOOD_CTX = {
 }
 
 
+CHROME_DOCUMENT_ACCEPT = (
+    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,"
+    "image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+)
+CHROME_IMAGE_ACCEPT = "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
+
+
 def raw(**over):
     base = {
+        "accept": {"document": CHROME_DOCUMENT_ACCEPT, "image": CHROME_IMAGE_ACCEPT},
         "canvas": ["h1", "h1"],
         "canvasSolid": True,
         "webgl": ["g1", "g1"],
@@ -102,6 +110,7 @@ def test_consistency_report_from_raw_marks_missing_values_fail():
         "voices",
         "headless-ua",
         "screen",
+        "accept-header",
     }
     assert not checks["canvas-stable"].passed and not checks["contexts-agree"].passed
     assert not checks["headless-ua"].passed and not checks["screen"].passed
@@ -230,3 +239,23 @@ async def test_each_run_uses_a_fresh_profile(tmp_path, monkeypatch):
     await consistency.run_consistency(config)
     await consistency.run_consistency(config)
     assert profiles[0] != profiles[1] and all(p.startswith("consistency-") for p in profiles)
+
+
+def test_jxl_in_accept_fails_for_google_chrome():
+    jxl = {"document": CHROME_DOCUMENT_ACCEPT, "image": "image/jxl," + CHROME_IMAGE_ACCEPT}
+    check = by_name(report_from_raw(raw(accept=jxl), "p"))["accept-header"]
+    assert not check.passed
+    assert check.observed["jxl"] is True and check.observed["image"].startswith("image/jxl")
+
+
+def test_missing_accept_headers_fail():
+    assert not by_name(report_from_raw(raw(accept={}), "p"))["accept-header"].passed
+    assert not by_name(report_from_raw(raw(accept=None), "p"))["accept-header"].passed
+
+
+def test_chromium_brand_may_advertise_jxl():
+    ctx = {**GOOD_CTX, "brands": "Chromium/155"}
+    contexts = dict.fromkeys(("page", "frame", "worker", "shared", "service"), ctx)
+    jxl = {"document": CHROME_DOCUMENT_ACCEPT, "image": "image/jxl," + CHROME_IMAGE_ACCEPT}
+    check = by_name(report_from_raw(raw(contexts=contexts, accept=jxl), "p"))["accept-header"]
+    assert check.passed

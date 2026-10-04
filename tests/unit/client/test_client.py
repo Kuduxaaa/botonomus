@@ -97,7 +97,8 @@ def rig(monkeypatch, tmp_path):
     monkeypatch.setattr(client_module, "available_targets", lambda: ["chrome142", "chrome150"])
 
     def make(**options):
-        client = Client(identity_root=tmp_path / "ids", max_tabs=2, **options)
+        options.setdefault("max_tabs", 2)
+        client = Client(identity_root=tmp_path / "ids", **options)
         client._browser = browser
         return client
 
@@ -333,3 +334,20 @@ def test_cookie_path_matching_respects_segments():
     assert cookies_for("https://x.example/foo/bar", cookies) == {"a": "1"}
     assert cookies_for("https://x.example/foo", cookies) == {"a": "1"}
     assert cookies_for("https://x.example/foobar", cookies) == {}
+
+
+async def test_local_storage_restore_waits_for_a_tab_slot(rig, monkeypatch):
+    calls = []
+
+    async def restore(context, origin, items):
+        calls.append(client._slots._value)
+
+    monkeypatch.setattr(client_module, "_restore_local_storage", restore)
+    client = rig["make"](mode="browser", max_tabs=1)
+    async with client:
+        async with client.identity("acct") as me:
+            me._holder.state.local_storage = {"https://a.example": {"k": "v"}}
+            await me.cookies()  # creates the context outside any tab slot
+            assert calls == []
+            await me.get("https://a.example/")
+    assert calls == [0]  # restored once, while holding the only slot

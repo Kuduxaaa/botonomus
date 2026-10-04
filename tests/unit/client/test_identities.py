@@ -52,3 +52,18 @@ def test_corrupt_state_is_a_clear_error(tmp_path):
         (tmp_path / "acct" / "state.json").write_text("{not json", encoding="utf-8")
         with pytest.raises(ConfigurationError, match="acct"):
             store.load()
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows ACLs")
+def test_state_directory_is_private_on_windows(tmp_path):
+    import getpass
+    import subprocess
+
+    with IdentityStore(tmp_path, "acct") as store:
+        store.save(StorageState())
+    listing = subprocess.run(
+        ["icacls", str(tmp_path / "acct" / "state.json")], capture_output=True, text=True
+    ).stdout
+    entries = [line for line in listing.splitlines()[:-2] if ":" in line.split(" ", 1)[-1]]
+    assert entries, listing
+    assert all(getpass.getuser().lower() in line.lower() for line in entries), listing
