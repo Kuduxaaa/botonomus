@@ -142,8 +142,13 @@ async def test_drag_moves_report_buttons_and_pressure(session, local_url):
     await page.mouse.down()
     await page.mouse.move(150, 150, steps=5)
     await page.mouse.up()
-    pointer_moves = [e for e in await _events(page, "pointermove") if (e["x"], e["y"]) != (50, 50)]
-    mouse_moves = [e for e in await _events(page, "mousemove") if (e["x"], e["y"]) != (50, 50)]
+    # Only moves between press and release belong to the drag; Chrome on X11 may send a
+    # hover move after pointerup, which rightly has no buttons.
+    events = await _events(page)
+    types = [e["type"] for e in events]
+    drag = events[types.index("pointerdown") + 1 : types.index("pointerup")]
+    pointer_moves = [e for e in drag if e["type"] == "pointermove"]
+    mouse_moves = [e for e in drag if e["type"] == "mousemove"]
     assert pointer_moves and mouse_moves
     assert all(e["buttons"] == 1 and e["pressure"] == 0.5 for e in pointer_moves)
     assert all(e["buttons"] == 1 and e["trusted"] for e in mouse_moves)
