@@ -85,7 +85,7 @@ print([b.version for b in installed_binaries()])
 [`install()`](../reference/browser.md) fetches the channel's release manifest and its signature, verifies the Ed25519 signature against a public key embedded in the SDK **before** parsing the manifest, downloads the archive for this platform, checks its size and SHA-256 against the manifest, extracts it with path-safety checks, and renames it into place only after every check passed. Concurrent installs are serialised by a file lock. Installs live in `BOTONOMUS_HOME` (default `%LOCALAPPDATA%\botonomus` on Windows, `~/.cache/botonomus` elsewhere) under `chromium/<version>/`. `uninstall(version)` removes one.
 
 !!! note "Availability"
-    In 1.0.0 the release host (`BOTONOMUS_MANIFEST_URL`, default `https://releases.botonomus.dev/chromium/stable/manifest.json`) and the embedded release key are placeholders, so `install()` cannot complete until the first Botonomus Chromium release is published. The same applies to the `botonomus install` command, which wraps `install()`. `botonomus binaries` and `botonomus info` list installed builds, and `botonomus info` shows which executable `browser="auto"` would launch.
+    In 0.2 the release host (`BOTONOMUS_MANIFEST_URL`, default `https://releases.botonomus.dev/chromium/stable/manifest.json`) and the embedded release key are placeholders, so `install()` cannot complete until the first Botonomus Chromium release is published. The same applies to the `botonomus install` command, which wraps `install()`. `botonomus binaries` and `botonomus info` list installed builds, and `botonomus info` shows which executable `browser="auto"` would launch.
 
 ### Which browser launches
 

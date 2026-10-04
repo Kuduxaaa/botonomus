@@ -35,7 +35,7 @@ Windows Python ships without the IANA time-zone database. Botonomus depends on `
 
 Botonomus launches browsers as subprocesses, which needs the proactor event loop. `asyncio.run()` uses it by default on Windows. Do not switch to `WindowsSelectorEventLoopPolicy` for Botonomus code.
 
-## Session shutdown hung with an authenticated proxy (fixed in 1.0.0)
+## Session shutdown hung with an authenticated proxy (fixed in 0.2.0)
 
 On the proactor loop (CPython 3.12), a browser killed mid-connection could reset a socket in a way that made `asyncio.Server.wait_closed()` never return, so closing the proxy forwarder hung and leaked the socket. Since 1.0.0 the forwarder runs its own accept loop and closes every accepted socket itself. If you still see a hang at close, open an issue with the log output from the `botonomus` logger.
 

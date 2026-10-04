@@ -1,5 +1,6 @@
 # Botonomus
 
+[![PyPI](https://img.shields.io/pypi/v/botonomus.svg)](https://pypi.org/project/botonomus/)
 [![CI](https://github.com/Kuduxaaa/botonomus/actions/workflows/ci.yml/badge.svg)](https://github.com/Kuduxaaa/botonomus/actions/workflows/ci.yml)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%2B-blue.svg)](pyproject.toml)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
@@ -11,16 +12,16 @@ Botonomus does not claim to be undetectable. The [measured results](#measured-re
 ## Install
 
 ```bash
-pip install "git+https://github.com/Kuduxaaa/botonomus"
+pip install botonomus
 ```
 
-Not on PyPI yet. Requires Python 3.12+ and an installed Google Chrome (stable channel). Windows is the most-tested platform; Linux servers are supported with a virtual display (see [Linux servers](#linux-servers)). No browser is downloaded automatically.
+Requires Python 3.12+ and an installed Google Chrome (stable channel). Windows is the most-tested platform; Linux servers are supported with a virtual display (see [Linux servers](#linux-servers)). No browser is downloaded automatically.
 
 Optional drivers (the default `native` driver needs neither):
 
 ```bash
-pip install "botonomus[patchright] @ git+https://github.com/Kuduxaaa/botonomus"   # Patchright, a Playwright fork without Runtime.enable
-pip install "botonomus[playwright] @ git+https://github.com/Kuduxaaa/botonomus"   # stock Playwright
+pip install "botonomus[patchright]"   # Patchright, a Playwright fork without Runtime.enable
+pip install "botonomus[playwright]"   # stock Playwright
 ```
 
 ## Quickstart

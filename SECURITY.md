@@ -16,7 +16,7 @@ Please do not open a public GitHub issue for a vulnerability. We aim to acknowle
 
 | Version | Supported |
 |---|---|
-| 1.0.x | Yes |
+| 0.2.x | Yes |
 | 0.1.x | No |
 
 ## Scope

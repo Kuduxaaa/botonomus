@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-04
+
+First public release on PyPI. It includes the measurement toolkit and Linux support below, and the restructure and features listed under "Included from the 1.0 development line".
+
 ### Added
 
 - **`botonomus experiment`.** Interleaved A/B comparison of browser configurations ("arms") from a TOML file: rounds shuffled so arms share network conditions, a fresh profile and the next proxy per visit, per-(arm, site) pass rates with Wilson 95 % intervals, `report.json` and `report.md`. Python: `botonomus.diagnostics.load_spec`, `run_experiment`.
@@ -19,16 +23,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - **`blocked` verdict.** Pages that say they are rate-limiting ("too many requests", "error 429", a 429 title) and challenge interstitials are reported as `blocked` instead of `pass` or `unknown`, counted separately in `SiteSummary.blocked` / `blocked_rate`, and excluded from pass rates.
 - `incolumitas` ignores its spec-level `WEBDRIVER` row, which stock Chrome fails too.
 - `CATALOGUE` and `SITES` moved from `botonomus.diagnostics.detection` to `botonomus.diagnostics.catalogue`; import them from `botonomus.diagnostics`.
-- Installation is from GitHub until the first PyPI release.
 
 ### Fixed
 
 - `botonomus proxy-check` printed `?://?` and no exit details for every proxy when the shared checker was used.
 - Unit tests pass on Linux (socket linger layout, real-clock warm-up timing).
 
-## [1.0.0] - Unreleased
+### Included from the 1.0 development line
 
-First public release. The 0.1 lifecycle guarantees (bounded admission, cancellation-safe cleanup, cross-process profile locks, typed errors, credential-free logs) are unchanged.
+The 0.1 lifecycle guarantees (bounded admission, cancellation-safe cleanup, cross-process profile locks, typed errors, credential-free logs) are unchanged.
 
 ### Changed
 
@@ -62,4 +65,5 @@ First public release. The 0.1 lifecycle guarantees (bounded admission, cancellat
 - `Human` input: Bezier pointer paths with Fitts's-law timing, lognormal keystroke gaps and eased wheel scrolling.
 - Local probe page with ordinary-launch comparison, and a held-open concurrency benchmark.
 
-[1.0.0]: https://github.com/Kuduxaaa/botonomus/compare/v0.1.0...v1.0.0
+[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/Kuduxaaa/botonomus/releases/tag/v0.2.0

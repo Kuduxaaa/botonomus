@@ -11,14 +11,14 @@ Avoid Chrome for Testing and Playwright's downloaded browsers: they show a perma
 ## Install
 
 ```bash
-pip install "git+https://github.com/Kuduxaaa/botonomus"
+pip install botonomus
 ```
 
 Optional extras add alternative drivers:
 
 ```bash
-pip install "botonomus[patchright] @ git+https://github.com/Kuduxaaa/botonomus"   # Patchright: Playwright API, no Runtime.enable
-pip install "botonomus[playwright] @ git+https://github.com/Kuduxaaa/botonomus"   # stock Playwright
+pip install "botonomus[patchright]"   # Patchright: Playwright API, no Runtime.enable
+pip install "botonomus[playwright]"   # stock Playwright
 ```
 
 Check what Botonomus can find:
