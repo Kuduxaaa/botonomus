@@ -82,7 +82,8 @@ def test_trace_server_accepts_batches_and_rejects_bad_bodies():
             post(server.endpoint, b"not json")
         assert bad.value.code == 400
         # The server refuses without reading the body; the client sees 400 or a reset.
-        with pytest.raises((urllib.error.HTTPError, ConnectionError)) as big:
+        # Windows raises the reset directly; Linux and macOS wrap it in URLError.
+        with pytest.raises((urllib.error.URLError, ConnectionError)) as big:
             post(server.endpoint, b"[" + b"1," * 300_000 + b"1]")
         if isinstance(big.value, urllib.error.HTTPError):
             assert big.value.code == 400

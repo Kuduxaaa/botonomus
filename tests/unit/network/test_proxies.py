@@ -114,3 +114,20 @@ async def test_check_proxies_rejects_zero_parallelism():
 )
 def test_error_category(exc, category):
     assert error_category(exc) == category
+
+
+@pytest.mark.parametrize(
+    ("exc", "category"),
+    [
+        (ConnectionRefusedError(), "unreachable"),
+        (OSError("no route"), "unreachable"),
+        (ConnectionResetError(), "upstream"),  # connected, then the proxy hung up (macOS)
+        (ConnectionAbortedError(), "upstream"),
+        (BrokenPipeError(), "upstream"),
+        (asyncio.IncompleteReadError(b"", 10), "upstream"),
+    ],
+)
+def test_error_category_separates_refused_from_hung_up(exc, category):
+    from botonomus.network.proxies import error_category
+
+    assert error_category(exc) == category

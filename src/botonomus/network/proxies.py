@@ -78,7 +78,10 @@ def error_category(exc: BaseException) -> str:
         return "timeout"
     if isinstance(exc, ssl.SSLError):
         return "tls"
-    if isinstance(exc, UpstreamError | asyncio.IncompleteReadError):
+    # Connected, then the proxy hung up: an EOF on some platforms, a reset or broken
+    # pipe on others (macOS). Either way the proxy was reachable and refused service.
+    hung_up = ConnectionResetError | ConnectionAbortedError | BrokenPipeError
+    if isinstance(exc, UpstreamError | asyncio.IncompleteReadError | hung_up):
         return "upstream"
     return "unreachable"
 
