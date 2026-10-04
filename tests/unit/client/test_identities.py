@@ -64,6 +64,8 @@ def test_state_directory_is_private_on_windows(tmp_path):
     listing = subprocess.run(
         ["icacls", str(tmp_path / "acct" / "state.json")], capture_output=True, text=True
     ).stdout
-    entries = [line for line in listing.splitlines()[:-2] if ":" in line.split(" ", 1)[-1]]
-    assert entries, listing
-    assert all(getpass.getuser().lower() in line.lower() for line in entries), listing
+    entries = [line for line in listing.splitlines() if ":(" in line]
+    assert len(entries) == 1, listing
+    assert getpass.getuser().lower() in entries[0].lower(), listing
+    for broad in ("everyone", "users", "authenticated", "system", "administrators"):
+        assert f"\{broad}:" not in listing.lower() and f" {broad}:" not in listing.lower()
