@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-10-04
+
 ### Added
 
 - **Persona screen.** `Persona.screen` and `Persona.taskbar` (`--bn-screen=WxH`, `--bn-taskbar=H`, CSS pixels): a weighted real monitor resolution no larger than the host's, divided by the host's scale so `screen x devicePixelRatio` is a real monitor size. `HostInfo` gains `screen` (physical pixels) and `scale`, detected on Windows. With a persona screen the window opens at the origin and fills the persona's work area. Needs Botonomus Chromium with patch 0012.
@@ -99,6 +101,7 @@ The 0.1 lifecycle guarantees (bounded admission, cancellation-safe cleanup, cros
 - `Human` input: Bezier pointer paths with Fitts's-law timing, lognormal keystroke gaps and eased wheel scrolling.
 - Local probe page with ordinary-launch comparison, and a held-open concurrency benchmark.
 
-[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Kuduxaaa/botonomus/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Kuduxaaa/botonomus/releases/tag/v0.2.0
