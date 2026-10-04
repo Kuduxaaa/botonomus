@@ -15,8 +15,11 @@ A persona is the hardware and locale identity a browser presents. Without one, e
 | `timezone` | Time zone in the browser | `BrowserConfig.timezone`, the proxy exit (with `geoip=True`), or the host |
 | `gpu` | `UNMASKED_VENDOR_WEBGL` / `UNMASKED_RENDERER_WEBGL` strings | None: keep the real GPU |
 | `noise` | Readback noise on or off | On (`False` is for measurement only) |
+| `screen`, `taskbar` | `screen.width/height`, `availHeight` (height minus taskbar), CSS `device-width`/`device-height`, every frame | Weighted draw of a real monitor resolution no larger than the host's, divided by the host's scale; taskbar 48 (Windows 11) or 40 (Windows 10). `None` when the host screen is unknown (Linux, macOS) |
 
 Values are drawn from weighted Windows desktop distributions and **never exceed the host's hardware**: detectors measure parallel speed-up and proof-of-work timing, so claimed cores or memory that do not exist show up.
+
+The screen follows the same rule. `devicePixelRatio` stays the host's, so the persona picks a *physical* resolution and divides it by the host's scale: on a 1920x1080 monitor at 125 %, a persona can present 1536x864 (that monitor) or 1093x614 (a 1366x768 one), and `screen x devicePixelRatio` is always a real monitor size. With a persona screen the browser window opens at the origin and fills the persona's work area, because `outerWidth`/`outerHeight` come from the real window. The screen switches need patch 0012 in Botonomus Chromium; `botonomus consistency` reports the `screen` check as failed on a build without it.
 
 ## Choosing a persona
 
@@ -45,7 +48,7 @@ After launch, `session.persona` holds the applied persona (or `None`).
 
 ```pycon
 >>> from botonomus.fingerprint import HostInfo, Persona
->>> host = HostInfo(logical_cpus=16, memory_gb=32.0, platform="win32")
+>>> host = HostInfo(logical_cpus=16, memory_gb=32.0, platform="win32")  # screen unknown
 >>> persona = Persona.from_seed(42, host, timezone="Europe/Berlin")
 >>> persona.hardware_concurrency, persona.device_memory
 (12, 16)

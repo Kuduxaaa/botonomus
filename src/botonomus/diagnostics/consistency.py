@@ -129,8 +129,24 @@ def report_from_raw(raw: dict[str, Any], product: str) -> ConsistencyReport:
             screen.get("outerW", 0) >= screen.get("innerW", 1)
             and screen.get("outerH", 0) >= screen.get("innerH", 1)
             and screen.get("availH", 1) <= screen.get("h", 0)
+            # CSS media queries must describe the same screen as JavaScript.
+            and screen.get("cssDevice") is True
         )
     )
+    persona_screen = raw.get("persona_screen")
+    screen_observed: dict[str, Any] = dict(screen)
+    if isinstance(persona_screen, dict):
+        # A persona screen must be what every surface reports, and the real window
+        # must fit inside its work area.
+        screen_observed["persona"] = persona_screen
+        screen_ok = screen_ok and (
+            screen.get("w") == persona_screen.get("w")
+            and screen.get("h") == persona_screen.get("h")
+            and screen.get("availH")
+            == persona_screen.get("h", 0) - persona_screen.get("taskbar", 0)
+            and screen.get("outerW", 0) <= screen.get("availW", 0)
+            and screen.get("outerH", 0) <= screen.get("availH", 0)
+        )
     checks = [
         Check("canvas-stable", _pair_equal(raw.get("canvas")), {"reads": raw.get("canvas")}),
         Check("canvas-solid", raw.get("canvasSolid") is True, {"exact": raw.get("canvasSolid")}),
@@ -167,7 +183,7 @@ def report_from_raw(raw: dict[str, Any], product: str) -> ConsistencyReport:
             bool(page) and "headless" not in identity.lower(),
             {"ua": page.get("ua")},
         ),
-        Check("screen", screen_ok, dict(screen)),
+        Check("screen", screen_ok, screen_observed),
         # Chrome stable does not advertise JPEG XL; a Chromium build with it on does,
         # in the image (and navigation) Accept headers the server sees.
         Check(
@@ -326,4 +342,11 @@ async def run_consistency(config: BrowserConfig, *, timeout: float = 30) -> Cons
                     f"The consistency page posted no result within {timeout:g} s"
                 ) from None
             raw["accept"] = dict(server.accept)
+            persona = getattr(session, "persona", None)
+            if persona is not None and persona.screen is not None:
+                raw["persona_screen"] = {
+                    "w": persona.screen[0],
+                    "h": persona.screen[1],
+                    "taskbar": persona.taskbar,
+                }
     return report_from_raw(raw, product)

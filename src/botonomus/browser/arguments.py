@@ -4,6 +4,7 @@ from collections.abc import Sequence
 from pathlib import Path
 
 from ..config import BrowserConfig
+from ..fingerprint import switches
 
 
 def launch_arguments(
@@ -47,6 +48,7 @@ def launch_arguments(
     arguments += platform_args
     arguments += config.extra_args
     arguments += config.persona_switches
+    arguments += _persona_window(config.persona_switches)
     if proxy_server is not None:
         # WebRTC UDP would otherwise bypass the proxy and reveal the real address.
         arguments += [
@@ -55,3 +57,18 @@ def launch_arguments(
         ]
     arguments.append("about:blank")
     return arguments
+
+
+def _persona_window(persona_switches: Sequence[str]) -> list[str]:
+    """Window geometry that fits a persona screen: at the origin, filling the work area.
+
+    ``outerWidth``/``outerHeight`` come from the real window, so a window larger than
+    the persona's screen would contradict it.
+    """
+    values = dict(arg.split("=", 1) for arg in persona_switches if "=" in arg)
+    screen = values.get(switches.SCREEN)
+    if screen is None:
+        return []
+    width, height = (int(part) for part in screen.split("x"))
+    taskbar = int(values.get(switches.TASKBAR, "0"))
+    return ["--window-position=0,0", f"--window-size={width},{height - taskbar}"]

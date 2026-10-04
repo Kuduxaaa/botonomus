@@ -25,15 +25,21 @@ class HostInfo:
             ``navigator.hardwareConcurrency``).
         memory_gb: Total physical memory in GiB.
         platform: ``sys.platform`` of the host, for example ``"win32"``.
+        screen: Primary display resolution in physical pixels, or ``None`` when
+            unknown (a persona then keeps the real screen).
+        scale: Display scale factor (``devicePixelRatio`` at 100% zoom).
 
     Raises:
-        ConfigurationError: If ``logical_cpus`` is not a positive integer or
-            ``memory_gb`` is not a positive finite number.
+        ConfigurationError: If ``logical_cpus`` is not a positive integer,
+            ``memory_gb`` or ``scale`` is not a positive finite number, or
+            ``screen`` is not two positive integers.
     """
 
     logical_cpus: int
     memory_gb: float
     platform: str
+    screen: tuple[int, int] | None = None
+    scale: float = 1.0
 
     def __post_init__(self) -> None:
         cpus = self.logical_cpus
@@ -49,6 +55,20 @@ class HostInfo:
             raise ConfigurationError("Host memory must be a positive number of GB")
         if not isinstance(self.platform, str) or not self.platform:
             raise ConfigurationError("Host platform must be a non-empty string")
+        if self.screen is not None and (
+            not isinstance(self.screen, tuple)
+            or len(self.screen) != 2
+            or any(isinstance(v, bool) or not isinstance(v, int) or v < 1 for v in self.screen)
+        ):
+            raise ConfigurationError("Host screen must be (width, height) in pixels")
+        scale = self.scale
+        if (
+            isinstance(scale, bool)
+            or not isinstance(scale, int | float)
+            or not math.isfinite(scale)
+            or scale <= 0
+        ):
+            raise ConfigurationError("Host scale must be a positive number")
 
     @classmethod
     def detect(cls) -> "HostInfo":
@@ -61,10 +81,13 @@ class HostInfo:
             The detected host information.
         """
         cpus = psutil.cpu_count(logical=True) or os.cpu_count() or 1
+        screen, scale = _windows_display() if sys.platform == "win32" else (None, 1.0)
         return cls(
             logical_cpus=cpus,
             memory_gb=psutil.virtual_memory().total / 2**30,
             platform=sys.platform,
+            screen=screen,
+            scale=scale,
         )
 
     @property
@@ -82,3 +105,55 @@ class HostInfo:
         nearest = lower if megabytes - lower <= upper - megabytes else upper
         gigabytes = nearest // 1024
         return min(_MAX_DEVICE_MEMORY, max(_MIN_DEVICE_MEMORY, gigabytes))
+
+
+def _windows_display() -> tuple[tuple[int, int] | None, float]:
+    """The primary display's physical resolution and scale factor, or ``(None, 1.0)``."""
+    try:
+        import ctypes
+        from ctypes import wintypes
+
+        class DEVMODEW(ctypes.Structure):
+            _fields_ = [
+                ("dmDeviceName", wintypes.WCHAR * 32),
+                ("dmSpecVersion", wintypes.WORD),
+                ("dmDriverVersion", wintypes.WORD),
+                ("dmSize", wintypes.WORD),
+                ("dmDriverExtra", wintypes.WORD),
+                ("dmFields", wintypes.DWORD),
+                ("dmPositionX", wintypes.LONG),
+                ("dmPositionY", wintypes.LONG),
+                ("dmDisplayOrientation", wintypes.DWORD),
+                ("dmDisplayFixedOutput", wintypes.DWORD),
+                ("dmColor", ctypes.c_short),
+                ("dmDuplex", ctypes.c_short),
+                ("dmYResolution", ctypes.c_short),
+                ("dmTTOption", ctypes.c_short),
+                ("dmCollate", ctypes.c_short),
+                ("dmFormName", wintypes.WCHAR * 32),
+                ("dmLogPixels", wintypes.WORD),
+                ("dmBitsPerPel", wintypes.DWORD),
+                ("dmPelsWidth", wintypes.DWORD),
+                ("dmPelsHeight", wintypes.DWORD),
+                ("dmDisplayFlags", wintypes.DWORD),
+                ("dmDisplayFrequency", wintypes.DWORD),
+            ]
+
+        user32 = getattr(ctypes, "windll").user32  # noqa: B009 (absent from non-Windows stubs)
+        mode = DEVMODEW()
+        mode.dmSize = ctypes.sizeof(DEVMODEW)
+        if not user32.EnumDisplaySettingsW(None, -1, ctypes.byref(mode)):  # current mode
+            return None, 1.0
+        width, height = int(mode.dmPelsWidth), int(mode.dmPelsHeight)
+        if width < 1 or height < 1:
+            return None, 1.0
+        # A DPI-unaware process sees scaled metrics; an aware one sees physical pixels
+        # and the real DPI. Either way physical / logical is the scale.
+        logical = int(user32.GetSystemMetrics(0))
+        if 0 < logical != width:
+            scale = width / logical
+        else:
+            scale = int(user32.GetDpiForSystem()) / 96 or 1.0
+        return (width, height), round(scale, 2)
+    except (AttributeError, OSError, ValueError):
+        return None, 1.0

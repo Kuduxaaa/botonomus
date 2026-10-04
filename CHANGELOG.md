@@ -8,6 +8,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- **Persona screen.** `Persona.screen` and `Persona.taskbar` (`--bn-screen=WxH`, `--bn-taskbar=H`, CSS pixels): a weighted real monitor resolution no larger than the host's, divided by the host's scale so `screen x devicePixelRatio` is a real monitor size. `HostInfo` gains `screen` (physical pixels) and `scale`, detected on Windows. With a persona screen the window opens at the origin and fills the persona's work area. Needs Botonomus Chromium with patch 0012.
+- `consistency` `screen` check: CSS `device-width`/`device-height` must match `screen.width/height`, and a persona screen must be what JavaScript reports, with `availHeight` = height - taskbar and the window inside the work area.
+
 - `botonomus consistency` check `accept-header`: the loopback server records the `Accept` headers of the page and of an image, and fails when they advertise `image/jxl` while UA-CH claims Google Chrome (Chrome stable does not; the current Botonomus Chromium dev build does).
 
 ### Changed

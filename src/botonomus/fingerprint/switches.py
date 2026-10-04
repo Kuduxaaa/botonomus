@@ -27,10 +27,26 @@ GPU_RENDERER: Final = "--bn-gpu-renderer"
 NOISE: Final = "--bn-noise"
 """``--bn-noise=0`` disables canvas, WebGL and audio noise (debugging, measurement)."""
 
+SCREEN: Final = "--bn-screen"
+"""Screen size in CSS pixels as ``WxH`` (JS ``screen``, CSS media queries, every frame)."""
+
+TASKBAR: Final = "--bn-taskbar"
+"""Taskbar height in CSS pixels; ``screen.availHeight`` is the screen height minus it."""
+
 DEVICE_MEMORY_VALUES: Final = frozenset({2, 4, 8, 16, 32})
 """Values Chromium 155 can report on desktop (clamped to 2-32 GB, crbug 454354290)."""
 
 PERSONA_SWITCHES: Final = frozenset(
-    {SEED, TIMEZONE, HARDWARE_CONCURRENCY, DEVICE_MEMORY, GPU_VENDOR, GPU_RENDERER, NOISE}
+    {
+        SEED,
+        TIMEZONE,
+        HARDWARE_CONCURRENCY,
+        DEVICE_MEMORY,
+        GPU_VENDOR,
+        GPU_RENDERER,
+        NOISE,
+        SCREEN,
+        TASKBAR,
+    }
 )
 """Every persona switch name, for callers that must refuse user-supplied duplicates."""

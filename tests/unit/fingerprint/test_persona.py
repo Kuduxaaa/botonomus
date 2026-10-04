@@ -138,6 +138,8 @@ def test_switches_with_every_option(no_tz_database):
         timezone="Europe/Berlin",
         gpu=GPU,
         noise=False,
+        screen=(1536, 864),
+        taskbar=40,
     )
     rendered = persona.to_switches()
     assert rendered == tuple(sorted(rendered))
@@ -149,6 +151,8 @@ def test_switches_with_every_option(no_tz_database):
         f"--bn-gpu-vendor={GPU.vendor}",
         f"--bn-gpu-renderer={GPU.renderer}",
         "--bn-noise=0",
+        "--bn-screen=1536x864",
+        "--bn-taskbar=40",
     }
     assert {item.split("=", 1)[0] for item in rendered} == switches.PERSONA_SWITCHES
 

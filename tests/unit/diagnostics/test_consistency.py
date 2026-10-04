@@ -1,3 +1,5 @@
+import pytest
+
 from botonomus.diagnostics.consistency import report_from_raw
 
 GOOD_CTX = {
@@ -41,6 +43,9 @@ def raw(**over):
             "innerH": 700,
             "h": 1080,
             "availH": 1040,
+            "w": 1920,
+            "availW": 1920,
+            "cssDevice": True,
         },  # fmt: skip
     }
     base.update(over)
@@ -259,3 +264,36 @@ def test_chromium_brand_may_advertise_jxl():
     jxl = {"document": CHROME_DOCUMENT_ACCEPT, "image": "image/jxl," + CHROME_IMAGE_ACCEPT}
     check = by_name(report_from_raw(raw(contexts=contexts, accept=jxl), "p"))["accept-header"]
     assert check.passed
+
+
+SCREEN = {"outerW": 1366, "innerW": 1350, "outerH": 728, "innerH": 640, "w": 1366, "h": 768,
+          "availW": 1366, "availH": 728, "cssDevice": True}  # fmt: skip
+PERSONA_SCREEN = {"w": 1366, "h": 768, "taskbar": 40}
+
+
+def test_persona_screen_matching_everywhere_passes():
+    report = report_from_raw(raw(screen=SCREEN, persona_screen=PERSONA_SCREEN), "p")
+    assert by_name(report)["screen"].passed
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"w": 1920},
+        {"h": 1080},
+        {"availH": 768},
+        {"outerW": 1400},
+        {"outerH": 760},
+        {"cssDevice": False},
+    ],  # fmt: skip
+)
+def test_persona_screen_contradictions_fail(change):
+    report = report_from_raw(raw(screen={**SCREEN, **change}, persona_screen=PERSONA_SCREEN), "p")
+    check = by_name(report)["screen"]
+    assert not check.passed
+    assert check.observed["persona"] == PERSONA_SCREEN
+
+
+def test_css_device_size_must_match_js_screen():
+    screen = {**raw()["screen"], "cssDevice": False}
+    assert not by_name(report_from_raw(raw(screen=screen), "p"))["screen"].passed

@@ -114,7 +114,9 @@ window.addEventListener('load', async () => {
       document.createElement('video').canPlayType('video/mp4; codecs="avc1.42E01E"'));
     raw.screen = await safe(() => ({
       outerW: outerWidth, innerW: innerWidth, outerH: outerHeight, innerH: innerHeight,
-      h: screen.height, availH: screen.availHeight,
+      w: screen.width, h: screen.height, availW: screen.availWidth, availH: screen.availHeight,
+      cssDevice: matchMedia(
+        `(device-width: ${screen.width}px) and (device-height: ${screen.height}px)`).matches,
     }));
   } finally {
     await fetch(ROUTE + '/result', {

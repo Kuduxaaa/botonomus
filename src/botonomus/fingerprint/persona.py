@@ -47,6 +47,31 @@ the plurality, 32 GB second and growing, 8 GB declining, 4 GB rare), expressed
 as the power-of-two values Chromium reports.
 """
 
+SCREEN_WEIGHTS: Final[tuple[tuple[tuple[int, int], int], ...]] = (
+    ((1920, 1080), 40),
+    ((2560, 1440), 12),
+    ((1366, 768), 10),
+    ((1600, 900), 6),
+    ((1440, 900), 5),
+    ((1920, 1200), 5),
+    ((1680, 1050), 3),
+    ((1280, 1024), 3),
+    ((3840, 2160), 6),
+    ((2560, 1080), 2),
+)
+"""``((width, height) physical pixels, relative weight)`` for Windows desktop monitors.
+
+An estimate shaped by StatCounter and Steam survey resolution shares. A persona picks
+a physical resolution no larger than the host's and divides it by the host's scale, so
+``screen x devicePixelRatio`` is always a real monitor size.
+"""
+
+TASKBAR_WEIGHTS: Final[tuple[tuple[int, int], ...]] = ((48, 70), (40, 30))
+"""``(taskbar height in CSS pixels, relative weight)``: Windows 11 (48) and 10 (40)."""
+
+_SCREEN_MIN: Final = (640, 480)
+_SCREEN_MAX: Final = (7680, 4320)
+_TASKBAR_MAX: Final = 200
 _SEED_LIMIT: Final = 1 << 64
 _MAX_CONCURRENCY: Final = 1024
 _PERSON: Final = b"bn-persona-v1"
@@ -89,6 +114,9 @@ class Persona:
         timezone: IANA time zone, or ``None`` to keep the host's zone.
         gpu: WebGL vendor/renderer override, or ``None`` to keep the real GPU.
         noise: Whether readback noise is on; ``False`` is for measurement only.
+        screen: Screen size in CSS pixels, or ``None`` to keep the real screen.
+        taskbar: Taskbar height in CSS pixels (``availHeight = height - taskbar``);
+            used only with ``screen``.
 
     Raises:
         ConfigurationError: If any field is out of range or malformed. The time
@@ -102,6 +130,8 @@ class Persona:
     timezone: str | None = None
     gpu: GpuOverride | None = None
     noise: bool = True
+    screen: tuple[int, int] | None = None
+    taskbar: int = 48
 
     def __post_init__(self) -> None:
         _check_seed(self.seed)
@@ -127,6 +157,23 @@ class Persona:
             raise ConfigurationError("gpu must be a GpuOverride or None")
         if not isinstance(self.noise, bool):
             raise ConfigurationError("noise must be a bool")
+        if self.screen is not None and (
+            not isinstance(self.screen, tuple)
+            or len(self.screen) != 2
+            or any(isinstance(v, bool) or not isinstance(v, int) for v in self.screen)
+            or not all(
+                low <= v <= high
+                for v, low, high in zip(self.screen, _SCREEN_MIN, _SCREEN_MAX, strict=True)
+            )
+        ):
+            raise ConfigurationError("screen must be (width, height) within 640x480-7680x4320")
+        taskbar = self.taskbar
+        if (
+            isinstance(taskbar, bool)
+            or not isinstance(taskbar, int)
+            or not 0 <= taskbar <= _TASKBAR_MAX
+        ):
+            raise ConfigurationError(f"taskbar must be an integer from 0 to {_TASKBAR_MAX}")
 
     @classmethod
     def from_seed(
@@ -168,6 +215,8 @@ class Persona:
             device_memory=_choose(seed, "device-memory", DEVICE_MEMORY_WEIGHTS, host.device_memory),
             timezone=timezone,
             gpu=gpu,
+            screen=_choose_screen(seed, host),
+            taskbar=_choose(seed, "taskbar", TASKBAR_WEIGHTS, _TASKBAR_MAX),
         )
 
     def to_switches(self) -> tuple[str, ...]:
@@ -190,6 +239,9 @@ class Persona:
             values.append(f"{switches.GPU_RENDERER}={self.gpu.renderer}")
         if not self.noise:
             values.append(f"{switches.NOISE}=0")
+        if self.screen is not None:
+            values.append(f"{switches.SCREEN}={self.screen[0]}x{self.screen[1]}")
+            values.append(f"{switches.TASKBAR}={self.taskbar}")
         return tuple(sorted(values))
 
 
@@ -228,6 +280,10 @@ def resolve_persona(
     if isinstance(spec, Persona):
         if spec.hardware_concurrency > host.logical_cpus or spec.device_memory > host.device_memory:
             raise ConfigurationError("Persona claims more cores or memory than the host has")
+        if spec.screen is not None and host.screen is not None:
+            limit = host_dips(host)
+            if spec.screen[0] > limit[0] or spec.screen[1] > limit[1]:
+                raise ConfigurationError("Persona screen is larger than the host's screen")
         if spec.timezone is None and timezone is not None:
             return dataclasses.replace(spec, timezone=timezone)
         return spec
@@ -238,6 +294,33 @@ def resolve_persona(
     if isinstance(spec, int) and not isinstance(spec, bool):
         return Persona.from_seed(spec, host, timezone=timezone)
     raise ConfigurationError("persona must be 'auto', 'off', a 64-bit seed or a Persona")
+
+
+def host_dips(host: HostInfo) -> tuple[int, int]:
+    """The host screen in CSS pixels (physical size divided by the scale)."""
+    if host.screen is None:
+        raise ConfigurationError("Host screen is unknown")
+    return round(host.screen[0] / host.scale), round(host.screen[1] / host.scale)
+
+
+def _choose_screen(seed: int, host: HostInfo) -> tuple[int, int] | None:
+    """A weighted real resolution no larger than the host's, in the host's CSS pixels."""
+    if host.screen is None:
+        return None
+    width, height = host.screen
+    candidates = [(size, w) for size, w in SCREEN_WEIGHTS if size[0] <= width and size[1] <= height]
+    physical = host.screen
+    if candidates:
+        point = _draw(seed, "screen") % sum(w for _, w in candidates)
+        for size, w in candidates:
+            if point < w:
+                physical = size
+                break
+            point -= w
+    dips = [round(physical[0] / host.scale), round(physical[1] / host.scale)]
+    for index in (0, 1):
+        dips[index] = min(max(dips[index], _SCREEN_MIN[index]), _SCREEN_MAX[index])
+    return dips[0], dips[1]
 
 
 def _check_seed(seed: object) -> None:

@@ -106,7 +106,7 @@ A loopback page, with no third-party traffic, runs these checks. The command exi
 | `media` | H.264 `canPlayType` is `"probably"`, and Widevine is available when UA-CH claims Google Chrome |
 | `voices` | At least one speech voice (Google network voices are reported, not required: Chrome lists them only after a public page has loaded) |
 | `headless-ua` | No "Headless" in the user agent or brands |
-| `screen` | Outer size >= inner size and `availHeight <= height` |
+| `screen` | Outer size >= inner size, `availHeight <= height`, and CSS `device-width`/`device-height` match `screen.width/height`. With a persona screen: JS reports exactly the persona's size, `availHeight` is height minus the taskbar, and the window fits the work area |
 | `accept-header` | The server saw the page's and an image's `Accept` headers, and neither advertises `image/jxl` while UA-CH claims Google Chrome (Chrome stable does not support JPEG XL; a Chromium build with it enabled does) |
 
 From Python: `botonomus.diagnostics.consistency.run_consistency(config)` returns a `ConsistencyReport`.
