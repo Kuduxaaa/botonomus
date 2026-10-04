@@ -107,19 +107,21 @@ class IdentityStore:
         os.replace(temporary, self._path)
 
 
+# Broad principals some hosts grant explicitly on new directories (removing inheritance
+# keeps explicit entries): SYSTEM, Administrators, OWNER RIGHTS, CREATOR OWNER, Everyone,
+# Users, Authenticated Users and INTERACTIVE.
+_BROAD_SIDS = ("*S-1-5-18", "*S-1-5-32-544", "*S-1-3-4", "*S-1-3-0", "*S-1-1-0",
+               "*S-1-5-32-545", "*S-1-5-11", "*S-1-5-4")  # fmt: skip
+
+
 def _restrict_to_owner(directory: Path) -> None:
-    """Windows: replace inherited ACLs on ``directory`` with full control for the owner.
+    """Windows: leave ``directory`` accessible to the current user only.
 
     POSIX modes do not apply on Windows; files created inside inherit this ACL.
     """
-    subprocess.run(
-        [
-            "icacls",
-            str(directory),
-            "/inheritance:r",
-            "/grant:r",
-            f"{getpass.getuser()}:(OI)(CI)F",
-        ],
-        check=True,
-        capture_output=True,
-    )
+    target = str(directory)
+    for arguments in (
+        ["/inheritance:r", "/grant:r", f"{getpass.getuser()}:(OI)(CI)F"],
+        ["/remove:g", *_BROAD_SIDS],
+    ):
+        subprocess.run(["icacls", target, *arguments], check=True, capture_output=True)

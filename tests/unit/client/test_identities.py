@@ -59,6 +59,12 @@ def test_state_directory_is_private_on_windows(tmp_path):
     import getpass
     import subprocess
 
+    # Some hosts (GitHub's Windows runners) give new directories explicit ACEs for
+    # SYSTEM, Administrators and OWNER RIGHTS, which removing inheritance keeps.
+    (tmp_path / "acct").mkdir()
+    for sid in ("*S-1-5-18", "*S-1-5-32-544", "*S-1-3-4"):
+        subprocess.run(["icacls", str(tmp_path / "acct"), "/grant", f"{sid}:(OI)(CI)F"],
+                       check=True, capture_output=True)  # fmt: skip
     with IdentityStore(tmp_path, "acct") as store:
         store.save(StorageState())
     listing = subprocess.run(
@@ -68,4 +74,4 @@ def test_state_directory_is_private_on_windows(tmp_path):
     assert len(entries) == 1, listing
     assert getpass.getuser().lower() in entries[0].lower(), listing
     for broad in ("everyone", "users", "authenticated", "system", "administrators"):
-        assert f"\{broad}:" not in listing.lower() and f" {broad}:" not in listing.lower()
+        assert "\\" + broad + ":" not in listing.lower()
