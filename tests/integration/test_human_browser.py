@@ -103,8 +103,12 @@ async def test_warm_up_browses_local_site_without_forms_or_logins(page, site):
     )
     assert report.sites_visited == 2 and report.sites_failed == 1
     assert report.elapsed <= 24 + 3
-    assert report.links_followed >= 1 and "/a" in paths
     assert "/" in paths and "/b" in paths
+    # Which safe article it follows (/a or /b) depends on randomness and timing; every
+    # followed link must be one of them. "/b" is also visited once as a site.
+    articles = [p for p in paths if p in ("/a", "/b")]
+    assert report.links_followed >= 1
+    assert len(articles) == 1 + report.links_followed
     assert not any(
         p.startswith(("/login", "/cart", "/search", "/elsewhere", "POST")) for p in paths
     )
