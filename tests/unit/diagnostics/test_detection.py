@@ -309,3 +309,24 @@ def test_aggregate_counts_blocked_separately():
     assert (alpha.passed, alpha.blocked, alpha.failed, alpha.unknown) == (1, 2, 0, 0)
     assert alpha.passed + alpha.failed + alpha.unknown + alpha.blocked + alpha.errors == alpha.runs
     assert alpha.blocked_rate == round(2 / 3, 4)
+
+
+async def test_site_click_button_is_clicked_after_load(tmp_path):
+    site = DetectionSite("clicky", "https://c.example/", settle=0, click_button="Check",
+                         extractor="() => 1")  # fmt: skip
+    pages = []
+
+    def factory(profile):
+        page = FakePage({"verdict": "pass", "details": {}})
+        pages.append(page)
+        return page
+
+    bot = FakeOpener(tmp_path, factory)
+    report = await run_detection(bot, [site], interact=False)
+    assert report.runs[0].verdict == "pass"
+    assert pages[0].clicked == [("button", "Check")]
+
+
+def test_click_button_must_be_text():
+    with pytest.raises(ConfigurationError):
+        DetectionSite("x", "https://x.example/", click_button=3)

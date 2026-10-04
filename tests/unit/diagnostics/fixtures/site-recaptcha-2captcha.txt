@@ -1,0 +1,162 @@
+To home page
+Toggle site navigation menu
+reCAPTCHA v3 demo
+
+This page explains how reCAPTCHA v3 is displayed and how reCAPTCHA v3 verification works. reCAPTCHA v3 is the newest type of captcha from Google. It has no challenge so there is no need for user interaction. Instead it uses a "humanity" rating - score.
+
+Captcha is passed successfully!
+
+{
+  "success": true,
+  "challenge_ts": "2026-10-04T12:26:05.169Z",
+  "hostname": "2captcha.com",
+  "score": 0.7,
+  "action": "demo_action"
+}
+Reset
+
+In many cases reCAPTCHA v3 hinder accessibility, frustrate users, limits access to open information, makes testing application and sites difficult. Use reCAPTCHA v3 solver for automatic bypass.
+
+reCAPTCHA v3 solver
+API
+
+How to solve reCAPTCHA v3
+
+Explore the source code of the website and search for grecaptcha.execute call. The call can be anywhere in the website code, inside <script> elements of the page of inside the included javascript files. For example, on our demo page source code you will find:
+
+window.grecaptcha.ready(function() {
+    grecaptcha.execute(
+        '6LfB5_IbAAAAAMCtsjEHEHKqcB9iQocwwxTiihJu', 
+        {action: 'demo_action'},
+    ).then(function(token) {
+        if (window.verifyRecaptcha) {
+        window.verifyRecaptcha(token);
+        }
+    });
+});
+Copy code snippet
+
+There you can find all the required values to solve the captcha with our API. And also you can see .then() method call - that's the code that handles the token after it was generated. You need to call the same code and pass the token received from our API.
+
+Send sitekey, pageurl and action values to our API.
+
+With SDK (recommended):
+PHP
+// https://github.com/2captcha/2captcha-php
+
+require(__DIR__ . '/../src/autoloader.php');
+
+$solver = new \TwoCaptcha\TwoCaptcha('YOUR_API_KEY');
+
+try {
+    $result = $solver->recaptcha([
+        'sitekey' => '6LfB5_IbAAAAAMCtsjEHEHKqcB9iQocwwxTiihJu',
+        'url'     => 'https://2captcha.com/demo/recaptcha-v3',
+        'version' => 'v3',
+        'action'  => 'demo_action',
+        'score'   => 0.9,
+    ]);
+} catch (\Exception $e) {
+    die($e->getMessage());
+}
+
+die('Captcha solved: ' . $result->code);
+Copy code snippet
+Python
+Java
+C#
+Go
+C++
+Ruby
+
+Wait for the result, which may look like this:
+
+03AGdBq27lvCYmKkaqDdxWLfMe3ovADGfGlSyiR-fN_EJrZGniTAmdH1XSjK8ralsctfjOLX2K0T7dJfxPqqga8dtSG2Lmns8Gk2ckcU6PQzUFieBqrtpkr5PPwnngew0Rnot2ik1y8m202u6pHTIquExlEYSlzS8vfoyPPt8fCf-Zrbu8vWkiY8Ogj17ommHMgkguZbmEyOdfLTXzhRko-a655_jJdCMjEtMxva-b78DnGlXu9d0o6vEmrw9n8ABu4lLsWnIbYPH0beXRRIkUE3si64Xhwkh1aO3L1HaIR3sfR0vOs3GV1OBzry
+
+Manually:
+
+Send GET or POST request to our API URL: https://2captcha.com/in.php with method set to userrecaptcha, version set to v3 and provide the value found on previous step as value for googlekey and full page URL as value for pageurl.
+Request example:
+GET https://2captcha.com/in.php?key=YOUR_API_KEY&method=userrecaptcha&version=v3&min_score=0.9&action=demo_action&googlekey=6LfB5_IbAAAAAMCtsjEHEHKqcB9iQocwwxTiihJu&pageurl=http://2captcha.com/demo/recaptcha-v3
+
+If everything is fine server will return the ID of your captcha:
+
+OK|2122988149
+Otherwise server will return an error code.
+
+After 1-2 sec. send GET request to get the result:
+
+GET https://2captcha.com/res.php?key=YOUR_API_KEY&action=get&id=2122988149
+If captcha is already solved server will respond with the token:
+
+OK|03AGdBq27lvCYmKkaqDdxWLfMe3ovADGfGlSyiR-fN_EJrZGniTAmdH1XSjK8ralsctfjOLX2K0T7dJfxPqqga8dtSG2Lmns8Gk2ckcU6PQzUFieBqrtpkr5PPwnngew0Rnot2ik1y8m202u6pHTIquExlEYSlzS8vfoyPPt8fCf-Zrbu8vWkiY8Ogj17ommHMgkguZbmEyOdfLTXzhRko-a655_jJdCMjEtMxva-b78DnGlXu9d0o6vEmrw9n8ABu4lLsWnIbYPH0beXRRIkUE3si64Xhwkh1aO3L1HaIR3sfR0vOs3GV1OBzry
+If captcha is not solved yet server will return CAPCHA_NOT_READY result. Repeat your request in 5 seconds. If something went wrong server will return an error code.
+
+Once we have a token we can execute the same code that is exexuted inside .then() method call and pass our token as the function call argument. In our demo case we can open javacsript execute the following code in the javascript console:
+
+window.verifyRecaptcha('03AGdBq27lvCYmKkaqDdxWLfMe3ovADGfGlSyiR-fN_EJrZGniTAmdH1XSjK8ralsctfjOLX2K0T7dJfxPqqga8dtSG2Lmns8Gk2ckcU6PQzUFieBqrtpkr5PPwnngew0Rnot2ik1y8m202u6pHTIquExlEYSlzS8vfoyPPt8fCf-Zrbu8vWkiY8Ogj17ommHMgkguZbmEyOdfLTXzhRko-a655_jJdCMjEtMxva-b78DnGlXu9d0o6vEmrw9n8ABu4lLsWnIbYPH0beXRRIkUE3si64Xhwkh1aO3L1HaIR3sfR0vOs3GV1OBzry')
+Copy code snippet
+
+Please keep in mind that exact captcha implementation on a particular website depends on the website author. Our demo page shows just one, but very popular implemetation method.
+
+Toggle page navigation
+
+Scale up your business with 2Captcha
+
+Contact sales
+Captcha solver
+Captcha solver API
+Browser extension
+Puppeteer
+Selenium
+Playwright
+How-to tutorials
+Company
+Pricing
+Enterprise support
+Affiliate program
+About
+Blog
+Software
+Captcha supported
+reCAPTCHA
+Image Captcha
+Cloudflare Turnstile
+Arkose Labs captcha (FunCaptcha)
+Amazon captcha
+More types
+Proxy Services
+Residential proxies
+SOCKS5 proxies
+Data annotation service
+Dataset API
+Captcha solver SDK
+Python
+PHP
+Java
+C#
+Go
+JavaScript
+Ruby
+Scrapers
+Browser fingerprints
+Scraper API
+Headless browser
+English
+To home page
+
+Copying any part of this website without the explicit permission of the website owner is illegal.
+
+IN THE MONITORING SERVICE RATING
+Follow us
+Contact us
+Captcha bypass extension
+Recommended extension
+reCAPTCHA Solver Extension
+Alternative extensions
+New features
+Browser API for web scraping
+Browser fingerprint dataset
+Terms of service
+Payment policy
+Privacy policy

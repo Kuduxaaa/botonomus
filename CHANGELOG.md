@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- **Seven more detection sites:** `apivoid`, `donutbrowser`, `cleantalk`, `pixelscan-bot`, `recaptcha-google`, `recaptcha-2captcha` and `turnstile-capskip`, each with an extractor tested against a captured page.
+- `DetectionSite(click_button=...)`: the runner clicks a named button after loading, for pages that compute their result on demand.
+
 ## [0.2.0] - 2026-10-04
 
 First public release on PyPI. It includes the measurement toolkit and Linux support below, and the restructure and features listed under "Included from the 1.0 development line".

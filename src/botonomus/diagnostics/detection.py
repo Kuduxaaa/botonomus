@@ -60,6 +60,8 @@ class DetectionSite:
             not an error; the extractor then decides what it can.
         ready_timeout: Seconds to poll ``ready``.
         settle: Seconds to wait after ``ready`` before capturing, with no CDP traffic.
+        click_button: Accessible name of a button to click after load (trusted CDP
+            input), for pages that compute their result on demand; ``None`` for none.
         extractor: Optional JavaScript function source evaluated with
             ``page.evaluate``, which runs in the isolated world on the native and
             Patchright drivers. It must return ``{"verdict": "pass"|"fail"|"unknown"|
@@ -80,12 +82,17 @@ class DetectionSite:
     settle: float = 8.0
     extractor: str | None = None
     description: str = ""
+    click_button: str | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.name, str) or not _SITE_NAME.fullmatch(self.name):
             raise ConfigurationError("Site name must be 1-32 lowercase letters, digits or '-'")
         if not isinstance(self.url, str) or not self.url.startswith(("http://", "https://")):
             raise ConfigurationError("Site URL must be http or https")
+        if self.click_button is not None and (
+            not isinstance(self.click_button, str) or not self.click_button.strip()
+        ):
+            raise ConfigurationError("click_button must be a non-empty button name")
         if self.wait_until not in ("load", "domcontentloaded"):
             raise ConfigurationError("wait_until must be 'load' or 'domcontentloaded'")
         for value in (self.ready_timeout, self.settle):
@@ -557,6 +564,8 @@ async def _capture(
             await human.move_to(rng.uniform(200, 900), rng.uniform(150, 600))
             await human.pause(0.3, 0.9)
         await human.scroll(600)
+    if site.click_button is not None:
+        await page.get_by_role("button", name=site.click_button, exact=True).click(timeout=15)
     if site.ready is not None:
         await _wait_ready(page, site.ready, site.ready_timeout)
     # Plain sleep: no CDP traffic while the page measures.

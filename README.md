@@ -191,7 +191,7 @@ All events are trusted browser input sent through CDP `Input`; nothing is inject
 botonomus detect --runs 3
 ```
 
-Visits 13 public bot-detection pages (deviceandbrowserinfo, sannysoft, browserscan, fingerprint, fingerprint-playground, creepjs, incolumitas, nowsecure, recaptcha-score, pixelscan, fingerprint-scan, rebrowser, turnstile), each `--runs` times with a fresh profile per run, and writes screenshots, page text and `report.json` with per-run verdicts, pass rates, error categories and the environment (date, OS, executable SHA-256, browser version, driver, proxy scheme only). Verdicts come only from per-site extractor scripts; anything else is `unknown`, and rate-limit or challenge pages are `blocked`. Add your own sites from Python with `botonomus.diagnostics.DetectionSite` and `run_detection`.
+Visits 20 public bot-detection pages (deviceandbrowserinfo, sannysoft, browserscan, fingerprint, fingerprint-playground, creepjs, incolumitas, nowsecure, recaptcha-score, pixelscan, fingerprint-scan, rebrowser, turnstile, apivoid, donutbrowser, cleantalk, pixelscan-bot, recaptcha-google, recaptcha-2captcha, turnstile-capskip), each `--runs` times with a fresh profile per run, and writes screenshots, page text and `report.json` with per-run verdicts, pass rates, error categories and the environment (date, OS, executable SHA-256, browser version, driver, proxy scheme only). Verdicts come only from per-site extractor scripts; anything else is `unknown`, and rate-limit or challenge pages are `blocked`. Add your own sites from Python with `botonomus.diagnostics.DetectionSite` and `run_detection`.
 
 ### Measuring
 

@@ -1,0 +1,371 @@
+Skip to content
+EN
+CLOUDFLARE · LIVE DEMO
+Cloudflare Turnstile Demo
+
+A privacy-first, CAPTCHA-free challenge widget from Cloudflare.
+
+Try it live
+Download for Windows
+All captcha demos
+Windows x64
+·
+Runs locally, so no CAPTCHA leaves your machine
+Free, no signup
+The real provider widget
+See the verification response
+TURNSTILES A MONTH
+250,000
+12.0k
+250.0k
+Metered elsewhere, about $1.33 per 1,000
+$332.50
+CapSkip Bronze, flat
+$10.00
+$322.50
+stays in your pocket
+every month, at this volume
+ALSO SOLVES
+Turnstile
+reCAPTCHA v2
+v2 Callback
+v2 Invisible
+v3
+Enterprise
+Image CAPTCHA
+GeeTest v3
+Capy Puzzle
+ALTCHA
+CaptchaFox
+Friendly Captcha
+Live Cloudflare Turnstile widget
+Cloudflare Turnstile
+Cloudflare Challenge
+
+Standard Turnstile widget. It verifies as soon as Cloudflare returns a token.
+
+Reset
+
+TIME TO SOLVE
+10.2s
+Your best: 10.2s
+SOLVE COST
+$0 with CapSkip
+1 solve(s) this session · $0.0014 on pay-per-solve services
+VERIFICATION RESPONSE
+Success
+true
+Action
+Hostname
+capskip.com
+Challenge time
+2026-10-04T12:24:45.000Z
+cdata
+Token
+1.7f87Y9KcqxXNE9t0EzW5ITOuhcEQn5DNXKpHcL…
+Metadata
+How to Solve Cloudflare Turnstile
+
+The box above is a live Cloudflare Turnstile challenge. This page shows three easy ways to solve Cloudflare Turnstile and get a valid cf-turnstile-response token: automatically with the CapSkip browser extension, in your own code with the CapSkip SDK, or by routing the captcha service your tools already call to CapSkip. CapSkip is a fast, unlimited Cloudflare Turnstile solver that runs locally on your device, so there are no per solve fees and nothing leaves your machine.
+
+NO CODE NEEDED
+Option 1: Solve Cloudflare Turnstile with the browser extension
+
+The simplest way to bypass Cloudflare Turnstile is the CapSkip captcha solver extension for Chrome and Firefox. It detects the Turnstile widget on any page and solves it automatically in the background, with no code to write and no token to copy.
+
+1
+Install the extension
+
+Add CapSkip from the Chrome Web Store or Firefox Add-ons. It also works in Brave, Edge, Opera and Vivaldi.
+
+2
+Run the CapSkip app
+
+Install and open the CapSkip desktop app. It does the solving on your own device and pairs with the extension.
+
+3
+It solves automatically
+
+Reload this page and CapSkip clears the Turnstile for you. Prefer to stay in control? Switch to manual mode anytime.
+
+Add to Chrome
+Add to Firefox
+Read the extension guide
+FOR DEVELOPERS
+Option 2: Solve Cloudflare Turnstile with the CapSkip SDK
+
+Building automation, a scraper or a bot? Use the CapSkip captcha solving SDK to solve Cloudflare Turnstile from Python, Node.js, PHP or C#. You pass this page's site key and URL, and CapSkip hands back a fresh Turnstile token you can submit like a real one.
+
+SITE KEY
+0x4AAAAAADogn3t3_JKwKkgS
+Copy
+PAGE URL
+https://capskip.com/captcha-demo/cloudflare-turnstile/
+Copy
+Before you start
+
+CapSkip solves locally. Download and run the CapSkip desktop app and keep it open in the background. The SDK talks to it on 203.0.113.7:8080, so there are no cloud calls and no per solve fees.
+
+Python
+Node.js
+PHP
+C# / .NET
+1
+Install the SDK
+
+Add the official CapSkip client to your project.
+
+Terminal
+Copy
+pip install capskip
+2
+Solve the Turnstile and get a token
+
+Pass this page's sitekey and url to turnstile(). CapSkip returns a fresh cf-turnstile-response token.
+
+solve.py
+Copy
+from capskip import CapSkip
+
+# Connect to the CapSkip app running on your machine
+solver = CapSkip(host="203.0.113.7", port=8080)
+
+# Solve the Turnstile shown on this page
+result = solver.turnstile(
+    sitekey="0x4AAAAAADogn3t3_JKwKkgS",
+    url="https://capskip.com/captcha-demo/cloudflare-turnstile/",
+)
+
+token = result["code"]   # the cf-turnstile-response token
+print(token)
+
+You get a long token that starts with 1. and is valid for this site key, ready to submit.
+
+3
+Use the token
+
+Put the token into the widget's hidden cf-turnstile-response field. Some pages also read it from g-recaptcha-response. If a callback was defined in the turnstile.render() config, run it with the token. Then submit the form, and your server verifies it with Cloudflare siteverify. Note that the Check button on this page reads the token straight from the widget with turnstile.getResponse(), so it verifies the widget's own token rather than one you place in the field.
+
+in the browser
+Copy
+// 1. Drop the solved token into the Turnstile response field
+document.querySelector('[name="cf-turnstile-response"]').value = token;
+
+// Some implementations also read it from g-recaptcha-response:
+// document.querySelector('[name="g-recaptcha-response"]').value = token;
+
+// 2. If a callback was defined in turnstile.render(), run it with the token
+if (window.tsCallback) window.tsCallback(token);
+
+// 3. ...then submit your form.
+ADVANCED
+Turnstile on a Cloudflare Challenge Page
+
+Some sites sit fully behind Cloudflare and show a Turnstile challenge page before the content loads. Here you also need three values from turnstile.render(): cData, chlPageData and action. You then submit the token with the exact User-Agent that CapSkip returns.
+
+1. Intercept the parameters (inject this before Turnstile loads)
+
+in the browser
+Copy
+// Override turnstile.render to capture the challenge parameters
+const i = setInterval(() => {
+  if (window.turnstile) {
+    clearInterval(i);
+    window.turnstile.render = (container, params) => {
+      window.tsParams = {
+        sitekey: params.sitekey,
+        pageurl: window.location.href,
+        data: params.cData,
+        pagedata: params.chlPageData,
+        action: params.action,
+      };
+      window.tsCallback = params.callback; // call this with the solved token
+      console.log(JSON.stringify(window.tsParams));
+      return 'foo';
+    };
+  }
+}, 50);
+
+2. Solve with the captured values, then reuse the returned User-Agent
+
+solve_challenge.py
+Copy
+result = solver.turnstile(
+    sitekey="0x4AAAA...",          # params.sitekey
+    url="https://the-protected-site.com/",
+    data="init_data...",           # params.cData
+    pagedata="chl_page_data...",   # params.chlPageData
+)
+
+token = result["code"]
+user_agent = result["userAgent"]   # submit the token with this exact User-Agent
+
+The raw HTTP API also accepts an optional action value and a proxy, which helps when the site checks that the token was generated from your own IP.
+
+FULL TUTORIAL AND PACKAGE FOR YOUR LANGUAGE
+Python full tutorial
+github.com/capskip/capskip-python
+PyPI package
+pip install capskip
+Turnstile API reference
+capskip.com/api-docs
+
+Not using Python, Node.js, PHP or C#? The SDKs are just wrappers over the CapSkip HTTP API (the standard in.php / res.php endpoints), so you can solve Cloudflare Turnstile from any language, framework or tool. See the Turnstile API reference.
+
+NO CODE CHANGES
+Option 3: Send your existing solver-service code to CapSkip
+
+Already solving Cloudflare Turnstile through a pay-per-captcha service such as 2Captcha, Anti-Captcha or CapMonster? You do not have to rewrite a line. The CapSkip app includes a service emulator that speaks those services' own APIs locally: pick the service you use, click Add to hosts file, and every request your bot, scraper or off-the-shelf tool already sends to it is answered by CapSkip on your own machine, for a flat price instead of a per-solve bill.
+
+1
+Pick your service
+
+Open the CapSkip app and choose the service your code already talks to: 2Captcha, RuCaptcha, Anti-Captcha, CapMonster Cloud, CapSolver, DeathByCaptcha, SolveCaptcha or Captchas.io.
+
+2
+Add to hosts file
+
+One click in the app points that service's domain at CapSkip, so the calls your tool makes are answered on your own machine instead of going out to a paid API.
+
+3
+Run your tool unchanged
+
+Same API key, same request, same polling loop. CapSkip replies in that service's own format and your code gets a valid cf-turnstile-response token back.
+
+Nothing below changes when you switch. It is the same call your code makes today, except that Cloudflare Turnstile is now solved locally and a valid cf-turnstile-response token comes back from CapSkip:
+
+your-existing-request
+Copy
+POST https://2captcha.com/in.php
+     key=YOUR_EXISTING_API_KEY
+     method=turnstile
+     sitekey=0x4AAAAAADogn3t3_JKwKkgS
+     pageurl=https://capskip.com/captcha-demo/cloudflare-turnstile/
+
+GET  https://2captcha.com/res.php?key=YOUR_EXISTING_API_KEY&action=get&id=2122988149
+     OK|0.sBQmB…  the cf-turnstile-response token, solved by CapSkip
+
+Client libraries work the same way: an Anti-Captcha style createTask / getTaskResult pair, or any wrapper built on one of these services, keeps working once the emulator is on. The full request and response reference lives in the CapSkip API docs.
+
+Download CapSkip
+Read the API docs
+SERVICES CAPSKIP CAN STAND IN FOR
+2Captcha alternative
+Drop-in API emulation
+RuCaptcha alternative
+Drop-in API emulation
+Anti-Captcha alternative
+Drop-in API emulation
+CapMonster alternative
+Drop-in API emulation
+CapSolver alternative
+Drop-in API emulation
+DeathByCaptcha alternative
+Drop-in API emulation
+SolveCaptcha alternative
+Drop-in API emulation
+KEEP READING
+More on solving Cloudflare Turnstile
+
+Guides for the tools and languages people usually pair with this demo.
+
+Turnstile solver
+Unlimited, local, flat rate
+Web scraping
+Keep crawls moving
+Selenium
+Inject the token in a driver
+Playwright
+Same flow, async API
+Puppeteer
+Node automation
+Browser extension
+No code at all
+About this Cloudflare Turnstile demo
+
+This page is a live Cloudflare Turnstile demo where you can test how Cloudflare Turnstile works and watch it get solved in real time. Turnstile is Cloudflare's modern CAPTCHA and reCAPTCHA alternative that verifies visitors with browser and behavioral signals, often with no puzzle to click. Use it to explore Turnstile token generation, the cf-turnstile-response value, and the verification flow that websites rely on to protect forms, logins and signups from spam, abuse and bots.
+
+Developers, testers and automation engineers can use this Cloudflare Turnstile test page to check integrations, validate a setup and benchmark how fast CapSkip solves Turnstile. Whether you need to solve Cloudflare Turnstile once or automate thousands of solves, CapSkip is a Cloudflare Turnstile solver that works three ways: the no-code captcha solver extension for Chrome and Firefox, and the captcha solving SDK for Python, Node.js, PHP and C#, and drop-in emulation of the captcha services you may be paying per solve today, all with unlimited solving on one flat price. All three are driven by the same desktop AI captcha solver, installed once and running on your own machine, so nothing is queued on a remote server and nothing is billed per solve.
+
+Can I keep my existing 2Captcha or Anti-Captcha code?
+How do I solve Cloudflare Turnstile?
+Can Cloudflare Turnstile be bypassed?
+How fast does CapSkip solve Turnstile?
+Can I use CapSkip with other programming languages?
+Is CapSkip a free Cloudflare Turnstile solver?
+What are the Cloudflare Turnstile test sitekeys?
+Why does a form say the cf-turnstile-response field is required?
+QUESTIONS?
+Chat with support
+Download Windows App
+CAPTCHA Solver Extension
+Telegram channel
+
+Solve unlimited CAPTCHAs of any type. One subscription.
+
+Get a Gold license
+Compare licenses
+RECAPTCHA
+v2
+v2 Invisible
+v2 Callback
+v3
+Enterprise
+OTHER TYPES
+Cloudflare Turnstile
+Image CAPTCHA
+GeeTest
+ALTCHA
+Capy Puzzle
+CaptchaFox
+Friendly Captcha
+INTEGRATIONS
+Python
+Node.js
+PHP
+C#
+Selenium
+Playwright
+Puppeteer
+MCP Server
+Web Scraping
+DOCUMENTATION
+API Docs
+SDKs & Libraries
+Setup Guide
+Extension Guide
+CAPTCHA Demos
+FAQ
+LICENSES
+Pricing
+Gold
+Silver
+Bronze
+Trial
+COMPANY
+Blog
+Changelog
+Contact us
+Terms
+Privacy Policy
+SWITCHING FROM
+2Captcha
+Anti-Captcha
+CapMonster
+CapSolver
+RuCaptcha
+DeathByCaptcha
+SolveCaptcha
+© 2026 CapSkip CAPTCHA Solver · support@capskip.com · @capskip
+EN
+ZH
+RU
+DE
+TR
+HI
+ID
+CAPSKIP
+Menu
+Pricing
+Login
+Chat with the CapSkip assistant

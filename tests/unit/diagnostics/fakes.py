@@ -24,6 +24,7 @@ class FakePage:
         self.text = text
         self.visited = []
         self.evaluated = []
+        self.clicked = []
 
     async def goto(self, url, wait_until="load"):
         self.visited.append((url, wait_until))
@@ -42,6 +43,15 @@ class FakePage:
 
     def locator(self, selector):
         return FakeLocator(self.text)
+
+    def get_by_role(self, role, *, name=None, exact=False):
+        page = self
+
+        class Button:
+            async def click(self, *, timeout=None):
+                page.clicked.append((role, name))
+
+        return Button()
 
 
 class FakeOpener:

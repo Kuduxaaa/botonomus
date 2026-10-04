@@ -30,6 +30,15 @@ Built-in sites, in default order:
 | `fingerprint-scan` | fingerprint-scan.com | Bot score out of 100 (pass <= 30, fail >= 60) |
 | `rebrowser` | bot-detector.rebrowser.net | Automation leak tests; any red row fails |
 | `turnstile` | nopecha.com/demo/turnstile | Cloudflare Turnstile demo |
+| `apivoid` | apivoid.com/tools/bot-detection-test | Server-side risk score and tampering verdict (pass <= 30, fail >= 70) |
+| `donutbrowser` | donutbrowser.com/tools/bot-detection | Automation and spoofing checks, bot score out of 100 |
+| `cleantalk` | cleantalk.org/am-i-a-bot | Human score out of 100 (pass >= 80, fail < 50) |
+| `pixelscan-bot` | pixelscan.net/bot-check | Navigator, webdriver, CDP and user-agent checks |
+| `recaptcha-google` | recaptcha-demo.appspot.com | Google's reCAPTCHA v3 demo score (pass >= 0.7, fail <= 0.3) |
+| `recaptcha-2captcha` | 2captcha.com/demo/recaptcha-v3 | reCAPTCHA v3 score after clicking Check |
+| `turnstile-capskip` | capskip.com Turnstile demo | Cloudflare Turnstile widget verification |
+
+Pages that compute their result on demand set `DetectionSite(click_button="...")`: the runner clicks that button (trusted input) after loading and before waiting for `ready`.
 
 How a run works:
 

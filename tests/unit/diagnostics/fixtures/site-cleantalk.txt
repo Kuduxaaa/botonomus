@@ -1,0 +1,242 @@
+mobile search trigger
+burger navigation
+FREE BOT DETECTION TOOL
+Am I a Bot? Check If Your Browser Looks Human or Bot
+
+Run a free bot test online and see how your current browser session looks to a website's anti-bot system. Get a live Human Score and inspect the exact signals that are checked: automation frameworks, headless-browser markers, browser fingerprint, and interaction behavior. Everything runs in your browser - nothing is sent or stored.
+
+Free online bot vs human test
+Live Human Score from 0 to 100
+Automation frameworks: Selenium, Puppeteer, Playwright, PhantomJS
+Headless browser and environment fingerprint
+Behavior and interaction signals
+Run the Bot Test
+Free online bot test. No sign-up, no setup required.
+This tool runs entirely in your browser with JavaScript. It reads only the signals your browser already exposes to every website. No data is uploaded, logged, or stored.
+Current IP
+Unavailable
+Current User Agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+Human Score
+100
+Looks Human
+Your browser exposes the signals a normal human visitor would. (0 signals flagged)
+Range: 80-100 - looks human
+Result Details
+Test Type: Client-side browser signals
+Check Time: 10/4/2026, 4:23:14 PM
+Signals Checked: 16
+Signals Flagged: 0
+Automation Frameworks: OK (0 flags)
+Headless & Environment: OK (0 flags)
+Browser Fingerprint: OK (0 flags)
+Behavior: OK (0 flags)
+navigator.webdriver: false
+WebGL Renderer: ANGLE (Intel, Intel(R) UHD Graphics (0x0000A78B) Direct3D11 vs_5_0 ps_5_0, D3D11)
+Request User Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+Previous Checks
+Score: 100/100 (Looks Human) | Flags: 0 | Time: 10/4/2026, 4:23:14 PM
+Full Signal Breakdown
+This is every signal the test reads from your browser, grouped by category. A Flag lowers your Human Score, a Weak is a minor hint, and OK looks normal. These are the same public signals every website you visit can read.
+AUTOMATION FRAMEWORKS
+navigator.webdriver	Set to true when a browser is remote-controlled by Selenium, Puppeteer, etc.	OK
+Selenium markers	Selenium/ChromeDriver inject document keys like $cdc_ and __webdriver_evaluate.	OK
+Playwright markers	Playwright-specific global bindings present on the window.	OK
+PhantomJS	PhantomJS exposes window._phantom / callPhantom.	OK
+Nightmare.js	Nightmare exposes window.__nightmare.	OK
+HEADLESS & ENVIRONMENT
+Headless user-agent	HeadlessChrome / Electron / SlimerJS signature in the user-agent.	OK
+window.chrome missing	Real Chrome exposes a window.chrome object; headless Chrome often does not.	OK
+WebGL software renderer	SwiftShader / llvmpipe means no real GPU - typical of servers.	OK
+Zero-size window	outerWidth/outerHeight of 0 - no real browser window.	OK
+Default headless resolution	800x600 with no window chrome is a known headless default.	OK
+BROWSER FINGERPRINT
+Plugins	Desktop browsers usually expose plugins; none is a headless tell.	OK
+Languages	An empty languages list is a classic bot signal.	OK
+CPU cores	Zero or an absurd core count is unusual for real devices.	OK
+Color depth	A real display reports 24 or 30-bit color; 0 suggests no screen.	OK
+Screen dimensions	A 0x0 screen means no real display attached.	OK
+BEHAVIOR
+Interaction	No mouse, touch or key input at all can indicate a script (weak signal).	OK
+What is a bot test?
+
+A bot test checks whether your browser session looks like a real human or an automated bot, based on the technical signals your browser exposes to every website.
+
+Why does a website think I am a bot?
+
+Privacy browsers, VPNs, remote-desktop, hardened settings, or automation-testing tools can trip bot signals even for real people. It does not mean you did anything wrong - your setup just looks unusual to automated systems.
+
+Does this test send my data anywhere?
+
+No. Everything runs locally in your browser. Nothing is uploaded or stored. Reload the page and the result is gone.
+
+Can a real bot pass this test?
+
+A well-built bot can spoof many of these signals, which is why real protection combines browser signals with IP reputation, behavior over time, and request patterns - the approach used by CleanTalk.
+
+ 
+
+Why Do Websites Think I Am a Bot?
+
+If a site suddenly shows you a CAPTCHA or blocks you, it is rarely personal. Anti-bot systems score every visitor on dozens of signals, and normal people get caught in the net all the time. The most common reasons are automation flags left by browser tools, a headless or unusual browser environment, an IP address that already sits on a spam block list, and behavior that looks scripted rather than human.
+
+This page shows you exactly which of those signals your own browser is currently exposing, so you can see what a website sees.
+
+ 
+
+What Does Your Human Score Mean?
+
+The test returns a Human Score from 0 to 100. A higher score means your browser looks more like a normal human visitor. A lower score means more automation signals were detected. The score is a practical guide, not an absolute verdict - the same browser can be treated differently by different websites and different actions.
+
+ 
+
+80–100 — Looks human
+
+Your browser exposes the signals a normal visitor would. Most websites should let you through without extra friction, though final handling still depends on the action being protected.
+
+	
+
+50–79 — Needs review
+
+Some signals look off. A strict anti-bot system might challenge you with a CAPTCHA or an extra verification step before letting you continue.
+
+	
+
+0–49 — Bot-like
+
+Multiple automation signals were detected. Most websites would block or heavily challenge this browser. If you are a real person, it usually means a privacy tool, VPN, or automation extension is active.
+
+ 
+
+How to Read Your Score in Practice
+Treat the Human Score as a risk signal, not a final security decision.
+Review it together with the individual signals in the breakdown - a single flag matters less than several together.
+Remember this test only reads browser-side signals. Real sites also weigh IP reputation, behavior over time, and request volume.
+If you are a website owner debugging why real visitors get blocked, use this to see which signals your users trip.
+
+ 
+
+How This Bot Test Works
+
+Unlike a server-side CAPTCHA, this check happens entirely on your device. There is no backend and no reCAPTCHA involved.
+
+Read the signals
+When you click the button, the page reads the technical signals your browser exposes - automation flags, plugins, WebGL renderer, screen, and more.
+Weight each signal
+Strong bot markers, such as an active webdriver flag, cost more points than minor quirks.
+Calculate the Human Score
+Points are subtracted from 100 to produce your Human Score.
+Explain the result
+The full breakdown is shown right on the page, so you can see exactly which signals fired and what each one means.
+
+This takes a fraction of a second and gives you a clear view of how your browser looks to an anti-bot system.
+
+	
+4-Step Flow
+1. Read signals
+2. Weight each
+3. Score 0-100
+4. Explain
+
+ 
+
+Who This Page Is For
+
+Curious visitors
+
+Check whether your browser looks human or bot, and see what makes the difference.
+
+	
+
+People getting blocked
+
+Find out why a site keeps flagging you as a bot and which signal is likely to blame.
+
+	
+
+Website owners
+
+See the signals bots and visitors expose, and learn how to stop spam bots without punishing real users.
+
+ 
+
+Stop Bots on Your Own Website
+
+The same signals this test reads are what CleanTalk uses to stop spam bots and fake sign-ups - invisibly, without forcing CAPTCHAs on your real visitors. Block bad bots and spam traffic across every form, comment and order, or check any IP or email against the CleanTalk block lists.
+
+Block Bot Traffic on Your Site
+Check an IP in Block Lists
+
+ 
+
+I Have Questions…
+Why does a website think I am a bot?
+
+Usually because of an automation flag, a headless or unusual browser environment, an IP on a spam block list, or behavior that looks scripted. The breakdown on this page shows which of these your browser trips.
+
+I am a real person but got a low score. Why?
+
+Privacy browsers, hardened settings, remote-desktop, some VPNs, and automation-testing extensions can trip bot signals even for humans. A low score means your setup looks unusual, not that you are actually a bot.
+
+Is this the same as reCAPTCHA?
+
+No. reCAPTCHA v3 returns a server-side score based partly on Google's own data. This tool inspects only the public signals your browser exposes, so you can see them yourself. If you want the reCAPTCHA version, use the CleanTalk reCAPTCHA v3 Score Test.
+
+Does a high score guarantee I am human?
+
+No. A Human Score is only one signal and should not be treated as a complete verdict by itself. A determined bot can spoof many browser signals.
+
+How do I stop bots on my own site?
+
+CleanTalk offers cloud Anti-Spam for forms, logins, and comments, plus IP and email block lists you can query directly. It works invisibly, so genuine users never see a CAPTCHA.
+
+ 
+
+Run the Test and See Your Human Score
+
+Read the signals your browser exposes, get a live Human Score, and see the full breakdown of exactly why some websites think you are a bot.
+
+Go to the Bot Test
+
+Trigger cookie opening
+
+ Our site uses cookies
+
+We use necessary cookies to operate our website and optional analytics cookies to understand how it is used. You can accept or reject optional cookies. Learn more in our Cookie Policy.
+
+Accept optional cookies
+Reject optional cookies
+Anti-Spam for websites
+Security for websites
+Online services
+Other services for websites
+Block Lists
+Company
+Social media
+Community
+Help
+Published on August 20, 2026.
+© CleanTalk Inc. All Rights Reserved.
+DE
+EN
+PT-BR
+RU
+Back to top
+
+Create account
+
+And stop spam in 60 seconds. You will get a key to activate the plugin, installation instructions and the anti-spam plugin.
+
+An Email for notifications
+Website address
+Password
+
+Suggest password
+I agree with the Privacy policy (DPF, CCPA/CPRA)
+Create account
+
+Already have an account? Login
+
+Join over 1,103,000 websites who get CleanTalk Anti-Spam
+
+Ultimate Anti-Spam Protection

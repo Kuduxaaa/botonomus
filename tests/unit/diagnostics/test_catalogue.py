@@ -190,3 +190,45 @@ def test_fingerprint_playground_reports_browser():
     r = verdict("fingerprint-playground", fixture("fingerprint-playground-flagged.txt"))
     assert r["details"]["browser_name"] == "Chrome"
     assert r["details"]["browser_major_version"] == "155"
+
+
+NEW_SITES = {
+    "apivoid": ("site-apivoid.txt", {"risk_score": 0, "tampered": False, "rules": 0}),
+    "donutbrowser": ("site-donutbrowser.txt", {"bot_score": 0, "flagged": 0}),
+    "cleantalk": ("site-cleantalk.txt", {"human_score": 100, "flagged": 0}),
+    "pixelscan-bot": ("site-pixelscan-bot.txt", {"statement": "human"}),
+    "recaptcha-google": ("site-recaptcha-google.txt", {"score": 0.9}),
+    "recaptcha-2captcha": ("site-recaptcha-2captcha.txt", {"score": 0.7}),
+    "turnstile-capskip": ("site-turnstile-capskip.txt", {"success": True}),
+}
+
+
+@pytest.mark.parametrize("site", sorted(NEW_SITES))
+def test_new_sites_pass_on_captured_stock_chrome(site):
+    name, details = NEW_SITES[site]
+    assert verdict(site, fixture(name)) == {"verdict": "pass", "details": details}
+
+
+@pytest.mark.parametrize(
+    ("site", "text"),
+    [
+        ("apivoid", "7\nRISK SCORE\n Likely Bot\n Tampered: Yes\n Triggered rules: 3"),
+        ("donutbrowser", "Looks automated\nBot score\n85 / 100\nChecks run\n11\nFlagged\n4"),
+        ("cleantalk", "Human Score\n20\nLooks Like a Bot\nSignals Flagged: 5"),
+        ("pixelscan-bot", "Bot Detection Test\nYou're Definitely a Bot\nRestart"),
+        ("recaptcha-google", 'Received response\n{\n  "success": true,\n  "score": 0.1,\n}'),
+        ("recaptcha-2captcha", 'Captcha is passed successfully!\n{\n  "score": 0.3,\n}'),
+        ("turnstile-capskip", "VERIFICATION RESPONSE\nSuccess\nfalse\nAction"),
+    ],
+)
+def test_new_sites_fail_when_the_page_says_so(site, text):
+    assert verdict(site, text)["verdict"] == "fail"
+
+
+def test_2captcha_ignores_the_php_sample_score():
+    sample = "Check\n$data = array(\n        'score'   => 0.9,\n);"
+    assert verdict("recaptcha-2captcha", sample)["verdict"] == "unknown"
+
+
+def test_2captcha_site_clicks_check():
+    assert SITES["recaptcha-2captcha"].click_button == "Check"

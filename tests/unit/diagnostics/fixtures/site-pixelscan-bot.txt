@@ -1,0 +1,419 @@
+Products
+Resources
+Special Offers
+Company
+Join Pixelscan Community
+Back
+Fingerprint Check
+
+Verify your browser fingerprint
+
+CHECKERS
+IP Address Check
+
+See your IP details
+
+IP Blacklist Check
+
+Reviewing blacklist agent
+
+Bot Verification
+
+Verify that a user is a human
+
+VPN Check
+
+Test and see the expected security
+
+TOOLS
+DNS Leak Test
+
+Securing your DNS tunnel
+
+WebRTC Leak Test
+
+Securing your WebRTC tunnel
+
+Location Info
+
+Provide accurate location
+
+Cookie Converter
+
+Convert Cookies into JSON
+
+APPS
+Proxy Checker
+
+Verify proxy quality
+
+Android Checker
+
+Check your Android device
+
+Back
+RESOURCES
+Pixelscan Blog
+
+400+ useful articles
+
+Pixelscan Glossary
+
+The detection dictionary
+
+GUIDES
+Ultimate Antidetect Guide
+Proxy Best Practices
+BEST PROXIES
+Best Proxy Providers
+Best Residential Proxies
+Best Mobile Proxies
+Best Telegram Proxies
+Best Chinese Proxies
+RECOMMENDED TOOLS
+Best Anti-Detect Browsers
+Best Cloud Phones Providers
+Best Tools To Avoid IP Ban
+Best Captcha Solvers
+Phone Farming
+Back
+Pixelscan Partners
+
+Get exclusive discounts from top services
+
+BEST DEALS
+50% OFF Multilogin
+
+Leading multi-account platform
+
+-35% Off NodeMaven
+
+Stable and undetectable proxies
+
+Back
+COMPANY INFO
+About Pixelscan
+Contact Us
+Bot Detection Test
+Test your browser for bot detection
+Start Check
+Running bot detection...
+You're Definitely a Human
+Restart
+Bot Behavior Detected
+Restart
+Navigator
+Clear
+73 parameters
+Webdriver
+Clear
+37 parameters
+CDP
+Clear
+2 parameters
+User Agent
+Clear
+5 parameters
+Plugins
+Clear
+Languages
+Clear
+VendorSub
+Clear
+ProductSub
+Clear
+Vendor
+Clear
+MaxTouchPoints
+Clear
+Scheduling
+Clear
+UserActivation
+Clear
+Geolocation
+Clear
+DoNotTrack
+Clear
+WebkitTemporaryStorage
+Clear
+WebkitPersistentStorage
+Clear
+WindowControlsOverlay
+Clear
+HardwareConcurrency
+Clear
+CookieEnabled
+Clear
+AppCodeName
+Clear
+AppName
+Clear
+AppVersion
+Clear
+Platform
+Clear
+Product
+Clear
+UserAgent
+Clear
+Language
+Clear
+Languages
+Clear
+OnLine
+Clear
+Webdriver
+Clear
+Plugins
+Clear
+MimeTypes
+Clear
+PdfViewerEnabled
+Clear
+Connection
+Clear
+GetGamepads
+Clear
+JavaEnabled
+Clear
+SendBeacon
+Clear
+Vibrate
+Clear
+Constructor
+Clear
+CpuPerformance
+Clear
+DeprecatedRunAdAuctionEnforcesKAnonymity
+Clear
+ProtectedAudience
+Clear
+Bluetooth
+Clear
+Clipboard
+Clear
+Credentials
+Clear
+Keyboard
+Clear
+Managed
+Clear
+MediaDevices
+Clear
+ServiceWorker
+Clear
+VirtualKeyboard
+Clear
+WakeLock
+Clear
+DeviceMemory
+Clear
+UserAgentData
+Clear
+Locks
+Clear
+Storage
+Clear
+Gpu
+Clear
+Login
+Clear
+Ink
+Clear
+MediaCapabilities
+Clear
+Permissions
+Clear
+DevicePosture
+Clear
+Hid
+Clear
+MediaSession
+Clear
+Presentation
+Clear
+Serial
+Clear
+Usb
+Clear
+Xr
+Clear
+StorageBuckets
+Clear
+AdAuctionComponents
+Clear
+RunAdAuction
+Clear
+CanLoadAdAuctionFencedFrame
+Clear
+CanShare
+Clear
+Share
+Clear
+ClearAppBadge
+Clear
+GetBattery
+Clear
+GetUserMedia
+Clear
+RequestMIDIAccess
+Clear
+RequestMediaKeySystemAccess
+Clear
+SetAppBadge
+Clear
+WebkitGetUserMedia
+Clear
+ClearOriginJoinedAdInterestGroups
+Clear
+CreateAuctionNonce
+Clear
+JoinAdInterestGroup
+Clear
+LeaveAdInterestGroup
+Clear
+UpdateAdInterestGroups
+Clear
+DeprecatedReplaceInURN
+Clear
+DeprecatedURNToURL
+Clear
+GetInstalledRelatedApps
+Clear
+GetInterestGroupAdAuctionData
+Clear
+RegisterProtocolHandler
+Clear
+UnregisterProtocolHandler
+Clear
+NavigatorWebdriver
+Clear
+SeleniumArtifacts
+Clear
+ChromeDriverSignature
+Clear
+ElectronSignature
+Clear
+PhantomJSSignature
+Clear
+AwesomiumSignature
+Clear
+CefSignature
+Clear
+FminerAgent
+Clear
+CoachesAgent
+Clear
+BornAgent
+Clear
+RhinoAgent
+Clear
+PhantomasAgent
+Clear
+HeadlessChrome
+Clear
+TamperedFunctions
+Clear
+UnusualWindowProperties
+Clear
+HeadlessChromeProperties
+Clear
+AdvancedBotDetection
+Clear
+CDP
+Clear
+IsDevtoolOpen
+Clear
+User Agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+Browser
+Chrome 203.0.113.7
+Operating System
+Windows 10
+Device
+undefined - undefined - undefined
+CPU
+amd64
+Check Out Other Tools
+Fingerprint Check
+
+Verify your browser fingerprint
+
+IP Address Check
+
+See your IP details
+
+VPN Check
+
+Test and see the expected security
+
+IP Blacklist Check
+
+Reviewing blacklist agent
+
+Frequently Asked Questions
+What is Bot Detection?
+
+A bot detection test determines whether your browser profile or automation setup behaves like a real user or gets flagged as a bot. Pixelscan analyzes fingerprints, behavior patterns, and connection details to reveal how detection systems might see your setup.
+
+Human Detected means your environment looks natural, and no suspicious activity has been flagged.
+Bot Detected means your setup or automation workflow might be considered automated or bot-like by the target platforms you're working with. This often happens when the configuration is off—such as running in headless mode, using default settings, or combining mismatched fingerprints and proxies.
+Which bot detection tools does Pixelscan use?
+
+Pixelscan uses advanced detection methods similar to those used by major bot detection tools and platforms. It analyzes fingerprints, proxy behavior, and browser signals—helping you test your setup before going live and avoid detection on target websites.
+
+Can I use this tool to check if my browser profile or scraping setup looks like a bot?
+
+Yes. Pixelscan is designed for automation users who need to test how their setup will be seen by detection systems. You can use it to check:
+
+Antidetect browser profiles (e.g., Multilogin, GoLogin)
+Scraping frameworks (e.g., Puppeteer, Playwright, Selenium)
+Custom automation scripts with fingerprint spoofing
+Proxy-based configurations for traffic rotation or IP masking
+
+Pixelscan analyzes fingerprint signals like cookies, WebGL, and audio context to reveal whether your setup might be flagged as a bot by target platforms.
+
+How can I run a bot test online?
+
+Just open Pixelscan in your browser and run the test—no installation needed. You’ll get instant feedback on how your setup is classified, along with a detailed report to help you understand and improve your environment.
+
+Contact us for collaboration
+partners@pixelscan.net
+Checkers
+Fingerprint
+IP Check
+IP Blacklist Check
+Bot Checker
+VPN Check
+Tools
+DNS Leak Test
+WebRTC Leak Test
+Location
+Cookie Converter
+Pixelscan
+Blog
+Partners
+About Pixelscan
+Telegram Community
+Best proxies
+Best Proxy Providers
+Best Residential Proxies
+Best Mobile Proxies
+Best Telegram Proxies
+Best Chinese Proxies
+Proxies by Location
+Best Asia Proxies
+Best India Proxies
+Best Brazil Proxies
+Best Chinese Proxies
+Best German Proxies
+Best Japan Proxies
+Best Czech Proxies
+Best Tools
+Best Antidetect Browsers
+Best Cloud Phones Providers
+Best Tools To Avoid IP Ban
+Best Captcha Solvers
+Phone Farming
+© 2026 Pixelscan.net. All rights reserved.
+Privacy Policy

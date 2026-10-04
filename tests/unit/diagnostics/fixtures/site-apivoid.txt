@@ -1,0 +1,413 @@
+Products
+Tools 
+DNS Lookup Tool
+IP Reputation Check
+Domain Reputation Check
+URL Reputation Check
+Domain Age Check
+Domain Information
+Website Trust Score
+Email Reputation Check
+HTTP Requests Tracker
+Web Page Screenshot
+SSL Certificate Check
+Parked Domain Check
+View All Tools
+Use Cases 
+Enhance SIEM Data
+Cybersecurity Automation
+Risk Assessment
+Fraud Prevention
+IoC Validation
+Security Operation Center
+Stop Fake Accounts
+Threat Detection
+Threat Enrichment
+Block Disposable Emails
+VPN Detection
+Incident Response
+Visual Regression Testing
+Customer Onboarding
+Prevent Free-Trial Abuse
+CRM Data Integrity
+Pricing
+Resources 
+FAQs
+API Documentation
+Code Examples
+Browser Extensions
+Windows Software
+Changelog
+Service Status
+Newsletter
+Company 
+About Us
+Contacts
+Book a Call
+Log In
+Sign Up
+Bot Detection Test
+
+Test your browser for bot-like signals. This experimental tool analyzes your browser fingerprint and detects anomalies such as headless environments, spoofed user agents, browser tampering, and potential data leaks. Get an instant estimated risk score from 0 (likely human) to 100 (likely bot). Check out IP Reputation API and Email Verify API to enhance bot and abuse detection.
+
+ HTML Version
+ JSON Output
+0
+RISK SCORE
+ Likely Human
+ Tampered: No
+ Triggered rules: 0
+ Chrome (Blink 203.0.113.7)
+ Browser ID: c2c1a5a9-a15d-442f-afc9-1795a09e6d69
+DETECTION SUMMARY
+Network & Request
+No anomalies found
+Passed
+Hardware & Display
+No anomalies found
+Passed
+Browser & Engine
+No anomalies found
+Passed
+Browser Integrity
+No anomalies found
+Passed
+COLLECTED BROWSER DATA
+BROWSER & ENGINE
+Detected Browser
+Chrome
+Rendering Engine
+Blink 203.0.113.7
+Engine Confidence
+High
+JavaScript Engine
+V8 (High confidence)
+Mobile Device
+No
+Virtual Machine
+Not detected
+Inferred OS
+Windows
+Inferred Browser
+Chromium-based
+REQUEST HEADERS
+Headers Verified
+Yes
+User-Agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+Accept-Language
+en-US,en;q=0.9
+Sec-CH-UA
+"Chromium";v="154", "Google Chrome";v="154", "Not A(Brand";v="99"
+Sec-CH-UA-Platform
+"Windows"
+Sec-CH-UA-Mobile
+?0
+Sec-CH-UA-Full-Version-List
+–
+Sec-CH-UA-Arch / Bitness
+– / –
+SCREEN & WINDOW
+Screen Resolution
+1920 × 1080
+Available Screen
+1920 × 1032
+Color / Pixel Depth
+24 / 24
+Device Pixel Ratio
+1
+Orientation
+landscape-primary
+Outer Window
+945 × 1012
+Inner Viewport
+929 × 917
+Fullscreen
+No
+TIME & LOCALE
+Timezone
+Europe/Berlin
+Timezone Offset
+UTC+2
+System Time
+10/4/2026, 4:22:32 PM
+Locale
+en-US
+Language
+en-US
+Languages
+en-US, en
+Intl Locale / Calendar
+en-US / gregory
+NAVIGATOR
+User Agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+Platform
+Win32
+Vendor
+Google Inc.
+Hardware Concurrency
+16
+Device Memory
+32 GB
+Max Touch Points
+0
+WebDriver
+No
+Cookies Enabled
+Yes
+Do Not Track
+Unspecified
+Plugins
+5
+PDF Viewer
+Yes
+CLIENT HINTS
+Brands
+Chromium 154, Google Chrome 154, Not A(Brand 99
+Mobile
+No
+Platform / Version
+Windows / 19.0.0
+Architecture / Bitness
+x86 / 64
+Model
+–
+Full Version List
+Chromium 154.0.8037.98, Google Chrome 154.0.8037.98, Not A(Brand 203.0.113.7
+WoW64
+Yes
+GRAPHICS
+WebGL
+Supported (WebGL 2 available)
+WebGL Vendor
+WebKit
+WebGL Renderer
+WebKit WebGL
+Unmasked Vendor
+Google Inc. (Intel)
+Unmasked Renderer
+ANGLE (Intel, Intel(R) UHD Graphics (0x0000A78B) Direct3D11 vs_5_0 ps_5_0, D3D11)
+Max Texture Size
+16384
+WebGPU
+Adapter: intel gen-12lp
+Canvas 2D
+Supported
+Canvas Signature
+132973aac0a04969
+CROSS-REALM PROBES
+Dedicated Worker
+Executed in 222 ms
+Worker Headers Verified
+Yes
+Worker User Agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+Worker Platform
+Win32
+Worker Hardware Concurrency
+16
+Shared Worker
+Executed in 368 ms
+Iframe Realm
+Executed
+Iframe User Agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+WebAssembly (page / worker)
+Supported / Supported
+APIS & FEATURES
+Feature Probes Present
+93 / 94
+WebAssembly
+Supported (16 of 16 feature probes)
+Web Audio API
+Yes
+Speech Synthesis
+Yes (22 voices)
+WebRTC
+Yes
+Notification API
+Yes (default)
+Bluetooth API
+Yes
+Battery API
+98%, charging
+Storage APIs
+indexedDB, localStorage, sessionStorage
+Supported Codecs
+h264, h265, aac, mp3, vp8, vp9, av1, opus, vorbis, flac, ogg
+Keyboard Layout Map
+48 keys
+Pointer / Hover
+fine / hover
+Scrollbar Size
+15 × 15 px
+Connection
+4g, 1.45 Mbps
+MEDIA & STORAGE
+Media Devices
+3
+Microphone / Camera / Speaker
+Yes / Yes / Yes
+Device Labels Visible
+No
+Storage Quota
+10.00 GB
+Storage Usage
+0.00 MB
+FONTS & AUDIO
+Detected Fonts
+55
+Font Sample
+Arial, Arial Black, Arial Narrow, Book Antiqua, Bookman Old Style, Calibri, Cambria, Cambria Math, Candara, Century, Century Gothic, Comic Sans MS, …
+Font Signature
+ff288090ba99a13c
+Audio Signature
+f84e0f09bb6de61b
+NETWORK & IP
+IP Address
+203.0.113.7
+Location
+Berlin, Berlin, Germany
+ISP
+Example Telecom GmbH
+ASN
+AS64496 Example Telecom GmbH
+Network Type
+business
+Reverse DNS
+–
+Anonymity
+None detected
+Blacklists
+0 / 79 (0%)
+IP Risk Score
+0
+WebRTC Public IPs
+203.0.113.7
+FINGERPRINT COMPONENTS
+gpu (stable)
+7f7df4700ad1190c
+features (stable)
+de612d9bbda8d67b
+device (stable)
+bc3854a8749e1399
+screen (stable)
+7f34e10f5467db30
+fonts (stable)
+ff288090ba99a13c
+canvas (stable)
+132973aac0a04969
+audio (stable)
+f84e0f09bb6de61b
+wasm (stable)
+3720b2c41f96912c
+localeTimezone (volatile)
+7b3d06ae6f582393
+mediaQueries (volatile)
+ef67147cf848ce51
+mediaDevices (volatile)
+f3726f3a965f9eb5
+
+BOT DETECTION TEST FAQ
+
+Have questions about this bot detection test? Find answers here
+
+Learn how browser fingerprinting works, what signals are analyzed, and how the risk score is calculated to detect bots and headless browsers.
+
+What is browser fingerprinting and how does it work?
+
+Browser fingerprinting is a technique that collects various attributes exposed by your browser to create a unique identifier for your device. This includes data such as screen resolution, installed plugins, timezone, language settings, WebGL renderer details, user agent string, and many other signals. When combined, these attributes form a "fingerprint" that is often unique enough to distinguish one browser from another, even without cookies or login sessions. This test uses fingerprinting to assess whether a visitor appears to be a real human user or a potential automated bot.
+
+How does this bot detection test identify bots?
+
+The page collects dozens of browser signals and sends them to our server, where the analysis looks for inconsistencies commonly found in automated environments. It checks for known headless browser indicators (WebGL, canvas, screen dimensions, etc.), spoofed user agents, automation properties left by tools like Selenium or Puppeteer, cross-realm mismatches between the page, web workers and iframes, and missing feature APIs that real browsers always expose. Each suspicious signal triggers a rule that contributes points to a cumulative risk score from 0 to 100, where higher scores indicate a greater likelihood of bot activity. The result shows how many rules were triggered and which broad area they belong to (network and request, hardware and display, browser and engine, browser integrity); the individual rules and their weights are intentionally kept server-side so they cannot be trivially patched by bot authors.
+
+Is this client-side bot detection script enough to block bots?
+
+This script provides a solid first layer of defense focused on browser identification and fingerprinting, but effective bot protection typically requires a multi-layered approach. Browser fingerprinting can detect headless browsers, spoofed user agents, and automation tools, but sophisticated bots may evolve to bypass client-side checks alone. For comprehensive protection, we recommend combining browser fingerprinting with additional layers such as IP reputation analysis to identify known malicious and suspicious IP addresses, geolocation and proxy detection to flag suspicious traffic origins, email reputation checks to verify user identities during sign-ups, and user behavior analysis to detect non-human interaction patterns, multiple accounts and historical suspicious behaviors. Each layer catches threats that others might miss, and together they create a much stronger defense against automated abuse.
+
+How accurate is bot detection and can it produce false positives?
+
+Bot detection based on browser signals is inherently heuristic-based, which means false positives are possible in certain edge cases. For example, users with unusual browser configurations, privacy-focused extensions, or older browser versions may trigger some signals. Similarly, browsers running inside virtual machines or with strict privacy settings may appear slightly suspicious. The risk score is designed to be conservative: a real human user on a standard browser should consistently score 0.
+
+What data points are collected during the test?
+
+The test collects a wide range of browser-exposed attributes organized into several categories: screen properties (resolution, color depth, pixel ratio), time and locale settings, HTTP request headers (user agent, accept-language, client hints), navigator properties (platform, language, plugins, hardware concurrency, device memory), browser engine signals (engine type, version, and JavaScript engine characteristics), the same properties observed from a web worker and an iframe, WebRTC capabilities, WebGL and WebGPU renderer details, WebAssembly feature support, and much more.
+
+What does it mean when my browser is marked as "tampered"?
+
+A "tampered" browser means the test detected inconsistencies between what your browser claims to be and what it actually supports. For example, if your user agent says you are running Chrome but the browser lacks Chrome-specific features like the window.chrome object or other Chrome-specific properties, it suggests the user agent may have been spoofed or altered in some way.
+
+Is my personal data stored or shared with third parties?
+
+The signals collected by the page (browser properties, rendering hashes and request headers) are sent to our server to compute the risk score and are processed primarily in memory; they may be stored internally in an anonymized form to help improve the bot detection, and never shared with third-party. The technical fingerprint hashes shown on the page are derived values and do not contain PII. Your IP address is looked up through our own IP Reputation API to enrich the result with reputation, geolocation and anonymity data, and the lookup result is cached for a short time to avoid repeated queries. The only external network request made by the browser itself is to a public STUN server (for WebRTC IP detection).
+
+Why does my browser appear as likely bot or risky?
+
+A high risk score can result from several factors. Common causes include: using a browser with strict privacy settings that disable APIs like WebGL or Web Audio, running inside a virtual machine with limited device memory, having browser extensions that modify the user agent string or block JavaScript APIs, using an outdated browser that lacks modern features the test checks for, connecting from a hosting, proxy or VPN IP address, or accessing the page through an automated testing framework like Selenium. You can check the detection summary below the score to see which areas contributed to your result and how many rules were triggered in each. Please note that this is an experimental test.
+
+Does this test perform IP address analysis?
+
+Yes. Together with the browser signals, the server analyzes the IP address of the connection using our IP Reputation API. This adds geolocation, ISP and ASN details, anonymity detection (proxy, VPN, Tor, hosting and relay services), blacklist detections, and verification of search engine crawlers. Connections coming from anonymizing or hosting networks contribute to the risk score. The browser also connects to an external and public STUN server to perform a quick WebRTC analysis.
+
+What does it mean that this bot detection is experimental?
+
+The tool was created to test bot detection by primarily checking browser properties and other signals, and is intended for testing purposes only. While the detection methods used are based on well-established fingerprinting techniques, the specific thresholds, risk scoring weights, and signal combinations are continuously being refined. Browser vendors regularly update their APIs and behaviors, which can affect detection accuracy over time. The tool should be used as one data point among many in a comprehensive bot detection strategy, rather than as a definitive classification system. We encourage users to contact us and provide feedback to help improve detection accuracy.
+
+Start using our API services in just a few minutes
+
+Create your account, activate your free trial and make your first API call. No credit card and no commitment required.
+
+Get started now 
+
+Powerful threat intelligence APIs to integrate in your IT and Security Operation Center stack.
+
+Popular APIs
+
+IP Reputation API
+Domain Reputation API
+Site Trustworthiness API
+Domain Age API
+URL Reputation API
+Parked Domain API
+SPF Validation API
+SSL Info API
+
+Use Cases
+
+Threat Data Enrichment
+Risk Assessment
+IoC Validation
+SIEM Data Enrichment
+Cybersecurity Automation
+Prevent Free-Trial Abuse
+Incident Response
+Security Operation Center
+Fraud Prevention
+Threat Detection
+
+Resources
+
+FAQs
+API Documentation
+Code Examples
+Newsletter
+Changelog
+Service Status
+Browser Extensions
+Windows Software
+Online Tools
+
+Company
+
+About Us
+Contact Support
+Brand Assets
+Security & Compliance
+Subprocessors
+Service Level Agreement
+Terms of Service
+Privacy Policy
+
+© 2019-2026 NoVirusThanks Company Srl

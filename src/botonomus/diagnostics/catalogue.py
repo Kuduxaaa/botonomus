@@ -189,6 +189,69 @@ _TURNSTILE = extractor(
     challenge_blocks=False,
 )
 
+_APIVOID = extractor("""
+  const risk = /(\\d+)\\s*\\n\\s*RISK SCORE/i.exec(text);
+  const tampered = /Tampered:\\s*(Yes|No)/i.exec(text);
+  if (!risk || !tampered) return {verdict: 'unknown', details: {}};
+  const rules = /Triggered rules:\\s*(\\d+)/i.exec(text);
+  const details = {
+    risk_score: parseInt(risk[1], 10),
+    tampered: tampered[1].toLowerCase() === 'yes',
+    rules: rules ? parseInt(rules[1], 10) : null,
+  };
+  if (details.tampered || details.risk_score >= 70) return {verdict: 'fail', details};
+  return {verdict: details.risk_score <= 30 ? 'pass' : 'unknown', details};
+""")
+
+_DONUTBROWSER = extractor("""
+  const score = /Bot score\\s*(\\d+)\\s*\\/\\s*100/i.exec(text);
+  if (!score) return {verdict: 'unknown', details: {}};
+  const flagged = /Flagged\\s*(\\d+)/i.exec(text);
+  const details = {
+    bot_score: parseInt(score[1], 10), flagged: flagged ? parseInt(flagged[1], 10) : null,
+  };
+  if (details.bot_score >= 50) return {verdict: 'fail', details};
+  return {verdict: details.bot_score <= 20 ? 'pass' : 'unknown', details};
+""")
+
+_CLEANTALK = extractor("""
+  const score = /Human Score\\s*(\\d+)/i.exec(text);
+  if (!score) return {verdict: 'unknown', details: {}};
+  const flagged = /Signals Flagged:\\s*(\\d+)/i.exec(text);
+  const details = {
+    human_score: parseInt(score[1], 10), flagged: flagged ? parseInt(flagged[1], 10) : null,
+  };
+  if (details.human_score < 50) return {verdict: 'fail', details};
+  return {verdict: details.human_score >= 80 ? 'pass' : 'unknown', details};
+""")
+
+_PIXELSCAN_BOT = extractor("""
+  if (/definitely a human/i.test(text)) return {verdict: 'pass', details: {statement: 'human'}};
+  if (/(definitely|probably|likely) a bot|bot detected/i.test(text))
+    return {verdict: 'fail', details: {statement: 'bot'}};
+  return {verdict: 'unknown', details: {}};
+""")
+
+# Both demos print the verification JSON ("score": 0.9). The 2captcha page also shows a
+# PHP sample ('score' => 0.9), which the double-quoted JSON pattern does not match.
+_RECAPTCHA_JSON = extractor("""
+  const match = /"score":\\s*([01](?:\\.\\d+)?)/.exec(text);
+  if (!match) return {verdict: 'unknown', details: {}};
+  const score = parseFloat(match[1]);
+  const verdict = score >= 0.7 ? 'pass' : score <= 0.3 ? 'fail' : 'unknown';
+  return {verdict, details: {score}};
+""")
+
+_TURNSTILE_CAPSKIP = extractor(
+    """
+  const match = /VERIFICATION RESPONSE\\s*Success\\s*(true|false)/i.exec(text);
+  if (!match) return {verdict: 'unknown', details: {}};
+  const success = match[1].toLowerCase() === 'true';
+  return {verdict: success ? 'pass' : 'fail', details: {success}};
+""",
+    challenge_blocks=False,
+)
+
 _BODY_TEXT = "(document.body ? document.body.innerText : '')"
 
 CATALOGUE: Final[tuple[DetectionSite, ...]] = (
@@ -281,6 +344,60 @@ CATALOGUE: Final[tuple[DetectionSite, ...]] = (
         settle=15.0,
         extractor=_TURNSTILE,
         description="Cloudflare Turnstile demo",
+    ),
+    DetectionSite(
+        "apivoid",
+        "https://www.apivoid.com/tools/bot-detection-test/",
+        settle=15.0,
+        extractor=_APIVOID,
+        description="Server-side risk score and tampering verdict (pass <= 30, fail >= 70)",
+    ),
+    DetectionSite(
+        "donutbrowser",
+        "https://donutbrowser.com/tools/bot-detection/",
+        settle=10.0,
+        extractor=_DONUTBROWSER,
+        description="Automation and spoofing checks, bot score out of 100",
+    ),
+    DetectionSite(
+        "cleantalk",
+        "https://cleantalk.org/am-i-a-bot",
+        settle=10.0,
+        extractor=_CLEANTALK,
+        description="Human score out of 100 (pass >= 80, fail < 50)",
+    ),
+    DetectionSite(
+        "pixelscan-bot",
+        "https://pixelscan.net/bot-check",
+        settle=15.0,
+        extractor=_PIXELSCAN_BOT,
+        description="Bot check: navigator, webdriver, CDP and user-agent parameters",
+    ),
+    DetectionSite(
+        "recaptcha-google",
+        "https://recaptcha-demo.appspot.com/recaptcha-v3-request-scores.php",
+        ready=f'/"score"/.test({_BODY_TEXT})',
+        ready_timeout=40.0,
+        settle=1.0,
+        extractor=_RECAPTCHA_JSON,
+        description="Google's reCAPTCHA v3 demo score (pass >= 0.7, fail <= 0.3)",
+    ),
+    DetectionSite(
+        "recaptcha-2captcha",
+        "https://2captcha.com/demo/recaptcha-v3",
+        settle=2.0,
+        click_button="Check",
+        ready=f'/"score":/.test({_BODY_TEXT})',
+        ready_timeout=40.0,
+        extractor=_RECAPTCHA_JSON,
+        description="reCAPTCHA v3 demo score after clicking Check",
+    ),
+    DetectionSite(
+        "turnstile-capskip",
+        "https://capskip.com/captcha-demo/cloudflare-turnstile/",
+        settle=15.0,
+        extractor=_TURNSTILE_CAPSKIP,
+        description="Cloudflare Turnstile widget verification",
     ),
 )
 """Built-in public detection sites, in default run order."""

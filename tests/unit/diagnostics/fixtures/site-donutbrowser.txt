@@ -1,0 +1,86 @@
+Home
+Use Cases
+Tools
+Pricing
+Docs
+Blog
+★
+3,957
+Get Started
+Home
+/
+Tools
+/
+Bot Detection Test
+Does your browser look like a bot?
+
+Anti-bot systems look for tell-tale signs of automation and spoofing. This test runs the same kinds of checks locally and gives you a clear verdict. If your browser gets flagged, it shows exactly what gave it away.
+
+Looks like a real browser
+
+No automation or headless markers were detected. To anti-bot systems, this browser looks like a genuine human user.
+
+Run again
+Runs in your browser - nothing is stored
+Bot score
+0 / 100
+0 = human · 100 = automated
+Checks run
+11
+Flagged
+0
+01
+How bot detection works
+
+Detection scripts probe many small signals that differ between a real user's browser and an automated or headless one, then cross-check them for internal consistency. A single contradiction can be enough to get a session challenged or blocked.
+
+02
+Passing detection
+
+Evading these checks means every signal has to be internally consistent and look like real hardware - not randomized or half-patched. That consistency, per profile, is what Donut Browser is built to provide.
+
+Every profile its own identity
+
+Donut Browser is a free, open-source anti-detect browser. Each profile gets its own consistent fingerprint, IP and proxy, so the signals on these tools can't tie your accounts together or back to you.
+
+Download Donut Browser
+Star on GitHub
+Questions, answered.
+01
+What does this bot test check?
+It runs the same kinds of client-side checks anti-bot systems use, looking for automation markers, headless traits, spoofing traces and internal inconsistencies. If your browser is flagged, the exact signals that triggered are listed with an explanation of each.
+02
+Why does my normal browser pass?
+03
+Can bot detection be bypassed?
+Donut Browser
+
+Open source anti-detect browser with a generous free plan. Download browsers and create unlimited local profiles with complete privacy.
+
+RSS
+PROJECT
+Home
+Use Cases
+Open Source
+Pricing
+Docs
+RESOURCES
+Blog
+Tools
+Alternatives
+Comparisons
+Discussions
+Changelog
+Donut's Mission
+About
+Contact
+SOCIALS
+GitHub
+Telegram
+LEGAL
+Privacy Policy
+Terms of Service
+License
+ASK AI ABOUT DONUT BROWSER
+© 2026 Donut Browser · AGPL-3.0 License · All rights reserved
+Made with ❤️, hosted in 🇪🇺
