@@ -1,0 +1,105 @@
+site_name: Botonomus
+site_description: Async stealth browser automation on real Chrome, with a native CDP driver and C++ level personas.
+site_url: https://kuduxaaa.github.io/botonomus/
+repo_name: Kuduxaaa/botonomus
+repo_url: https://github.com/Kuduxaaa/botonomus
+copyright: Copyright &copy; 2026 Botonomus contributors. SDK under the MIT licence.
+
+# docs/superpowers holds internal design notes; it is not part of the public site.
+exclude_docs: |
+  superpowers/
+
+theme:
+  name: material
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+nav:
+  - Home: README.md
+  - Getting started: getting-started.md
+  - Guides:
+      - Concurrency: guides/concurrency.md
+      - Profiles: guides/profiles.md
+      - Proxies and geo: guides/proxies-and-geo.md
+      - Personas: guides/personas.md
+      - Human-like input: guides/humanize.md
+      - Detection runner: guides/detection.md
+      - Measuring: guides/measuring.md
+      - Command line: guides/cli.md
+      - Linux servers: guides/linux.md
+      - Troubleshooting on Windows: guides/troubleshooting-windows.md
+  - API reference:
+      - Overview: reference/index.md
+      - botonomus: reference/botonomus.md
+      - botonomus.config: reference/config.md
+      - botonomus.core: reference/core.md
+      - botonomus.errors: reference/errors.md
+      - botonomus.browser: reference/browser.md
+      - botonomus.drivers: reference/drivers.md
+      - botonomus.cdp: reference/cdp.md
+      - botonomus.fingerprint: reference/fingerprint.md
+      - botonomus.network: reference/network.md
+      - botonomus.human: reference/human.md
+      - botonomus.profiles: reference/profiles.md
+      - botonomus.diagnostics: reference/diagnostics.md
+      - botonomus.cli: reference/cli.md
+  - Changelog: changelog.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            docstring_options:
+              ignore_init_summary: true
+            merge_init_into_class: true
+            show_root_heading: true
+            show_root_full_path: true
+            show_source: false
+            show_signature_annotations: true
+            separate_signature: true
+            signature_crossrefs: true
+            members_order: source
+            filters: ["!^_"]
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            heading_level: 2

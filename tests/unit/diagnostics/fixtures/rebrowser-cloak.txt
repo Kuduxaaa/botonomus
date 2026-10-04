@@ -1,0 +1,36 @@
+🕵️ rebrowser-bot-detector
+Modern tests to detect automated browser behavior. See github repo for more details. How to properly run the tests?
+Test name	Time since load	Notes
+⚪️ dummyFn	0.6 ms	Call window.dummyFn() to test if you can access main world objects.
+⚪️ sourceUrlLeak	2.9 ms	Call document.getElementById('detections-json') to test sourceUrl leak.
+⚪️ mainWorldExecution	3.6 ms	Call document.getElementsByClassName('div') to trigger this test. If you did and the test wasn't triggered, then you're running it in an isolated world, which is safe and not detectable.
+🟢 runtimeEnableLeak	4.4 ms	No leak detected.
+⚪️ exposeFunctionLeak	5.6 ms	No window.exposedFn. Use page.exposeFunction to trigger this test.
+🟢 navigatorWebdriver	6 ms	No webdriver presented.
+🟢 viewport	24.6 ms	Viewport is different from default values used in automation libraries.
+{
+  "width": 929,
+  "height": 883
+}
+
+🟢 pwInitScripts	25.3 ms	No window.__pwInitScripts detected.
+🟢 bypassCsp	33.4 ms	Content Security Policy (CSP) is enabled, it's expected behavior.
+🟢 useragent	534.6 ms	Google Chrome version is not higher than the latest stable release version which is fine.
+{
+  "useragentVersionItems": [
+    {
+      "brand": "Chromium",
+      "version": "146.0.7680.177"
+    },
+    {
+      "brand": "Google Chrome",
+      "version": "146.0.7680.177"
+    }
+  ],
+  "latestStableRelease": {
+    "version": "154.0.8037.98",
+    "date": "2026-10-02T00:56:08.341Z"
+  }
+}
+JSON
+Sponsored by rebrowser.net — the ultimate stealth browser and scraping solution fueled by AI.

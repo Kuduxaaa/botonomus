@@ -1,0 +1,21 @@
+# Interleaved A/B comparison of browser configurations.
+#   botonomus experiment examples/experiment.toml --proxies proxies.txt --seed 1
+# Contacts third-party sites; results describe this machine, network and date only.
+
+sites = ["fingerprint", "fingerprint-playground", "creepjs", "pixelscan"]
+runs = 10
+
+[arms.chrome]
+browser = "chrome"
+persona = "off"
+
+[arms.bn]
+executable = 'C:\path\to\Botonomus Chromium\chrome.exe'
+browser = "botonomus"
+persona = "off"
+
+[arms.bn-persona]
+executable = 'C:\path\to\Botonomus Chromium\chrome.exe'
+browser = "botonomus"
+persona = "auto"
+geoip = true

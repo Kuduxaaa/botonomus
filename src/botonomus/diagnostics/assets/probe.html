@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Botonomus browser observations</title>
+<style>body{font:16px system-ui;max-width:900px;margin:3rem auto;padding:0 1rem}pre{white-space:pre-wrap;background:#eee;padding:1rem}button{padding:.7rem}</style>
+<h1>Browser observations</h1>
+<p>Run this same page in a manually opened browser and in Botonomus. A matching result is not proof of undetectability.</p>
+<button id="download" disabled>Download snapshot</button><pre id="result">Collecting…</pre>
+<script>
+// A CDP client with the Runtime domain enabled serializes console arguments,
+// which invokes this getter. Ordinary browsers leave it untouched.
+let consoleSerialized = false;
+const consoleProbe = new Error();
+Object.defineProperty(consoleProbe, 'stack', {get() { consoleSerialized = true; return ''; }});
+console.debug(consoleProbe);
+
+function webglInfo() {
+  const gl = document.createElement('canvas').getContext('webgl');
+  if (!gl) return null;
+  const debug = gl.getExtension('WEBGL_debug_renderer_info');
+  return debug ? {vendor: gl.getParameter(debug.UNMASKED_VENDOR_WEBGL),
+                  renderer: gl.getParameter(debug.UNMASKED_RENDERER_WEBGL)} : {vendor: null, renderer: null};
+}
+
+async function notificationConsistency() {
+  if (!navigator.permissions || typeof Notification === 'undefined') return null;
+  try {
+    const state = (await navigator.permissions.query({name: 'notifications'})).state;
+    // Historical headless signal: Notification.permission 'denied' with query state 'prompt'.
+    return {permission: Notification.permission, query: state};
+  } catch (error) { return {error: String(error.name)}; }
+}
+
+async function collectSnapshot() {
+  let version = navigator.userAgent.match(/(?:Chrome|Firefox)\/([\d.]+)/)?.[1] || 'unknown';
+  let clientHints = null;
+  if (navigator.userAgentData?.getHighEntropyValues) {
+    const high = await navigator.userAgentData.getHighEntropyValues(
+      ['fullVersionList', 'platformVersion', 'architecture']);
+    version = high.fullVersionList?.find(b => b.brand === 'Chromium')?.version || version;
+    clientHints = {brands: high.brands?.map(b => b.brand), mobile: high.mobile,
+                   platform: high.platform, platformVersion: high.platformVersion,
+                   architecture: high.architecture};
+  }
+  await new Promise(resolve => setTimeout(resolve, 50));
+  return {schema_version:1, browser_version:version, captured_at:new Date().toISOString(),
+    observations:{userAgent:navigator.userAgent, platform:navigator.platform,
+      webdriver:navigator.webdriver, languages:Array.from(navigator.languages),
+      timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,
+      viewport:{width:innerWidth,height:innerHeight},
+      windowChrome:{width:outerWidth-innerWidth,height:outerHeight-innerHeight},
+      screen:{width:screen.width,height:screen.height,colorDepth:screen.colorDepth},
+      hardwareConcurrency:navigator.hardwareConcurrency,
+      deviceMemory:navigator.deviceMemory ?? null,
+      maxTouchPoints:navigator.maxTouchPoints,
+      clientHints,
+      automation:{consoleSerialized, windowChrome:typeof window.chrome === 'object',
+        injectedGlobals:Object.keys(window).filter(k => /^(cdc_|\$cdc_|__playwright|__pw|__puppeteer)/.test(k)),
+        plugins:navigator.plugins.length, pdfViewerEnabled:navigator.pdfViewerEnabled ?? null,
+        notifications:await notificationConsistency()},
+      webgl:webglInfo(),
+      features:{webgl:!!document.createElement('canvas').getContext('webgl'),
+                indexedDB:typeof indexedDB !== 'undefined'}}};
+}
+window.collectSnapshot = collectSnapshot;
+collectSnapshot().then(snapshot => {
+  document.querySelector('#result').textContent = JSON.stringify(snapshot,null,2);
+  const button = document.querySelector('#download'); button.disabled = false;
+  button.onclick = () => {
+    const url = URL.createObjectURL(new Blob([JSON.stringify(snapshot,null,2)],{type:'application/json'}));
+    const link = document.createElement('a');link.href=url;link.download='manual-browser.json';link.click();
+    setTimeout(() => URL.revokeObjectURL(url),1000);
+  };
+});
+</script></html>

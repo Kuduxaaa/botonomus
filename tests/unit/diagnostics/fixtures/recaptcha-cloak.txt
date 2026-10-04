@@ -1,0 +1,24 @@
+reCAPTCHA v3 score detector
+This Score is taken by solving the reCAPTCHA v3 on your browser.
+The Score shows if Google considers you as HUMAN or BOT.
+1.0 is very likely a good interaction, 0.0 is very likely a bot
+With low score values (< 0.3) you'll get a slow reCAPTCHA 2, it would be hard to solve it.
+And vise versa, with score >= 0.7 it will be much easier.
+
+On the Kolotibablo.com earning money project, you'll get paid for having the high Score!
+
+Current User Agent: Chrome 203.0.113.7 for Windows
+Current IP Address: 203.0.113.7
+
+Your score is: 0.3
+Suggestion: You need to change User Agent, Proxy Server and Google Account for better reCAPTCHA 2 performance
+
+Refresh score now!
+
+Too frequent checks may make worse this score. It's not recommended to refresh your score often than once in 5 minutes.
+
+Previous score list (last 20)
+Clear list
+
+
+Score: 0.3; User Agent and OS: Chrome 203.0.113.7 for Windows; Ip Address: 203.0.113.7; Google Account: <detect google account>; Time: 12:04:10 PM

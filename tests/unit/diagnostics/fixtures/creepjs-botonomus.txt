@@ -1,0 +1,228 @@
+FP ID: 58f76bc0988c0a5f54c5f55b1435ec872b37216bb81d6df747408842ff5789d4
+Fuzzy: 234cedbcb12584c32c894bf74ded17d2fff5533739ce5afecdbf000000000000
+2727.60 ms
+WebRTC1f229136
+host connection:
+candidate:4039444317 1 udp 2113937151 e7419adb-8121-46ed-85bd-6a0936b4f112.local 59102 typ host generation 0 ufrag +EGo network-cost 999
+foundation/ip:
+type & base ip: 4039444317
+ip: 203.0.113.7
+sdp capabilities: cd23ef26
+stun connection:
+candidate:3622556267 1 udp 1677729535 203.0.113.7 64204 typ srflx raddr 203.0.113.7 rport 0 generation 0 ufrag +EGo network-cost 999
+devices (3):
+mic, audio, webcam
+13.80ms
+Timezone49b865a4
+Germany Standard Time
+Europe, Berlin
+-27028695551000
+-120
+13.10ms
+Intl2428e321
+en-US
+July at Germany Summer Time
+American English
+21 million
+next year
+0 or 1
+one
+8.10ms
+Headlessce2546a9
+chromium: true
+19% like headless: 2eb544f2
+0% headless: 52defe05
+0% stealth: 0c019315
+platform hints:
+Arial,"Segoe UI"
+0:73:100:91:91
+
+0.40ms
+Resistanceeb6b354a
+privacy: unknown
+security: unknown
+mode: unknown
+extension: unknown
+600.50ms
+ServiceWorkerGlobalScope
+Worker134f0b2e
+lang/timezone:
+en-US (1 US dollar)
+Europe/Berlin (-120)
+confidence: moderate
+gpu:
+Google Inc. (Intel)
+ANGLE (Intel, Intel(R) UHD Graphics (0x0000A78B) Direct3D11 vs_5_0 ps_5_0, D3D11)
+userAgent:
+ua reduction
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+device:
+Windows (Win32)
+Windows 10 (64-bit)
+cores: 4, ram: 32
+userAgentData:
+Google Chrome 155 (155.0.8059.26)
+Windows 11 [19.0.0] x86_64
+40.10ms
+WebGLf0375a74
+images:0fd09752
+pixels:4d4a8b8b
+params (78): 78120eb4
+exts (67): 096fe525
+gpu:
+confidence: moderate
+Google Inc. (Intel)
+ANGLE (Intel, Intel(R) UHD Graphics (0x0000A78B) Direct3D11 vs_5_0 ps_5_0, D3D11)
+0.20ms
+Screen9d83f24a
+...screen: 1920 x 1080
+....avail: 1920 x 1032
+touch: false
+depth: 24|24
+viewport:
+945
+929
+914
+1012
+917
+917
+browser
+landscape
+landscape-primary
+1
+301.40ms
+Canvas 2d9ef08bbe
+data: 887fb836
+rendering:
+textMetrics:
+0.010083626708984376
+😀🤵‍♂️♨...▪❣❄
+139.00ms
+Fontsbd49bd8d
+load (13/51): Like undefined
+apps: unsupported
+"Cambria Math", "Ink Free", "Javanese Text", "Leelawadee UI", "Lucida Console", "MS Outlook", "Myanmar Text", "Nirmala UI", "Segoe Fluent Icons", "Segoe MDL2 Assets", "Segoe UI Emoji", Bahnschrift, Gadugi
+
+0.02369484
+😀👨‍👩‍👧‍👦©™◼
+2.80ms
+DOMRect1d4eb14a
+elems A: 0.24583372172851561
+elems B: 0.24583372172851561
+range A: 0.24583372172851561
+range B: 0.24583372172851561
+0.023718509063720705
+😀👨‍👩‍👧‍👦©™◼
+80.40ms
+SVGRect43f113b0
+bBox: 0.0707875
+char: 0.033860069274902344
+subs: 0.027460067749023438
+text: 0.027460067749023438
+0.010394303741455078
+😀👨‍👩‍👧‍👦©™◼
+191.20ms
+Audio815cf0d9
+sum: 124.04347799351672
+gain: -20.538288116455078
+freq: 164539.10748672485
+time: 502.59992877283
+trap: 0.7296086041691806
+unique: 4735
+data:8a0cb40f
+copy:8a0cb40f
+values: dfc44fc6
+0.30ms
+Speechd8216ffd
+local (3): bf481691
+remote (0): unsupported
+lang (1): en-US
+default:
+Microsoft David - English (United States) [en-US]
+0.60ms
+Mediad0ec3aa6
+mimes (10/12): 91101bd8
+4.30ms
+Features: 113-115+
+JS/DOM: df08a511 (v114-115)
+CSS: 379baeb6 (v114-115)
+Window: eaef5763 (v113-115)
+3.50ms
+CSS Media Queries11ab0445
+@media: 808109eb
+matchMedia: 808109eb
+touch device: unknown
+screen query: 1920 x 1080
+5.40ms
+Computed Stylef20c47ac
+keys (1410): 49216242
+system styles: f219ad88
+0.40ms
+Mathcf16cf40
+results: details
+0.30ms
+Error92b51d39
+results: details
+1.20ms
+Window2241c5df
+keys (1234): details
+0.10ms
+HTMLElement2be52cf5
+keys (347): details
+2083.70ms
+Navigatorc9e5c1b6
+properties (83): 175484b7
+dnt: null
+gpc: unsupported
+lang: en-US, en (en-US)
+mimeTypes (2): 11003d7c
+permissions (6): b02221aa
+plugins (5): 6488a554
+vendor: Google Inc.
+webgpu: 448f4d80
+userAgentData:
+Google Chrome 155 (155.0.8059.26)
+Windows 11 [19.0.0] x86_64
+device:
+Windows (Win32)
+Windows 10 (64-bit)
+cores: 4, ram: 32, touch: 0, bluetooth
+ua parsed: Chrome 155
+userAgent:
+ua reduction
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+appVersion:
+5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+Statuse15d6fec
+network:
+rtt: 100, downlink: 1.7
+effectiveType: 4g
+saveData: false
+battery:
+level: 98%
+charging: true
+charge time: discharging
+discharge time: charging
+available:
+storage: 10GB
+[10737418240]
+memory: 4.09GB
+[4395630592]
+timing res:
+0.09999999403953552
+0.10000002384185791
+stack: 17778
+Tests
+Workers
+Iframes
+Fonts
+Timezone
+Window Version
+Screen
+Prototype
+DOMRect
+Emojis
+Math
+Machine
+Chrome Extensions
+JS Proxy

@@ -1,0 +1,392 @@
+Home
+Playground
+Use cases
+Contact sales
+Get started
+Fingerprint Pro Playground
+
+Analyze your browser with Fingerprint Pro and see all the available signals.
+
+Analyze my browser again
+IDENTIFICATION
+
+Your Visitor ID is 
+
+orSENmBDw0VFZ4seFSnn
+Browser	
+Chromium-Based Browser Not Available
+
+Operating System	
+Windows 11
+
+IP Address	
+203.0.113.7
+
+Last Seen	
+14 minutes ago
+
+Confidence Score	
+0.99
+SMART SIGNALS
+Geolocation
+Ashburn, Virginia, United States
+	
+
+Incognito Mode	
+Not detected
+
+Bot	
+Not detected
+
+VPN	
+You are using a VPN 🌐 (timezone mismatch)
+
+Browser Tampering	
+Not detected
+
+Developer Tools	
+Not detected
+
+Virtual Machine	
+Not detected
+
+Privacy Settings	
+Not detected
+
+IP Blocklist	
+Not detected
+
+Proxy Detection	
+Your IP is used by a data center proxy from Example data center proxies (confidence: high, ML score: 0.41)
+
+High-Activity Device	
+Yes 🔥
+
+Rare Device	
+Not detected
+
+Velocity Signals	
+15 IPs, 16 Linked IDs in the past 24 hours
+
+Suspect Score	
+23
+
+Raw Device Attributes	
+See the JSON below
+MOBILE SMART SIGNALS
+TRY OUR DEMO FOR MOBILE DEVICES
+
+App is instrumented by Frida	Available in native iOS and Android SDKs
+Factory Reset Timestamp	Available in native iOS and Android SDKs
+Proximity Detection	Available in native iOS and Android SDKs
+Location Spoofing	Available in native iOS and Android SDKs
+VPN (Mobile)	Available in native iOS and Android SDKs
+Man-in-the-middle attack	Available in native iOS and Android SDKs
+Tampered Request	Available in native iOS and Android SDKs
+Active Call Detection	Available in native iOS and Android SDKs
+Developer Tools (Mobile)	Available in native iOS and Android SDKs
+Cloned App	Available in the native Android SDK
+Emulator	Available in the native Android SDK
+Rooted Device	Available in the native Android SDK
+Jailbroken device	Available in the native iOS SDK
+iOS Simulator	Available in the native iOS SDK
+How to use this demo
+Incognito mode
+If you’re using a normal browser, you will see a green box with “Not detected”.
+Open this page in incognito mode to see the box change to red with “You are incognito” displayed. Your visitor ID will stay the same.
+VPN Detection
+Browser tampering
+Bot detection
+IP Geolocation
+JavaScript Agent Response
+{
+event_id: "1791104220628.qizWYK"
+sealed_result: null
+visitor_id: "orSENmBDw0VFZ4seFSnn"
+suspect_score: 23
+}
+Server API Response
+{
+event_id: "1791104220628.qizWYK"
+timestamp: 1791104220639
+source: "device"
+linked_id: "session_id_93ff4792"
+environment_id: "ae_fphv5xrU47S1ZAzg"
+sdk: {
+platform: "js"
+version: "4.1.5"
+integrations: [
+0: {
+name: "fingerprintjs-pro-cloudfront"
+version: "2.2.0"
+}
+1: {
+name: "fingerprintjs-pro-react"
+version: "3.0.0"
+}
+]
+}
+replayed: false
+identification: {
+visitor_id: "orSENmBDw0VFZ4seFSnn"
+confidence: {
+score: 0.99
+version: "v1.1"
+}
+visitor_found: true
+first_seen_at: 1791103060628
+last_seen_at: 1791103365891
+}
+url: "https://demo.fingerprint.com/playground"
+ip_address: "203.0.113.7"
+user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7..."
+device: "Other"
+os: "Windows"
+os_version: "11"
+browser_details: {
+browser_name: "Chromium-Based Browser"
+browser_major_version: "Not Available"
+browser_full_version: "Not Available"
+os: "Windows"
+os_version: "11"
+device: "Other"
+}
+bot: "not_detected"
+developer_tools: false
+ip_blocklist: {
+email_spam: false
+attack_source: false
+tor_node: false
+}
+ip_info: {
+v4: {
+address: "203.0.113.7"
+geolocation: {
+accuracy_radius: 20
+latitude: 39.04372
+longitude: -77.48749
+postal_code: "20147"
+timezone: "America/New_York"
+city_name: "Ashburn"
+country_code: "US"
+country_name: "United States"
+continent_code: "NA"
+continent_name: "North America"
+subdivisions: []
+}
+asn: "200373"
+asn_name: "3xK Tech GmbH"
+asn_network: "203.0.113.7/20"
+asn_type: "hosting"
+datacenter_result: true
+}
+}
+proxy: true
+proxy_confidence: "high"
+proxy_details: {
+proxy_type: "data_center"
+last_seen_at: 1791061200000
+provider: "Example data center proxies"
+}
+proxy_ml_score: 0.41
+incognito: false
+privacy_settings: false
+suspect_score: 23
+tampering: false
+tampering_confidence: "high"
+tampering_ml_score: 0.6992
+tampering_details: {
+anomaly_score: 0
+anti_detect_browser: false
+}
+velocity: {
+distinct_ip: {
+5_minutes: 1
+1_hour: 15
+24_hours: 15
+}
+distinct_linked_id: {
+5_minutes: 1
+1_hour: 16
+24_hours: 16
+}
+distinct_country: {
+5_minutes: 1
+1_hour: 2
+24_hours: 2
+}
+events: {
+5_minutes: 1
+1_hour: 31
+24_hours: 31
+}
+ip_events: {
+5_minutes: 1
+1_hour: 3
+24_hours: 3
+}
+distinct_ip_by_linked_id: {
+5_minutes: 1
+1_hour: 1
+24_hours: 1
+}
+distinct_visitor_id_by_linked_id: {
+5_minutes: 1
+1_hour: 1
+24_hours: 1
+}
+}
+virtual_machine: false
+virtual_machine_ml_score: 0.338
+vpn: true
+vpn_confidence: "medium"
+vpn_ml_score: 0.597
+vpn_origin_timezone: "Europe/Berlin"
+vpn_origin_country: "unknown"
+vpn_methods: {
+timezone_mismatch: true
+public_vpn: false
+auxiliary_mobile: false
+os_mismatch: false
+relay: false
+ml_prediction: false
+}
+high_activity_device: true
+rare_device: false
+rare_device_percentile_bucket: "<p95"
+raw_device_attributes: {
+font_preferences: {
+default: 149.3125
+serif: 149.3125
+sans: 144.015625
+mono: 121.515625
+apple: 149.3125
+min: 9.34375
+system: 147.859375
+}
+emoji: {
+font: ""Times New Roman""
+width: 1757.5
+height: 17
+top: 11
+bottom: 28
+left: 8
+right: 1765.5
+x: 8
+y: 11
+}
+fonts: [
+0: "Calibri"
+1: "Century"
+2: "Century Gothic"
+3: "Franklin Gothic"
+4: "Haettenschweiler"
+5: "Leelawadee"
+6: "MS Outlook"
+7: "MS Reference Specialty"
+8: "MS UI Gothic"
+9: "MT Extra"
+10: "Marlett"
+11: "Microsoft Uighur"
+12: "Monotype Corsiva"
+13: "Pristina"
+14: "Segoe UI Light"
+]
+device_memory: 32
+timezone: "Europe/Berlin"
+canvas: {
+winding: true
+geometry: "cb081bc9019ca51ff5c79fe1cb51c02a"
+text: "83ee8e16488265d18422072b36b373f7"
+}
+languages: [
+0: [
+0: "en-US"
+]
+]
+webgl_extensions: {
+context_attributes: "6b1ed336830d2bc96442a9d76373252a"
+parameters: "5b20b101cbe6f1eeca7373f11d45ef18"
+shader_precisions: "f223dfbcd580cf142da156d93790eb83"
+extensions: "2ec6a06c62e232a16e719d1738edbc16"
+extension_parameters: "22fad1bae5d96011ed8c710f66905ce2"
+unsupported_extensions: [
+]
+}
+webgl_basics: {
+version: "WebGL 1.0 (OpenGL ES 2.0 Chromium)"
+vendor: "WebKit"
+vendor_unmasked: "Google Inc. (Intel)"
+renderer: "WebKit WebGL"
+renderer_unmasked: "ANGLE (Intel, Intel(R) UHD Graphics (0x0000A78B) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+shading_language_version: "WebGL GLSL ES 1.0 (OpenGL ES GLSL ES 1.0 Chromium)"
+}
+screen_resolution: [
+0: 1920
+1: 1080
+]
+touch_support: {
+touch_event: false
+touch_start: false
+max_touch_points: 0
+}
+architecture: 255
+cookies_enabled: true
+hardware_concurrency: 16
+date_time_locale: "en-US"
+vendor: "Google Inc."
+color_depth: 24
+platform: "Win32"
+session_storage: true
+local_storage: true
+audio: 124.04347776696522
+plugins: [
+0: {
+name: "PDF Viewer"
+description: "Portable Document Format"
+mimeTypes: []
+}
+1: {
+name: "Chrome PDF Viewer"
+description: "Portable Document Format"
+mimeTypes: []
+}
+2: {
+name: "Chromium PDF Viewer"
+description: "Portable Document Format"
+mimeTypes: []
+}
+3: {
+name: "Microsoft Edge PDF Viewer"
+description: "Portable Document Format"
+mimeTypes: []
+}
+4: {
+name: "WebKit built-in PDF"
+description: "Portable Document Format"
+mimeTypes: []
+}
+]
+indexed_db: true
+math: "cf845af5c17f8505dbe10c1afc548dcd"
+font_hash: "5dfc28a26d84433c88d289a0db598cab"
+timezone_offset: "+02:00"
+battery_level: 98
+battery_charging: true
+keyboard_layout_hash: "691e3845c85c202a1514b6fd7ef17065"
+keyboard_layout_name: "en-US"
+}
+}
+Learn more
+ARTICLE
+Quick Start Guide
+ARTICLE
+What is Fingerprint
+WEBINAR
+Intro to Device Intelligence Webinar
+DEMO APP
+Android Playground app
+DEMO APP
+iOS Playground app
+1440 W. Taylor St #735, Chicago, IL 60607, USA
+© FingerprintJS 2022, Inc

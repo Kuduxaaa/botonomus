@@ -1,0 +1,122 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Botonomus consistency</title></head>
+<body>
+<iframe id="f" srcdoc="<p>frame</p>" style="display:none"></iframe>
+<script>
+const ROUTE = location.pathname;
+const ctxScript = __CTX_JSON__;
+const readCtx = () => (0, eval)(ctxScript);
+const timeout = (p, ms, fallback) =>
+  Promise.race([p, new Promise((r) => setTimeout(() => r(fallback), ms))]);
+const hash = async (s) => {
+  const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return [...new Uint8Array(d)].slice(0, 8).map((b) => b.toString(16).padStart(2, '0')).join('');
+};
+const canvasOnce = async () => {
+  const c = document.createElement('canvas'); c.width = 240; c.height = 60;
+  const g = c.getContext('2d');
+  g.fillStyle = '#f60'; g.fillRect(10, 10, 100, 30);
+  g.fillStyle = '#069'; g.font = '16px Arial'; g.fillText('Botonomus \u{1F600} ŒÆ', 4, 30);
+  g.strokeStyle = 'rgba(102,204,0,0.7)'; g.arc(150, 30, 20, 0, Math.PI * 2); g.stroke();
+  return hash(c.toDataURL() + Array.from(g.getImageData(0, 0, 240, 60).data).join(','));
+};
+const canvasSolid = () => {
+  const c = document.createElement('canvas'); c.width = 16; c.height = 16;
+  const g = c.getContext('2d'); g.fillStyle = 'rgb(10,200,30)'; g.fillRect(0, 0, 16, 16);
+  const d = g.getImageData(0, 0, 16, 16).data;
+  for (let i = 0; i < d.length; i += 4) {
+    if (d[i] !== 10 || d[i + 1] !== 200 || d[i + 2] !== 30 || d[i + 3] !== 255) return false;
+  }
+  return true;
+};
+const webglOnce = async () => {
+  const c = document.createElement('canvas'); c.width = 64; c.height = 64;
+  const gl = c.getContext('webgl');
+  if (!gl) return null;
+  gl.clearColor(0.2, 0.4, 0.6, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+  const px = new Uint8Array(64 * 64 * 4);
+  gl.readPixels(0, 0, 64, 64, gl.RGBA, gl.UNSIGNED_BYTE, px);
+  return hash(Array.from(px).join(','));
+};
+const audioOnce = async () => {
+  const a = new OfflineAudioContext(1, 5000, 44100);
+  const o = a.createOscillator(); o.type = 'triangle'; o.frequency.value = 10000;
+  const k = a.createDynamicsCompressor(); o.connect(k); k.connect(a.destination); o.start(0);
+  const b = await a.startRendering(); const d = b.getChannelData(0);
+  let s = 0;
+  for (let i = 4500; i < 5000; i += 1) s += Math.abs(d[i]);
+  return s;
+};
+const workerCtx = () => timeout(new Promise((res) => {
+  const w = new Worker(URL.createObjectURL(new Blob([`postMessage(${ctxScript})`])));
+  w.onmessage = (e) => res(e.data); w.onerror = () => res(null);
+}), 3000, null);
+const sharedCtx = () => timeout(new Promise((res) => {
+  try {
+    const w = new SharedWorker(ROUTE + '/shared.js');
+    w.port.onmessage = (e) => res(e.data); w.port.start();
+  } catch (e) { res(null); }
+}), 3000, null);
+const serviceCtx = () => timeout((async () => {
+  try {
+    const reg = await navigator.serviceWorker.register(ROUTE + '/sw.js', { scope: ROUTE + '/' });
+    const sw = reg.installing || reg.waiting || reg.active;
+    return await new Promise((res) => {
+      navigator.serviceWorker.onmessage = (e) => res(e.data);
+      const ask = () => (reg.active || sw).postMessage('ctx');
+      if (reg.active) ask();
+      else sw.addEventListener('statechange', () => { if (sw.state === 'activated') ask(); });
+    });
+  } catch (e) { return null; }
+})(), 5000, null);
+const frameCtx = () => {
+  try { return document.getElementById('f').contentWindow.eval(ctxScript); } catch (e) { return null; }
+};
+// Every probe may be missing or throw on some browser; record "error:<name>" and go on,
+// so the result is always posted and the failing check names the cause.
+const safe = async (probe) => {
+  try { return await probe(); } catch (e) { return 'error:' + ((e && e.name) || 'Error'); }
+};
+const ctxOrNull = async (probe) => {
+  const value = await safe(probe);
+  return typeof value === 'string' ? null : value;
+};
+window.addEventListener('load', async () => {
+  const raw = { contexts: {} };
+  try {
+    const contexts = raw.contexts;
+    const add = (k, v) => { if (v) contexts[k] = v; };
+    add('page', await ctxOrNull(readCtx));
+    add('frame', await ctxOrNull(frameCtx));
+    add('worker', await ctxOrNull(workerCtx));
+    add('shared', await ctxOrNull(sharedCtx));
+    add('service', await ctxOrNull(serviceCtx));
+    const voices = await safe(async () => {
+      await new Promise((r) => { speechSynthesis.onvoiceschanged = r; setTimeout(r, 2000); });
+      return speechSynthesis.getVoices().map((v) => v.name + (v.localService ? '' : '*'));
+    });
+    raw.voices = Array.isArray(voices) ? voices : [];
+    raw.widevine = await safe(() => timeout(navigator.requestMediaKeySystemAccess(
+      'com.widevine.alpha',
+      [{ initDataTypes: ['cenc'],
+        videoCapabilities: [{ contentType: 'video/mp4; codecs="avc1.42E01E"' }] }],
+    ).then(() => true, () => false), 3000, false));
+    raw.canvas = [await safe(canvasOnce), await safe(canvasOnce)];
+    raw.canvasSolid = await safe(canvasSolid);
+    raw.webgl = [await safe(webglOnce), await safe(webglOnce)];
+    raw.audio = [await safe(audioOnce), await safe(audioOnce)];
+    raw.h264 = await safe(() =>
+      document.createElement('video').canPlayType('video/mp4; codecs="avc1.42E01E"'));
+    raw.screen = await safe(() => ({
+      outerW: outerWidth, innerW: innerWidth, outerH: outerHeight, innerH: innerHeight,
+      h: screen.height, availH: screen.availHeight,
+    }));
+  } finally {
+    await fetch(ROUTE + '/result', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(raw),
+    });
+    document.title = 'done';
+  }
+});
+</script>
+</body></html>

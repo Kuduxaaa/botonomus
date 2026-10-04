@@ -1,0 +1,607 @@
+FINGERPRINT SCAN
+Behavior
+Docs
+Resources
+About
+Browser Fingerprint Scanner
+
+Run a live browser fingerprinting and bot detection test to inspect your browser, device, WebRTC leak exposure, network signals, headers, GPU, DRM support, and automation indicators. Review your fingerprint hash and bot risk score, then learn more about browser fingerprinting and bot detection below, or read why this test exists.
+
+Fingerprint collected successfully
+Bot score 43/100
+Hardware / OS: LOW
+Browser: MEDIUM
++43
+Network / proxy: LOW
+FINGERPRINT HASH
+248dd932ac1b5acc
+FINGERPRINT ID
+89174930cf7c44aab67c95cdce2feb95
+GPU
+0c2937de101ba029
+SCREEN
+2af281c9998779c9
+LOCALE/TIMEZONE
+59ec28f0f181fa8e
+DEVICE INFO
+a8992ceff12d16bf
+BROWSER FEATURES
+9e02dc4d5c7acd81
+MEDIA QUERIES
+77a774ed88af7ac9
+MEDIA
+b13438c4d59f8f11
+WEB ASSEMBLY
+5fe6eb53c0f98b2b
+WEBRTC
+de6e02d08dd26cae
+Fingerprint signals
+
+73 visible signals across 16 categories
+
+Server Side
+IP address
+203.0.113.7
+Autonomous system name
+Example Telecom GmbH
+IP country
+DE
+Recent proxy activity
+residential (<=1 day)
+Live proxy activity
+False
+HTTP headers
+Accept
+application/x-tss-framed, application/x-ndjson, application/json
+Accept encoding
+gzip, deflate, br, zstd
+Accept language
+en-US,en;q=0.9
+Content length
+37861
+Content type
+application/json
+Host
+fingerprint-scan.com
+Origin
+https://fingerprint-scan.com
+Priority
+u=1, i
+Referer
+https://fingerprint-scan.com/
+Sec ch ua
+"Chromium";v="146", "Not-A.Brand";v="24", "Google Chrome";v="146"
+Sec ch ua mobile
+?0
+Sec ch ua platform
+"Windows"
+Sec fetch dest
+empty
+Sec fetch mode
+cors
+Sec fetch site
+same-origin
+User agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+X forwarded for
+203.0.113.7
+X forwarded host
+fingerprint-scan.com
+X forwarded port
+443
+X forwarded proto
+https
+X forwarded server
+6ece2802dd0a
+X real ip
+203.0.113.7
+X tsr serverfn
+true
+General
+User Agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/203.0.113.7 Safari/537.36
+Platform
+Win32
+Hardware Concurrency
+8
+Device Memory
+8
+Max Touch Points
+0
+High Entropy Values
+Available
+true
+Brands
+Chromium@146, Not-A.Brand@24, Google Chrome@146
+Architecture
+x86
+Bitness
+64
+Model
+NA
+Platform
+Windows
+Platform Version
+19.0.0
+Mobile
+false
+Wow64
+false
+Full Version List
+Chromium@146.0.7680.177, Not-A.Brand@203.0.113.7, Google Chrome@146.0.7680.177
+Keyboard
+Layout
+KeyK,k KeyG,g Digit2,2 Digit0,0 KeyV,v KeyA,a Backquote,` KeyL,l IntlBackslash,\ Quote,' KeyW,w Digit8,8 KeyM,m KeyH,h Period,. Digit7,7 Digit1,1 KeyP,p KeyD,d KeyF,f KeyO,o KeyQ,q KeyC,c KeyN,n BracketLeft,[ KeyZ,z KeyY,y Digit3,3 Digit6,6 Digit5,5 KeyX,x Slash,/ Backslash,\ Comma,, Minus,- Digit4,4 KeyB,b KeyT,t Digit9,9 KeyS,s KeyI,i KeyU,u Equal,= KeyJ,j Semicolon,; KeyR,r BracketRight,] KeyE,e
+Layout Size
+48
+Browser
+Brave
+false
+Browser Features
+Chrome
+true
+Brave
+false
+Apple Pay Support
+false
+Opera
+false
+Serial
+true
+Attach Shadow
+true
+Caches
+true
+Web Assembly
+true
+Buffer
+false
+Show Modal Dialog
+false
+Safari
+false
+Webkit Prefixed Function
+true
+Moz Prefixed Function
+false
+Usb
+true
+Browser Capture
+true
+Payment Request Update Event
+true
+Pressure Observer
+true
+Audio Session
+false
+Select Audio Output
+false
+Barcode Detector
+false
+Battery
+true
+Device Posture
+true
+Document Picture In Picture
+true
+Eye Dropper
+true
+Edit Context
+true
+Fenced Frame
+true
+Sanitizer
+true
+Otp Credential
+true
+Sum Precise
+false
+Bitmask
+10001111000101111000111111110
+Browser Extensions
+Bitmask
+0000000
+Extensions
+Default Chrome Extension
+false
+Plugins
+Items
+PDF Viewer
+Chrome PDF Viewer
+Chromium PDF Viewer
+Microsoft Edge PDF Viewer
+WebKit built-in PDF
+Count
+5
+MIME Types
+Items
+application/pdf
+text/pdf
+Count
+2
+AI
+Summarizer Availability
+unavailable
+Summarizer Language Availability
+unavailable
+Math Fingerprint
+Acos
+1.4473588658278522
+Acosh
+709.889355822726
+Asin
+0.12343746096704435
+Asinh
+0.881373587019543
+Atanh
+0.5493061443340548
+Atan
+0.4636476090008061
+Sin
+0.8178819121159085
+Sinh
+1.1752011936438014
+Cos
+-0.8390715290095377
+Cosh
+1.5430806348152437
+Tan
+-1.4214488238747245
+Tanh
+0.7615941559557649
+Exp
+2.718281828459045
+Expm1
+1.718281828459045
+Log1p
+2.3978952727983707
+Pow PI
+1.9275814160560206e-50
+Hash
+04331c22
+Tanh08
+0.6640367702678491
+Locale
+Language
+en-US
+Languages
+["en-US"]
+Timezone
+Europe/Berlin
+Timezone Offset
+-120
+Locale String Epoch
+1/1/1970, 4:00:00 AM
+Internationalization
+Locale Language
+en-US
+Calendar
+gregory
+Numbering System
+latn
+Hour Cycle
+NA
+Speech Voices
+Count
+6
+Voices
+["Microsoft David - English (United States) (en-US)","Microsoft Zira - English (United States) (en-US)","Microsoft Mark - English (United States) (en-US)","Google US English (en-US)","Google UK English Female (en-GB)","Google UK English Male (en-GB)"]
+Display
+Screen
+Width
+1920
+Height
+1080
+Avail Width
+1920
+Avail Height
+1032
+Avail Left
+0
+Avail Top
+48
+Color Depth
+32
+Pixel Depth
+32
+Device Pixel Ratio
+1
+Inner Width
+929
+Inner Height
+883
+Outer Width
+945
+Outer Height
+1012
+Multi Screen
+false
+Is Full Screen
+false
+Orientation Type
+landscape-primary
+Orientation Angle
+0
+Orientation Locks
+NA
+Scrollbar Size
+Width
+15
+Height
+15
+Media Queries
+Media Queries
+Prefers Color Scheme
+light
+Prefers Reduced Motion
+false
+Prefers Reduced Transparency
+false
+Color Gamut
+srgb
+Pointer
+fine
+Any Pointer
+fine
+Hover
+true
+Any Hover
+true
+Dynamic range high
+false
+Dynamic range standard
+true
+Prefers reduced motion no preference
+true
+Prefers reduced motion reduce
+false
+Prefers contrast no preference
+true
+Prefers contrast high
+false
+Prefers contrast low
+false
+Prefers contrast more
+false
+Prefers contrast less
+false
+Prefers contrast forced
+false
+Max monochrome 0
+true
+Max monochrome 10
+true
+Max monochrome 100
+true
+Max monochrome 1000
+true
+Forced colors active
+false
+Forced colors none
+true
+Inverted colors inverted
+false
+Inverted colors none
+false
+Color gamut rec2020
+false
+Color gamut p3
+false
+Color gamut srgb
+true
+Gpu
+WebGL
+Vendor
+Google Inc. (NVIDIA)
+Renderer
+ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Ti (0x00002805) Direct3D11 vs_5_0 ps_5_0, D3D11)
+WebGL Extensions
+["ANGLE_instanced_arrays","EXT_blend_minmax","EXT_clip_control","EXT_color_buffer_half_float","EXT_depth_clamp","EXT_disjoint_timer_query","EXT_float_blend","EXT_frag_depth","EXT_polygon_offset_clamp","EXT_shader_texture_lod","EXT_texture_compression_bptc","EXT_texture_compression_rgtc","EXT_texture_filter_anisotropic","EXT_texture_mirror_clamp_to_edge","EXT_sRGB","KHR_parallel_shader_compile","OES_element_index_uint","OES_fbo_render_mipmap","OES_standard_derivatives","OES_texture_float","OES_texture_float_linear","OES_texture_half_float","OES_texture_half_float_linear","OES_vertex_array_object","WEBGL_blend_func_extended","WEBGL_color_buffer_float","WEBGL_compressed_texture_s3tc","WEBGL_compressed_texture_s3tc_srgb","WEBGL_debug_renderer_info","WEBGL_debug_shaders","WEBGL_depth_texture","WEBGL_draw_buffers","WEBGL_lose_context","WEBGL_multi_draw","WEBGL_polygon_mode"]
+WebGL Fingerprint
+Parameters
+011c22ca
+Challenge
+649d68b4
+WebGL Parameters
+{"MAX_TEXTURE_SIZE":16384,"MAX_CUBE_MAP_TEXTURE_SIZE":16384,"MAX_RENDERBUFFER_SIZE":16384,"MAX_VIEWPORT_DIMS":[32767,32767],"MAX_VERTEX_ATTRIBS":16,"MAX_VERTEX_UNIFORM_VECTORS":4096,"MAX_FRAGMENT_UNIFORM_VECTORS":1024,"MAX_VARYING_VECTORS":30,"MAX_TEXTURE_IMAGE_UNITS":16,"MAX_VERTEX_TEXTURE_IMAGE_UNITS":16,"MAX_COMBINED_TEXTURE_IMAGE_UNITS":32,"ALIASED_LINE_WIDTH_RANGE":[1,1],"ALIASED_POINT_SIZE_RANGE":[1,1024],"RED_BITS":8,"GREEN_BITS":8,"BLUE_BITS":8,"ALPHA_BITS":8,"DEPTH_BITS":24,"STENCIL_BITS":0,"SUBPIXEL_BITS":4,"MAX_TEXTURE_MAX_ANISOTROPY_EXT":16,"MAX_3D_TEXTURE_SIZE":2048,"MAX_ARRAY_TEXTURE_LAYERS":2048,"MAX_DRAW_BUFFERS":8,"MAX_COLOR_ATTACHMENTS":8,"MAX_SAMPLES":8,"MAX_UNIFORM_BUFFER_BINDINGS":24,"MAX_UNIFORM_BLOCK_SIZE":65536,"MAX_VERTEX_UNIFORM_BLOCKS":12,"MAX_FRAGMENT_UNIFORM_BLOCKS":12,"MAX_ELEMENTS_VERTICES":2147483647,"MAX_ELEMENTS_INDICES":2147483647,"MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS":4,"MAX_TEXTURE_LOD_BIAS":2}
+WebGL2 Extensions
+["EXT_clip_control","EXT_color_buffer_float","EXT_color_buffer_half_float","EXT_conservative_depth","EXT_depth_clamp","EXT_disjoint_timer_query_webgl2","EXT_float_blend","EXT_polygon_offset_clamp","EXT_texture_compression_bptc","EXT_texture_compression_rgtc","EXT_texture_filter_anisotropic","EXT_texture_mirror_clamp_to_edge","KHR_parallel_shader_compile","NV_shader_noperspective_interpolation","OES_draw_buffers_indexed","OES_sample_variables","OES_shader_multisample_interpolation","OES_texture_float_linear","WEBGL_blend_func_extended","WEBGL_clip_cull_distance","WEBGL_compressed_texture_s3tc","WEBGL_compressed_texture_s3tc_srgb","WEBGL_debug_renderer_info","WEBGL_debug_shaders","WEBGL_lose_context","WEBGL_multi_draw","WEBGL_polygon_mode","WEBGL_stencil_texturing"]
+Web GPU
+Available
+true
+Vendor
+intel
+Architecture
+gen-12lp
+Device
+NA
+Description
+NA
+Api Type
+NA
+Limits
+Max Bind Groups
+4
+Max Bind Groups Plus Vertex Buffers
+24
+Max Bindings Per Bind Group
+1000
+Max Buffer Size
+2147483648
+Max Color Attachment Bytes Per Sample
+128
+Max Color Attachments
+8
+Max Compute Invocations Per Workgroup
+1024
+Max Compute Workgroup Size X
+1024
+Max Compute Workgroup Size Y
+1024
+Max Compute Workgroup Size Z
+64
+Max Compute Workgroup Storage Size
+32768
+Max Compute Workgroups Per Dimension
+65535
+Max Dynamic Storage Buffers Per Pipeline Layout
+8
+Max Dynamic Uniform Buffers Per Pipeline Layout
+10
+Max Inter Stage Shader Variables
+28
+Max Sampled Textures Per Shader Stage
+48
+Max Samplers Per Shader Stage
+16
+Max Storage Buffer Binding Size
+2147483644
+Max Storage Buffers In Fragment Stage
+16
+Max Storage Buffers In Vertex Stage
+16
+Max Storage Buffers Per Shader Stage
+16
+Max Storage Textures In Fragment Stage
+8
+Max Storage Textures In Vertex Stage
+8
+Max Storage Textures Per Shader Stage
+8
+Max Texture Array Layers
+2048
+Max Texture Dimension1 D
+16384
+Max Texture Dimension2 D
+16384
+Max Texture Dimension3 D
+2048
+Max Uniform Buffer Binding Size
+65536
+Max Uniform Buffers Per Shader Stage
+12
+Max Vertex Attributes
+30
+Max Vertex Buffer Array Stride
+2048
+Max Vertex Buffers
+8
+Min Storage Buffer Offset Alignment
+256
+Min Uniform Buffer Offset Alignment
+256
+Features
+bgra8unorm-storage
+clip-distances
+core-features-and-limits
+depth-clip-control
+depth32float-stencil8
+dual-source-blending
+float32-blendable
+float32-filterable
+indirect-first-instance
+primitive-index
+rg11b10ufloat-renderable
+shader-f16
+subgroups
+texture-component-swizzle
+texture-compression-bc
+texture-compression-bc-sliced-3d
+texture-formats-tier1
+texture-formats-tier2
+timestamp-query
+Canvas Hash
+649d68b4
+Web Assembly
+WASM relaxed lane select architecture
+0
+WASM relaxed swizzle architecture
+1
+WASM relaxed truncation architecture
+-2147483648
+WASM relaxed Q15 multiply-round architecture
+-32768
+WASM relaxed dot-product architecture
+256
+WASM relaxed fused multiply-add
+5.960464477539063e-8
+WASM memory max pages bitness
+Is64
+true
+Error
+null
+Media
+Audio Fingerprint
+Hash
+124.04347245009558
+Extended
+Gain
+-20.538288116455078
+Freq
+164537.64795303345
+Time
+502.5999283068122
+Audio Codecs
+Ogg
+probably
+Mp3
+probably
+Wav
+probably
+M4a
+maybe
+Aac
+probably
+Video Codecs
+Ogg
+NA
+H264
+probably
+Webm
+probably
+Mpeg4v
+NA
+Mpeg4a
+NA
+Theora
+NA
+Media Capabilities
+Available
+true
+Supported Media Capabilities
+Name
+video/mp4; codecs="avc1.42E01E"
+Supported
+true
+Smooth
+true
+Power Efficient
+true
+Name
+audio/mp4; codecs="mp4a.40.2"
+Supported
+true
+Smooth
+true
+Power Efficient
+true
+Count
+2
+Media Devices
+Audio Inputs
+1
+Audio Outputs
+1
+Video Inputs
+1
+Total Devices
+3
+Play Ready Drm Support
+NotSupportedError
+Widevine Drm Support
+NotSupportedError
+Fair Play Drm Support
+NotSupportedError
+Fonts
+Fonts
+Segoe UI, Segoe UI Emoji, Segoe Print, Segoe Script, Calibri, Cambria, Candara, Consolas, Constantia, Corbel, Ebrima, Franklin Gothic Medium, Gabriola, Leelawadee UI, Lucida Sans Unicode, MS Gothic, MV Boli, Nirmala UI, Sylfaen, Microsoft Sans Serif, Palatino Linotype, Marlett, Papyrus, Bookman Old Style, Century Gothic, Garamond, Wingdings, Wingdings 2, Webdings, MS Reference Sans Serif, Cascadia Code, Arial, Arial Black
