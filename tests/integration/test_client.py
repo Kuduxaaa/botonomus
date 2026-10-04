@@ -216,3 +216,25 @@ async def test_close_during_requests_raises_closed_errors(server, config):
     for result in results:
         assert not isinstance(result, BaseException) or isinstance(result, ManagerClosedError)
     assert not client._browser.alive
+
+
+async def test_client_contexts_never_gather_non_proxied_webrtc_candidates(server, config):
+    base, _ = server
+    async with Client(config=config, mode="browser") as client:
+        async with client.page(f"{base}/page") as page:
+            candidates = await page.evaluate(
+                """async () => {
+                  const pc = new RTCPeerConnection();
+                  pc.createDataChannel('x');
+                  const found = [];
+                  pc.onicecandidate = (e) => {
+                    if (e.candidate) found.push(e.candidate.candidate);
+                  };
+                  await pc.setLocalDescription(await pc.createOffer());
+                  await new Promise((r) => setTimeout(r, 1500));
+                  pc.close();
+                  return found;
+                }""",
+                isolated_context=False,
+            )
+    assert candidates == []

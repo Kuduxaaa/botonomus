@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.2] - 2026-10-05
+
+### Security
+
+- **WebRTC could reveal the real IP address behind a proxy.** Chrome ignores `--force-webrtc-ip-handling-policy` (only content_shell and headless shells read it) and takes the policy from the profile preference `webrtc.ip_handling_policy`. Sessions with a proxy, and every `Client` browser, now write `disable_non_proxied_udp` into the profile's preferences before launch, so WebRTC never sends UDP outside the proxy. Verified in Chrome: no ICE candidates are gathered. Upgrade if you use proxies.
+
 ## [0.3.1] - 2026-10-04
 
 ### Added
@@ -101,7 +107,8 @@ The 0.1 lifecycle guarantees (bounded admission, cancellation-safe cleanup, cros
 - `Human` input: Bezier pointer paths with Fitts's-law timing, lognormal keystroke gaps and eased wheel scrolling.
 - Local probe page with ordinary-launch comparison, and a held-open concurrency benchmark.
 
-[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.2...HEAD
+[0.3.2]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Kuduxaaa/botonomus/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/Kuduxaaa/botonomus/releases/tag/v0.2.0

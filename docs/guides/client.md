@@ -149,6 +149,6 @@ URL), `elapsed`, `via`, `ok` and `raise_for_status()`, which raises
   interrupted request once.
 - The shared browser's throwaway profile lives in the system temp directory
   (`botonomus-client-*`), never among your named profiles, and is deleted on close.
-- Client browsers always launch with
-  `--force-webrtc-ip-handling-policy=disable_non_proxied_udp`, so a per-context proxy
+- Client browsers always set the profile preference `webrtc.ip_handling_policy` to
+  `disable_non_proxied_udp`, which every context inherits, so a per-context proxy
   cannot leak the real address over WebRTC.

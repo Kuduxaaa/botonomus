@@ -31,7 +31,7 @@ ProxySpec(scheme='http', host='proxy.example', port=8080)
 
 ### WebRTC
 
-Any proxy also adds `--force-webrtc-ip-handling-policy=disable_non_proxied_udp`. WebRTC UDP would otherwise bypass the proxy and reveal the machine's real address. Botonomus blocks non-proxied UDP; it does not substitute a fake address.
+Any proxy also sets the profile preference `webrtc.ip_handling_policy` to `disable_non_proxied_udp` before launch (Chrome reads the policy only from this preference; the `--force-webrtc-ip-handling-policy` switch, also passed, works only in headless shells). WebRTC UDP would otherwise bypass the proxy and reveal the machine's real address. Botonomus blocks non-proxied UDP; it does not substitute a fake address, so pages see no ICE candidates.
 
 ## Checking proxies
 

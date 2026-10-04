@@ -18,11 +18,14 @@ from ..config import BrowserConfig, DriverName
 from ..drivers import Attachment, Driver, create_driver
 from ..errors import BrowserCleanupError, BrowserStartupError
 from ..network import ProxyForwarder
+from ..profiles.preferences import ensure_webrtc_policy
 from .arguments import launch_arguments
 from .discovery import find_chrome, is_testing_build
 from .display import VirtualDisplay, host_container_flags, needs_virtual_display
 from .process import available_port, descendants, owns_listener, stop_owned
 
+# Client launches without a browser proxy but proxies its contexts; it passes this flag.
+_WEBRTC_FLAG = "--force-webrtc-ip-handling-policy=disable_non_proxied_udp"
 _log = logging.getLogger("botonomus")
 
 
@@ -146,6 +149,8 @@ class ChromeBackend:
                     forwarder = ProxyForwarder(proxy)
                     await forwarder.start()
                     proxy_server = forwarder.server
+            if config.proxy_spec is not None or _WEBRTC_FLAG in config.extra_args:
+                await asyncio.to_thread(ensure_webrtc_policy, profile_path)
             arguments = launch_arguments(
                 executable,
                 profile_path,

@@ -87,3 +87,28 @@ async def test_cookies_roundtrip(session, local_url):
     assert "k" in names
     assert await session.page.evaluate("document.cookie") == "k=v"
     await asyncio.sleep(0)
+
+
+async def test_proxy_sessions_never_gather_non_proxied_webrtc_candidates(
+    tmp_path, executable, local_url
+):
+    """Chrome ignores --force-webrtc-ip-handling-policy; the profile pref must be set."""
+    config = BrowserConfig(
+        profile_root=tmp_path, executable_path=executable, proxy="http://127.0.0.1:9"
+    )
+    async with Botonomus(config=config) as bot, bot.open(profile="rtc") as session:
+        await session.page.goto(local_url)
+        candidates = await session.page.evaluate(
+            """async () => {
+              const pc = new RTCPeerConnection();
+              pc.createDataChannel('x');
+              const found = [];
+              pc.onicecandidate = (e) => { if (e.candidate) found.push(e.candidate.candidate); };
+              await pc.setLocalDescription(await pc.createOffer());
+              await new Promise((r) => setTimeout(r, 1500));
+              pc.close();
+              return found;
+            }""",
+            isolated_context=False,
+        )
+    assert candidates == []
