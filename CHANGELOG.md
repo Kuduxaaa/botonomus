@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-05
+
+### Changed
+
+- **`Client` keeps its browser profile between runs** (`client-browsers/client-N` next to the profile root, the first free slot for concurrent clients). Components the browser downloads once now stay installed, most importantly the Widevine CDM that streaming sites such as Spotify need: about 90 seconds after the very first start, then available immediately on every later run. Requests still run in separate contexts, so the profile keeps no site data. Copying a CDM into a fresh profile was measured again and is still flagged by fingerprint.com, while a CDM the browser downloaded itself is not.
+
 ## [0.4.0] - 2026-10-05
 
 ### Changed
@@ -122,7 +128,8 @@ The 0.1 lifecycle guarantees (bounded admission, cancellation-safe cleanup, cros
 - `Human` input: Bezier pointer paths with Fitts's-law timing, lognormal keystroke gaps and eased wheel scrolling.
 - Local probe page with ordinary-launch comparison, and a held-open concurrency benchmark.
 
-[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/Kuduxaaa/botonomus/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.2...v0.4.0
 [0.3.2]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.0...v0.3.1

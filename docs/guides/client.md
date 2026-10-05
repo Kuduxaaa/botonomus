@@ -147,8 +147,11 @@ URL), `elapsed`, `via`, `ok` and `raise_for_status()`, which raises
 - If the browser process dies, the client relaunches it on the next request. It
   recreates each context with its last known cookies and `localStorage`, and retries the
   interrupted request once.
-- The shared browser's throwaway profile lives in the system temp directory
-  (`botonomus-client-*`), never among your named profiles, and is deleted on close.
+- The shared browser keeps its own profile (`client-browsers/client-N`, next to your
+  profile root) between runs, like a person's browser. Components it downloads once,
+  such as the Widevine CDM that streaming sites need (about 90 seconds after the very
+  first start), stay installed. Requests run in separate contexts, so no site data is
+  kept there. Concurrent clients each take the first free `client-N`.
 - Client browsers always set the profile preference `webrtc.ip_handling_policy` to
   `disable_non_proxied_udp`, which every context inherits, so a per-context proxy
   cannot leak the real address over WebRTC.
