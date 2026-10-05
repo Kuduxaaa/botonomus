@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ### Added
 
+- **Widevine on fresh Botonomus Chromium profiles.** A Chromium build only gets the Widevine CDM from the component updater, about a minute after start, so new profiles failed `requestMediaKeySystemAccess('com.widevine.alpha')` where Chrome never does. When Google Chrome is installed on the machine, its CDM is copied into the profile before launch (locally, never redistributed).
 - `consistency` checks for server and VM tells: `gpu-real`, `audio-device`, `visibility`, `touch` and `notification`.
 - Botonomus Chromium launches pass `--bn-always-active` (windows stay active, so `document.hasFocus()` is true under automation), and Windows Server hosts present the UA-CH `platformVersion` of Windows 11 24H2 (`19.0.0`). Both need the new Botonomus Chromium build.
 

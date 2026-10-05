@@ -58,6 +58,10 @@ After launch, `session.persona` holds the applied persona (or `None`).
 
 `HostInfo.detect()` measures the current machine. The `--bn-*` switches are reserved: passing them in `extra_args` raises `ConfigurationError`; use `persona=` instead.
 
+## Widevine
+
+Google Chrome ships the Widevine CDM; Botonomus Chromium can only receive it from the component updater, about a minute after start. So that a fresh profile supports `com.widevine.alpha` straight away, as Chrome does, Botonomus copies the CDM from the Google Chrome installed on the same machine into the profile before launch. Nothing is downloaded or redistributed. Without a local Google Chrome, the component updater fetches it later.
+
 ## GPU overrides
 
 Overriding the GPU changes only the strings WebGL reports; every pixel is still rendered by the real GPU. Render-hash checks catch a claim from a different vendor family, so overrides are opt-in and should stay within the host's family:
