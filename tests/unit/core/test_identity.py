@@ -96,7 +96,15 @@ async def test_botonomus_build_gets_stable_persona_switches(botonomus_build, tmp
     assert first.botonomus_build and first.executable == botonomus_build
     assert first.persona == second.persona
     assert first.persona != other.persona
-    assert first.config.persona_switches == first.persona.to_switches()
+    assert first.config.persona_switches == tuple(
+        sorted((*first.persona.to_switches(), "--bn-always-active=1"))
+    )
+
+
+async def test_botonomus_build_keeps_windows_active_even_without_persona(botonomus_build, tmp_path):
+    config = BrowserConfig(profile_root=tmp_path / "p", persona="off")
+    result = await IdentityResolver().resolve(config, "acct")
+    assert result.config.persona_switches == ("--bn-always-active=1",)
 
 
 async def test_preferred_botonomus_build_missing_raises(chrome, tmp_path):
@@ -142,7 +150,7 @@ async def test_persona_off_on_botonomus_build_still_sets_timezone(botonomus_buil
     )
     result = await IdentityResolver(exits).resolve(config, "acct")
     assert result.persona is None
-    assert result.config.persona_switches == ("--bn-timezone=Asia/Tokyo",)
+    assert result.config.persona_switches == ("--bn-always-active=1", "--bn-timezone=Asia/Tokyo")
 
 
 async def test_geo_lookup_failure_is_typed(chrome, tmp_path):

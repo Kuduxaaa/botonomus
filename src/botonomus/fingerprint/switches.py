@@ -33,6 +33,12 @@ SCREEN: Final = "--bn-screen"
 TASKBAR: Final = "--bn-taskbar"
 """Taskbar height in CSS pixels; ``screen.availHeight`` is the screen height minus it."""
 
+PLATFORM_VERSION: Final = "--bn-platform-version"
+"""UA-CH ``platformVersion`` (``MAJOR.MINOR.PATCH``), for Windows Server hosts."""
+
+ALWAYS_ACTIVE: Final = "--bn-always-active"
+"""Windows always report active, so ``document.hasFocus()`` is true under automation."""
+
 DEVICE_MEMORY_VALUES: Final = frozenset({2, 4, 8, 16, 32})
 """Values Chromium 155 can report on desktop (clamped to 2-32 GB, crbug 454354290)."""
 
@@ -47,6 +53,8 @@ PERSONA_SWITCHES: Final = frozenset(
         NOISE,
         SCREEN,
         TASKBAR,
+        PLATFORM_VERSION,
+        ALWAYS_ACTIVE,
     }
 )
 """Every persona switch name, for callers that must refuse user-supplied duplicates."""

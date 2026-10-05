@@ -28,6 +28,8 @@ class HostInfo:
         screen: Primary display resolution in physical pixels, or ``None`` when
             unknown (a persona then keeps the real screen).
         scale: Display scale factor (``devicePixelRatio`` at 100% zoom).
+        windows_server: Whether the host runs Windows Server, whose UA-CH
+            ``platformVersion`` differs from consumer Windows.
 
     Raises:
         ConfigurationError: If ``logical_cpus`` is not a positive integer,
@@ -40,6 +42,7 @@ class HostInfo:
     platform: str
     screen: tuple[int, int] | None = None
     scale: float = 1.0
+    windows_server: bool = False
 
     def __post_init__(self) -> None:
         cpus = self.logical_cpus
@@ -69,6 +72,8 @@ class HostInfo:
             or scale <= 0
         ):
             raise ConfigurationError("Host scale must be a positive number")
+        if not isinstance(self.windows_server, bool):
+            raise ConfigurationError("windows_server must be a bool")
 
     @classmethod
     def detect(cls) -> "HostInfo":
@@ -88,6 +93,7 @@ class HostInfo:
             platform=sys.platform,
             screen=screen,
             scale=scale,
+            windows_server=sys.platform == "win32" and _is_windows_server(),
         )
 
     @property
@@ -157,3 +163,19 @@ def _windows_display() -> tuple[tuple[int, int] | None, float]:
         return (width, height), round(scale, 2)
     except (AttributeError, OSError, ValueError):
         return None, 1.0
+
+
+def _is_windows_server() -> bool:
+    """Whether this Windows installation is a Server edition (``InstallationType``)."""
+    try:
+        import winreg
+
+        key = winreg.OpenKey(  # type: ignore[attr-defined,unused-ignore]
+            winreg.HKEY_LOCAL_MACHINE,  # type: ignore[attr-defined,unused-ignore]
+            r"SOFTWARE\Microsoft\Windows NT\CurrentVersion",
+        )
+        with key:
+            value, _ = winreg.QueryValueEx(key, "InstallationType")  # type: ignore[attr-defined,unused-ignore]
+        return str(value).lower().startswith("server")
+    except (ImportError, OSError):
+        return False

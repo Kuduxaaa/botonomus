@@ -140,6 +140,7 @@ def test_switches_with_every_option(no_tz_database):
         noise=False,
         screen=(1536, 864),
         taskbar=40,
+        platform_version="19.0.0",
     )
     rendered = persona.to_switches()
     assert rendered == tuple(sorted(rendered))
@@ -153,8 +154,11 @@ def test_switches_with_every_option(no_tz_database):
         "--bn-noise=0",
         "--bn-screen=1536x864",
         "--bn-taskbar=40",
+        "--bn-platform-version=19.0.0",
     }
-    assert {item.split("=", 1)[0] for item in rendered} == switches.PERSONA_SWITCHES
+    # --bn-always-active is an automation switch, not part of a persona.
+    persona_names = switches.PERSONA_SWITCHES - {switches.ALWAYS_ACTIVE}
+    assert {item.split("=", 1)[0] for item in rendered} == persona_names
 
 
 def test_seed_switch_is_sixteen_lowercase_hex_digits():

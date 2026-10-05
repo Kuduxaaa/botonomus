@@ -104,6 +104,9 @@ class IdentityResolver:
         extra = persona.to_switches() if persona is not None else ()
         if persona is None and botonomus_build and timezone is not None:
             extra = (f"{switches.TIMEZONE}={timezone}",)
+        if botonomus_build:
+            # Automation drives several windows; keep each one active (hasFocus).
+            extra = tuple(sorted((*extra, f"{switches.ALWAYS_ACTIVE}=1")))
         resolved = replace(
             config,
             executable_path=executable,

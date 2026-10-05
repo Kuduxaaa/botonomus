@@ -69,6 +69,14 @@ a physical resolution no larger than the host's and divides it by the host's sca
 TASKBAR_WEIGHTS: Final[tuple[tuple[int, int], ...]] = ((48, 70), (40, 30))
 """``(taskbar height in CSS pixels, relative weight)``: Windows 11 (48) and 10 (40)."""
 
+SERVER_PLATFORM_VERSION: Final = "19.0.0"
+"""UA-CH ``platformVersion`` of Windows 11 24H2, presented by Windows Server hosts.
+
+Server 2019 reports 7.0.0 and Server 2022 an uncommon 14.0.0 (consumer releases
+reached end of service); Server 2025 already reports 19.0.0.
+"""
+
+_PLATFORM_VERSION: Final = re.compile(r"\d{1,2}\.\d{1,2}\.\d{1,2}")
 _SCREEN_MIN: Final = (640, 480)
 _SCREEN_MAX: Final = (7680, 4320)
 _TASKBAR_MAX: Final = 200
@@ -117,6 +125,8 @@ class Persona:
         screen: Screen size in CSS pixels, or ``None`` to keep the real screen.
         taskbar: Taskbar height in CSS pixels (``availHeight = height - taskbar``);
             used only with ``screen``.
+        platform_version: UA-CH ``platformVersion`` override (``MAJOR.MINOR.PATCH``),
+            or ``None`` for the host's.
 
     Raises:
         ConfigurationError: If any field is out of range or malformed. The time
@@ -132,6 +142,7 @@ class Persona:
     noise: bool = True
     screen: tuple[int, int] | None = None
     taskbar: int = 48
+    platform_version: str | None = None
 
     def __post_init__(self) -> None:
         _check_seed(self.seed)
@@ -174,6 +185,11 @@ class Persona:
             or not 0 <= taskbar <= _TASKBAR_MAX
         ):
             raise ConfigurationError(f"taskbar must be an integer from 0 to {_TASKBAR_MAX}")
+        if self.platform_version is not None and (
+            not isinstance(self.platform_version, str)
+            or not _PLATFORM_VERSION.fullmatch(self.platform_version)
+        ):
+            raise ConfigurationError("platform_version must look like '19.0.0'")
 
     @classmethod
     def from_seed(
@@ -217,6 +233,7 @@ class Persona:
             gpu=gpu,
             screen=_choose_screen(seed, host),
             taskbar=_choose(seed, "taskbar", TASKBAR_WEIGHTS, _TASKBAR_MAX),
+            platform_version=SERVER_PLATFORM_VERSION if host.windows_server else None,
         )
 
     def to_switches(self) -> tuple[str, ...]:
@@ -242,6 +259,8 @@ class Persona:
         if self.screen is not None:
             values.append(f"{switches.SCREEN}={self.screen[0]}x{self.screen[1]}")
             values.append(f"{switches.TASKBAR}={self.taskbar}")
+        if self.platform_version is not None:
+            values.append(f"{switches.PLATFORM_VERSION}={self.platform_version}")
         return tuple(sorted(values))
 
 

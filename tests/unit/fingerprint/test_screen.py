@@ -92,3 +92,16 @@ def test_window_fits_persona_screen(tmp_path):
 def test_persona_off_has_no_window_flags(tmp_path):
     args = launch_arguments(tmp_path / "chrome", tmp_path / "p", 9222, BrowserConfig())
     assert not any(arg.startswith("--window-") for arg in args)
+
+
+def test_windows_server_host_presents_a_consumer_platform_version():
+    server = HostInfo(8, 16.0, "win32", windows_server=True)
+    assert Persona.from_seed(1, server).platform_version == "19.0.0"
+    assert "--bn-platform-version=19.0.0" in Persona.from_seed(1, server).to_switches()
+    assert Persona.from_seed(1, FULL_HD).platform_version is None
+
+
+@pytest.mark.parametrize("value", ["19", "19.0", "1.2.3.4", "100.0.0", "a.b.c"])
+def test_invalid_platform_version_rejected(value):
+    with pytest.raises(ConfigurationError):
+        Persona(seed=1, hardware_concurrency=8, device_memory=8, platform_version=value)
