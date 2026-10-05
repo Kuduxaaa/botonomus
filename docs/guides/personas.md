@@ -14,12 +14,16 @@ A persona is the hardware and locale identity a browser presents. Without one, e
 | `device_memory` | `navigator.deviceMemory` (2, 4, 8, 16 or 32 GB) | Weighted draw, at most the host's memory |
 | `timezone` | Time zone in the browser | `BrowserConfig.timezone`, the proxy exit (with `geoip=True`), or the host |
 | `gpu` | `UNMASKED_VENDOR_WEBGL` / `UNMASKED_RENDERER_WEBGL` strings | None: keep the real GPU |
-| `noise` | Readback noise on or off | On (`False` is for measurement only) |
+| `noise` | Canvas, WebGL and audio readback noise on or off | **Off** for derived personas (`Persona.from_seed(..., noise=True)` turns it on); on for a directly constructed `Persona` |
 | `screen`, `taskbar` | `screen.width/height`, `availHeight` (height minus taskbar), CSS `device-width`/`device-height`, every frame | Weighted draw of a real monitor resolution no larger than the host's, divided by the host's scale; taskbar 48 (Windows 11) or 40 (Windows 10). `None` when the host screen is unknown (Linux, macOS) |
 
 Values are drawn from weighted Windows desktop distributions and **never exceed the host's hardware**: detectors measure parallel speed-up and proof-of-work timing, so claimed cores or memory that do not exist show up.
 
 The screen follows the same rule. `devicePixelRatio` stays the host's, so the persona picks a *physical* resolution and divides it by the host's scale: on a 1920x1080 monitor at 125 %, a persona can present 1536x864 (that monitor) or 1093x614 (a 1366x768 one), and `screen x devicePixelRatio` is always a real monitor size. With a persona screen the browser window opens at the origin and fills the persona's work area, because `outerWidth`/`outerHeight` come from the real window. The screen switches need patch 0012 in Botonomus Chromium; `botonomus consistency` reports the `screen` check as failed on a build without it.
+
+### Why noise is off by default
+
+Measured on 2026-10-05 with the official build, through rotating proxies, on fingerprint.com's playground: the tampering model scored personas **with** readback noise 0.76-0.92 and flagged most of them, scored the same personas **without** noise about 0.24, and scored the browser with no persona 0.48. Readback noise is what that detector reads as tampering. The cost of turning it off: personas on one machine share their canvas, WebGL and audio hashes, so they can be linked through those values (the rest of the persona, the proxy and the profile still differ). Turn it on with `Persona.from_seed(seed, host, noise=True)` where linkability matters more than this detector.
 
 ## Choosing a persona
 
@@ -57,10 +61,6 @@ After launch, `session.persona` holds the applied persona (or `None`).
 ```
 
 `HostInfo.detect()` measures the current machine. The `--bn-*` switches are reserved: passing them in `extra_args` raises `ConfigurationError`; use `persona=` instead.
-
-## Widevine
-
-Google Chrome ships the Widevine CDM; Botonomus Chromium can only receive it from the component updater, about a minute after start. So that a fresh profile supports `com.widevine.alpha` straight away, as Chrome does, Botonomus copies the CDM from the Google Chrome installed on the same machine into the profile before launch. Nothing is downloaded or redistributed. Without a local Google Chrome, the component updater fetches it later.
 
 ## GPU overrides
 

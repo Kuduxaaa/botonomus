@@ -16,29 +16,16 @@ import psutil
 
 from ..config import BrowserConfig, DriverName
 from ..drivers import Attachment, Driver, create_driver
-from ..errors import BrowserCleanupError, BrowserStartupError, BrowserUnavailableError
+from ..errors import BrowserCleanupError, BrowserStartupError
 from ..network import ProxyForwarder
 from ..profiles.preferences import ensure_webrtc_policy
-from ..profiles.widevine import seed_widevine
 from .arguments import launch_arguments
-from .discovery import find_chrome, is_botonomus_build, is_testing_build
+from .discovery import find_chrome, is_testing_build
 from .display import VirtualDisplay, host_container_flags, needs_virtual_display
 from .process import available_port, descendants, owns_listener, stop_owned
 
 # Client launches without a browser proxy but proxies its contexts; it passes this flag.
 _WEBRTC_FLAG = "--force-webrtc-ip-handling-policy=disable_non_proxied_udp"
-
-
-def _seed_widevine(profile_path: Path) -> None:
-    """Give a Botonomus Chromium profile Google Chrome's Widevine CDM, if Chrome is here."""
-    try:
-        chrome = find_chrome()
-    except BrowserUnavailableError:
-        return
-    if seed_widevine(profile_path, [chrome]):
-        _log.info("widevine_seeded")
-
-
 _log = logging.getLogger("botonomus")
 
 
@@ -164,8 +151,6 @@ class ChromeBackend:
                     proxy_server = forwarder.server
             if config.proxy_spec is not None or _WEBRTC_FLAG in config.extra_args:
                 await asyncio.to_thread(ensure_webrtc_policy, profile_path)
-            if await asyncio.to_thread(is_botonomus_build, executable):
-                await asyncio.to_thread(_seed_widevine, profile_path)
             arguments = launch_arguments(
                 executable,
                 profile_path,

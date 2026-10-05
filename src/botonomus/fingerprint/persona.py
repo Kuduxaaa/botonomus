@@ -199,6 +199,7 @@ class Persona:
         *,
         timezone: str | None = None,
         gpu: GpuOverride | None = None,
+        noise: bool = False,
     ) -> "Persona":
         """Derive a realistic persona deterministically from a seed.
 
@@ -213,6 +214,11 @@ class Persona:
             timezone: IANA zone to present, or ``None`` for the host zone.
             gpu: Explicit GPU override; see the GPU table in
                 `botonomus.fingerprint.gpus`.
+            noise: Canvas, WebGL and audio readback noise. Off by default: measured on
+                2026-10-05, fingerprint.com's tampering model scored noisy personas
+                0.76-0.92 (flagged above about 0.8) and noiseless ones 0.24, against
+                0.48 for no persona. Without noise, personas on one machine share
+                their canvas, WebGL and audio hashes.
 
         Returns:
             The persona.
@@ -234,6 +240,7 @@ class Persona:
             screen=_choose_screen(seed, host),
             taskbar=_choose(seed, "taskbar", TASKBAR_WEIGHTS, _TASKBAR_MAX),
             platform_version=SERVER_PLATFORM_VERSION if host.windows_server else None,
+            noise=noise,
         )
 
     def to_switches(self) -> tuple[str, ...]:

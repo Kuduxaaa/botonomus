@@ -105,3 +105,15 @@ def test_windows_server_host_presents_a_consumer_platform_version():
 def test_invalid_platform_version_rejected(value):
     with pytest.raises(ConfigurationError):
         Persona(seed=1, hardware_concurrency=8, device_memory=8, platform_version=value)
+
+
+def test_seeded_personas_have_noise_off_by_default():
+    persona = Persona.from_seed(1, FULL_HD)
+    assert persona.noise is False
+    assert "--bn-noise=0" in persona.to_switches()
+
+
+def test_noise_can_be_requested():
+    persona = Persona.from_seed(1, FULL_HD, noise=True)
+    assert persona.noise is True
+    assert not any(s.startswith("--bn-noise") for s in persona.to_switches())

@@ -6,11 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- **Derived personas have readback noise off by default.** On fingerprint.com's playground, the tampering model scored noisy personas 0.76-0.92 (most flagged) and noiseless ones about 0.24 (official build, rotating proxies, 2026-10-05). `Persona.from_seed(..., noise=True)` turns it back on. Personas on one machine then share canvas, WebGL and audio hashes.
+
 ### Added
 
-- **Widevine on fresh Botonomus Chromium profiles.** A Chromium build only gets the Widevine CDM from the component updater, about a minute after start, so new profiles failed `requestMediaKeySystemAccess('com.widevine.alpha')` where Chrome never does. When Google Chrome is installed on the machine, its CDM is copied into the profile before launch (locally, never redistributed).
 - `consistency` checks for server and VM tells: `gpu-real`, `audio-device`, `visibility`, `touch` and `notification`.
 - Botonomus Chromium launches pass `--bn-always-active` (windows stay active, so `document.hasFocus()` is true under automation), and Windows Server hosts present the UA-CH `platformVersion` of Windows 11 24H2 (`19.0.0`). Both need the new Botonomus Chromium build.
+
+### Not changed
+
+- Widevine on fresh Botonomus Chromium profiles stays absent until the component updater installs it. Copying the CDM from a local Google Chrome was tried and rejected: fingerprint.com then flagged the browser as tampered (2 of 2 visits, against 0 of 2 without it, same proxy).
 
 ## [0.3.2] - 2026-10-05
 
