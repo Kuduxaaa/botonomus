@@ -315,6 +315,19 @@ Every SDK error derives from `botonomus.BotonomusError`; the low-level cause is 
 
 ## Measured results
 
+Measured 2026-10-05, Windows 11, **Botonomus Chromium 155.0.8059.26 official build** (PGO, patches 0001-0021), `native` driver, fresh profile per visit, rotating datacenter proxies with `geoip=True`, `botonomus experiment` (4-5 visits per arm and site):
+
+| Check | No persona | Persona (default: noise off) | Persona with readback noise |
+|---|---|---|---|
+| demo.fingerprint.com (bot and tampering decision) | **4/4** | **4/4** | 2/5 |
+| fingerprint.com playground (tampering, anti-detect) | **4/4**, tampering score 0.48 | **4/4**, about 0.24 | 2/5, 0.76-0.92 |
+| creepjs | **4/4** | **4/4** | 5/5 |
+| pixelscan.net bot check / browserscan | **5/5** | - | 5/5 |
+| pixelscan.net fingerprint | 0/4 "inconsistent" (browser version) | 0/4 (same) | - |
+| `botonomus consistency` (15 checks, persona screen included) | 14/15 (Widevine) | 14/15 (Widevine) | - |
+
+The same build without a persona passed fingerprint.com 5/5 where the earlier non-official dev build of the same patches was flagged as an anti-detect browser, so the official build itself removed that signal. Readback noise is what fingerprint.com's tampering model reacts to, hence the noiseless default. pixelscan.net's fingerprint page reports the browser version as inconsistent; Chrome 154 passes it, so this looks like its version database not yet knowing 155. Widevine is absent on a fresh profile until the component updater installs it; copying Google Chrome's CDM made fingerprint.com flag tampering, so it is not done.
+
 Measured 2026-10-04, Windows 11, Google Chrome 154 stable through the `native` driver, `--persona off`, fresh profile per visit, rotating datacenter proxies (one per visit), with `botonomus experiment` and `botonomus consistency`:
 
 | Check | Result |

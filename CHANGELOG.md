@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-05
+
 ### Changed
 
 - **Derived personas have readback noise off by default.** On fingerprint.com's playground, the tampering model scored noisy personas 0.76-0.92 (most flagged) and noiseless ones about 0.24 (official build, rotating proxies, 2026-10-05). `Persona.from_seed(..., noise=True)` turns it back on. Personas on one machine then share canvas, WebGL and audio hashes.
@@ -120,7 +122,8 @@ The 0.1 lifecycle guarantees (bounded admission, cancellation-safe cleanup, cros
 - `Human` input: Bezier pointer paths with Fitts's-law timing, lognormal keystroke gaps and eased wheel scrolling.
 - Local probe page with ordinary-launch comparison, and a held-open concurrency benchmark.
 
-[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/Kuduxaaa/botonomus/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.2...v0.4.0
 [0.3.2]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/Kuduxaaa/botonomus/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/Kuduxaaa/botonomus/compare/v0.2.0...v0.3.0
