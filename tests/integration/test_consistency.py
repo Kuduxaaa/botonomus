@@ -1,3 +1,4 @@
+import os
 import sys
 
 import pytest
@@ -16,6 +17,9 @@ async def test_stock_chrome_is_consistent(tmp_path, executable):
     tolerated = {"media"} | (
         {"voices", "webgl-stable"} if sys.platform.startswith("linux") else set()
     )
+    if os.environ.get("CI"):
+        # CI runners are GPU-less, audio-less VMs: exactly what these checks detect.
+        tolerated |= {"gpu-real", "audio-device", "visibility", "touch"}
     assert {c.name for c in failing} <= tolerated, failing
     contexts = next(c for c in report.checks if c.name == "contexts-agree").observed["contexts"]
     assert {"page", "frame", "worker"} <= set(contexts)
