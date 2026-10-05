@@ -8,6 +8,7 @@ posts the raw observations back. `report_from_raw` turns them into named checks.
 import asyncio
 import json
 import queue
+import re
 import secrets
 import threading
 from dataclasses import asdict, dataclass
@@ -85,6 +86,52 @@ def _pair_equal(value: Any) -> bool:
         and value[0] is not None
         and value[0] == value[1]
     )
+
+
+# Software renderers a GPU-less server falls back to; no desktop user has them.
+_SOFTWARE_GPU = re.compile(r"basic render driver|swiftshader|llvmpipe|softpipe|lavapipe", re.I)
+
+
+def _machine_checks(machine: dict[str, Any]) -> list["Check"]:
+    """Checks for tells of a server or VM rather than a desktop."""
+    renderer = machine.get("webglRenderer")
+    sample_rate = machine.get("sampleRate")
+    outputs = machine.get("audioOutputs")
+    raf = machine.get("rafPerSecond")
+    return [
+        # WebGL must exist and run on a real GPU (WARP, SwiftShader and Mesa's
+        # software rasterizers are server tells).
+        Check(
+            "gpu-real",
+            isinstance(renderer, str) and bool(renderer) and not _SOFTWARE_GPU.search(renderer),
+            {"renderer": renderer},
+        ),
+        # Desktops have an output device and run it at 48 kHz; servers have none
+        # and Chrome falls back to a fake 44.1 kHz device.
+        Check(
+            "audio-device",
+            sample_rate == 48000 and isinstance(outputs, int) and outputs > 0,
+            {"sample_rate": sample_rate, "audio_outputs": outputs},
+        ),
+        # A locked or disconnected session hides the page and stops frames.
+        Check(
+            "visibility",
+            machine.get("visibility") == "visible" and isinstance(raf, int | float) and raf >= 30,
+            {"visibility": machine.get("visibility"), "raf_per_second": raf},
+        ),
+        # RDP touch redirection reports many touch points on a desktop persona.
+        Check(
+            "touch",
+            machine.get("touchPoints") == 0,
+            {"max_touch_points": machine.get("touchPoints")},
+        ),
+        # Off-the-record contexts deny notifications without asking.
+        Check(
+            "notification",
+            machine.get("notification") in ("default", "granted"),
+            {"permission": machine.get("notification")},
+        ),
+    ]
 
 
 def report_from_raw(raw: dict[str, Any], product: str) -> ConsistencyReport:
@@ -191,6 +238,7 @@ def report_from_raw(raw: dict[str, Any], product: str) -> ConsistencyReport:
             bool(document_accept) and bool(image_accept) and not (jxl and claims_chrome),
             {"document": document_accept, "image": image_accept, "jxl": jxl},
         ),
+        *_machine_checks(raw["machine"] if isinstance(raw.get("machine"), dict) else {}),
     ]
     return ConsistencyReport(product, checks)
 

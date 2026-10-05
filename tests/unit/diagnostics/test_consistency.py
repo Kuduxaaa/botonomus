@@ -22,6 +22,15 @@ CHROME_IMAGE_ACCEPT = "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/
 def raw(**over):
     base = {
         "accept": {"document": CHROME_DOCUMENT_ACCEPT, "image": CHROME_IMAGE_ACCEPT},
+        "machine": {
+            "webglRenderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 Direct3D11 vs_5_0 ps_5_0)",
+            "sampleRate": 48000,
+            "audioOutputs": 1,
+            "visibility": "visible",
+            "rafPerSecond": 60,
+            "touchPoints": 0,
+            "notification": "default",
+        },
         "canvas": ["h1", "h1"],
         "canvasSolid": True,
         "webgl": ["g1", "g1"],
@@ -116,6 +125,11 @@ def test_consistency_report_from_raw_marks_missing_values_fail():
         "headless-ua",
         "screen",
         "accept-header",
+        "gpu-real",
+        "audio-device",
+        "visibility",
+        "touch",
+        "notification",
     }
     assert not checks["canvas-stable"].passed and not checks["contexts-agree"].passed
     assert not checks["headless-ua"].passed and not checks["screen"].passed
@@ -297,3 +311,32 @@ def test_persona_screen_contradictions_fail(change):
 def test_css_device_size_must_match_js_screen():
     screen = {**raw()["screen"], "cssDevice": False}
     assert not by_name(report_from_raw(raw(screen=screen), "p"))["screen"].passed
+
+
+@pytest.mark.parametrize(
+    ("change", "check"),
+    [
+        ({"webglRenderer": "ANGLE (Microsoft, Microsoft Basic Render Driver Direct3D11)"},
+         "gpu-real"),
+        ({"webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)))"},
+         "gpu-real"),
+        ({"webglRenderer": None}, "gpu-real"),
+        ({"sampleRate": 44100}, "audio-device"),
+        ({"audioOutputs": 0}, "audio-device"),
+        ({"visibility": "hidden"}, "visibility"),
+        ({"rafPerSecond": 4}, "visibility"),
+        ({"touchPoints": 256}, "touch"),
+        ({"notification": "denied"}, "notification"),
+    ],
+)  # fmt: skip
+def test_server_tells_fail_their_check(change, check):
+    machine = {**raw()["machine"], **change}
+    checks = by_name(report_from_raw(raw(machine=machine), "p"))
+    assert not checks[check].passed
+    assert all(c.passed for name, c in checks.items() if name != check), check
+
+
+def test_machine_checks_pass_on_a_desktop():
+    checks = by_name(report_from_raw(raw(), "p"))
+    for name in ("gpu-real", "audio-device", "visibility", "touch", "notification"):
+        assert checks[name].passed, name

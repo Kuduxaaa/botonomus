@@ -107,6 +107,11 @@ A loopback page, with no third-party traffic, runs these checks. The command exi
 | `voices` | At least one speech voice (Google network voices are reported, not required: Chrome lists them only after a public page has loaded) |
 | `headless-ua` | No "Headless" in the user agent or brands |
 | `screen` | Outer size >= inner size, `availHeight <= height`, and CSS `device-width`/`device-height` match `screen.width/height`. With a persona screen: JS reports exactly the persona's size, `availHeight` is height minus the taskbar, and the window fits the work area |
+| `gpu-real` | WebGL exists and runs on a real GPU: not WARP ("Microsoft Basic Render Driver"), SwiftShader, llvmpipe or lavapipe, which only GPU-less servers show |
+| `audio-device` | `AudioContext.sampleRate` is 48000 and at least one `audiooutput` device exists (servers without audio fall back to a fake 44.1 kHz device) |
+| `visibility` | The page is visible and `requestAnimationFrame` runs at 30+ frames per second (a locked or disconnected session stops frames) |
+| `touch` | `navigator.maxTouchPoints` is 0, as on a desktop (RDP touch redirection reports many) |
+| `notification` | `Notification.permission` is `default` or `granted` (off-the-record contexts deny it without asking) |
 | `accept-header` | The server saw the page's and an image's `Accept` headers, and neither advertises `image/jxl` while UA-CH claims Google Chrome (Chrome stable does not support JPEG XL; a Chromium build with it enabled does) |
 
 From Python: `botonomus.diagnostics.consistency.run_consistency(config)` returns a `ConsistencyReport`.

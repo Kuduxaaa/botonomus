@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Added
+
+- `consistency` checks for server and VM tells: `gpu-real`, `audio-device`, `visibility`, `touch` and `notification`.
+- Botonomus Chromium launches pass `--bn-always-active` (windows stay active, so `document.hasFocus()` is true under automation), and Windows Server hosts present the UA-CH `platformVersion` of Windows 11 24H2 (`19.0.0`). Both need the new Botonomus Chromium build.
+
 ## [0.3.2] - 2026-10-05
 
 ### Security

@@ -112,6 +112,37 @@ window.addEventListener('load', async () => {
     raw.audio = [await safe(audioOnce), await safe(audioOnce)];
     raw.h264 = await safe(() =>
       document.createElement('video').canPlayType('video/mp4; codecs="avc1.42E01E"'));
+    raw.machine = {
+      webglRenderer: await safe(() => {
+        const gl = document.createElement('canvas').getContext('webgl');
+        if (!gl) return null;
+        const info = gl.getExtension('WEBGL_debug_renderer_info');
+        return info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+      }),
+      sampleRate: await safe(async () => {
+        const ctx = new AudioContext();
+        const rate = ctx.sampleRate;
+        await ctx.close();
+        return rate;
+      }),
+      audioOutputs: await safe(async () =>
+        (await navigator.mediaDevices.enumerateDevices())
+          .filter((d) => d.kind === 'audiooutput').length),
+      visibility: document.visibilityState,
+      rafPerSecond: await safe(() => new Promise((r) => {
+        let frames = 0;
+        const start = performance.now();
+        const step = () => {
+          frames++;
+          if (performance.now() - start < 1000) requestAnimationFrame(step);
+          else r(frames);
+        };
+        requestAnimationFrame(step);
+        setTimeout(() => r(frames), 1500);
+      })),
+      touchPoints: navigator.maxTouchPoints,
+      notification: await safe(() => Notification.permission),
+    };
     raw.screen = await safe(() => ({
       outerW: outerWidth, innerW: innerWidth, outerH: outerHeight, innerH: innerHeight,
       w: screen.width, h: screen.height, availW: screen.availWidth, availH: screen.availHeight,
